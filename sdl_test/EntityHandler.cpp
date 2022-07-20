@@ -94,6 +94,6 @@ void EntityHandler::draw(Game& g)
 
 void EntityHandler::place_enemy(Game& g, int x, int y)
 {
-	for(int _ = 1000; _--;)
+	for(int _ = 1; _--;)
 		_enemy_basics.emplace_back((float)x + g._cam._x + _, (float)y + g._cam._y);
 }
