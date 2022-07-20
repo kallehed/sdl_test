@@ -8,6 +8,7 @@ enum class MOVING_RECT_TYPES {
 	PLAYER,
 	ENEMY,
 	SHOT,
+	SHOT_ENEMY,
 	TOTAL
 };
 
@@ -20,8 +21,6 @@ private:
 	float _friction;
 	float _x_vel = 0.f;
 	float _y_vel = 0.f;
-	
-
 protected:
 	MovingRect(float x, float y, float w, float h, float friction);
 	void move_and_collide(Game& g);
@@ -33,4 +32,7 @@ public:
 	
 	virtual void intersection(float nx, float ny, MovingRect* e);
 	virtual MOVING_RECT_TYPES get_moving_rect_type() const = 0;
+	virtual void draw(Game& g) = 0;
+	virtual void logic(Game& g) = 0;
+	virtual bool end_logic(Game& g) = 0;
 };

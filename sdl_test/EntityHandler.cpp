@@ -6,8 +6,7 @@ EntityHandler::EntityHandler()  : _quadtree(0, 0, 4096, 4096) {}
 void EntityHandler::logic(Game& g)
 {
 	_p.logic(g);
-	for (EnemyBasic& e : _enemy_basics) e.logic(g);
-	for (Shot& s : _shots) s.logic(g);
+	for (auto e : _entities) e->logic(g);
 
 	//intersection logic
 	/*for (EnemyBasic& e : _enemy_basics)
@@ -54,29 +53,20 @@ void EntityHandler::logic(Game& g)
 	}*/
 	_quadtree.clear();
 
-	for (EnemyBasic& e : _enemy_basics) {
-		_quadtree.add_to_head(&e);
-	}
-	for (Shot& e : _shots) {
-		_quadtree.add_to_head(&e);
+	for (auto e : _entities) {
+		_quadtree.add_to_head(e);
 	}
 	_quadtree.add_to_head(&_p);
 
 	_quadtree.head_do_intersection();
 	
 	// remove entities
-	for (size_t i = _shots.size(); i-- != 0; ) // backwards loop
-	{ 
-		if (_shots[i].end_logic(g))
-		{
-			_shots.erase(_shots.begin() + i);
-		}
-	}
-	for (size_t i = _enemy_basics.size(); i-- != 0; ) 
+	for (size_t i = _entities.size(); i-- != 0; ) // backwards loop
 	{
-		if (_enemy_basics[i].end_logic(g))
+		if (_entities[i]->end_logic(g))
 		{
-			_enemy_basics.erase(_enemy_basics.begin() + i);
+			delete _entities[i];
+			_entities.erase(_entities.begin() + i);
 		}
 	}
 
@@ -86,14 +76,13 @@ void EntityHandler::logic(Game& g)
 
 void EntityHandler::draw(Game& g)
 {
-	for (auto& e : _enemy_basics) e.draw(g);
-	for (auto& s : _shots) s.draw(g);
+	for (auto& e : _entities) e->draw(g);
 	_p.draw(g);
 	_quadtree.head_draw(g);
 }
 
 void EntityHandler::place_enemy(Game& g, int x, int y)
 {
-	for(int _ = 1; _--;)
-		_enemy_basics.emplace_back((float)x + g._cam._x + _, (float)y + g._cam._y);
+	for (int _ = 1; _--;)
+		_entities.push_back(new EnemyShooter((float)x + g._cam._x + _, (float)y + g._cam._y));
 }

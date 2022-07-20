@@ -47,7 +47,7 @@ public:
 
 	bool end_logic(Game& g);
 
-	void draw(Game& g);
+	void draw(Game& g) override;
 protected:
 	void new_walk_path(Game& g);
 };

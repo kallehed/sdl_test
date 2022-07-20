@@ -15,21 +15,25 @@ void Player::logic(Game& g)
 	// change velocities according to keys pressed
 	static const float acc = 0.0023f;
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_RIGHT]) {
+	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
 		change_x_vel(acc);
 	}
-	if (keys[SDL_SCANCODE_LEFT]) {
+	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A]) {
 		change_x_vel(-acc);
 	}
-	if (keys[SDL_SCANCODE_DOWN]) {
+	if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S]) {
 		change_y_vel(acc);
 	}
-	if (keys[SDL_SCANCODE_UP]) {
+	if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W]) {
 		change_y_vel(-acc);
 	}
 
 	// let MovingRect handle the rest
 	move_and_collide(g);
+}
+
+bool Player::end_logic(Game& g) {
+	return false;
 }
 
 void Player::possibly_shoot(Game& g)
@@ -43,7 +47,7 @@ void Player::possibly_shoot(Game& g)
 		
 		float x_speed = nx * shot_speed;
 		float y_speed = ny * shot_speed;
-		g._entity_handler._shots.emplace_back(get_mid_x(), get_mid_y(), x_speed, y_speed);
+		g._entity_handler._entities.push_back(new Shot(get_mid_x(), get_mid_y(), x_speed, y_speed));
 	}
 }
 

@@ -10,10 +10,10 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 	Player();
-	void logic(Game& g);
+	void logic(Game& g) override;
+	bool end_logic(Game& g) override;
 
 	void possibly_shoot(Game& g);
-
 
 	void enemy_intersection(float nx, float ny);
 
