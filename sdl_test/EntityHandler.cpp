@@ -3,54 +3,31 @@
 
 EntityHandler::EntityHandler()  : _quadtree(0, 0, 4096, 4096) {}
 
+inline void EntityHandler::do_logic(Game& g, std::vector<MovingRect*>& vec)
+{
+	for (int i = 0; i < vec.size();)
+	{
+		if (vec[i]->logic(g)) // delete if entity returns true
+		{
+			vec.erase(vec.begin() + i);
+		}
+		else {
+			++i;
+		}
+	}
+}
+
 void EntityHandler::logic(Game& g)
 {
 	_p.logic(g);
-	for (auto e : _entities) e->logic(g);
 
-	//intersection logic
-	/*for (EnemyBasic& e : _enemy_basics)
-	{
-		// player : enemies
-		if (General::rect_intersection(_p, e))
-		{
-			float nx, ny;
-			General::normalize_vector_two_points(nx, ny, _p.get_mid_x(), _p.get_mid_y(), e.get_mid_x(), e.get_mid_y());
+	// _draw_entities first, cuz _entitites could add to _draw_entitites
+	
+	this->do_logic(g, _draw_entities);
 
-			_p.enemy_intersection(-nx, -ny);
-			e.player_intersection(nx, ny);
-			break;
-		}
-		// shots : enemies
-		for (Shot& s : _shots)
-		{
-			if (General::rect_intersection(s, e))
-			{
-				float nx, ny;
-				General::normalize_vector_two_points(nx, ny, s.get_mid_x(), s.get_mid_y(), e.get_mid_x(), e.get_mid_y());
-				s.hit_something(); 
-				e.shot_intersection(nx, ny);
-			}
-		}
-	}*/
+	this->do_logic(g, _entities);
 
-	// enemy against enemy
-	/*for (int i = 0; i + 1 < _enemy_basics.size(); ++i)
-	{
-		EnemyBasic& e1 = _enemy_basics[i];
-		for (int j = i + 1; j < _enemy_basics.size(); ++j)
-		{
-			EnemyBasic& e2 = _enemy_basics[j];
-
-			if (General::rect_intersection(e1, e2)) 
-			{
-				float nx, ny;
-				General::normalize_vector_two_points(nx, ny, e1.get_mid_x(), e1.get_mid_y(), e2.get_mid_x(), e2.get_mid_y());
-				e1.enemy_intersection(-nx, -ny);
-				e2.enemy_intersection(nx, ny);
-			}
-		}
-	}*/
+	// quadtree stuff, intersection!
 	_quadtree.clear();
 
 	for (auto e : _entities) {
@@ -60,25 +37,20 @@ void EntityHandler::logic(Game& g)
 
 	_quadtree.head_do_intersection();
 	
-	// remove entities
-	for (size_t i = _entities.size(); i-- != 0; ) // backwards loop
+	// add entities
+	for (auto e : _entities_to_add)
 	{
-		if (_entities[i]->end_logic(g))
-		{
-			delete _entities[i];
-			_entities.erase(_entities.begin() + i);
-		}
+		_entities.push_back(e);
 	}
-
-	// mouse button press actions
-	_p.possibly_shoot(g); // could append shot
+	_entities_to_add.clear();
 }
 
 void EntityHandler::draw(Game& g)
 {
 	for (auto& e : _entities) e->draw(g);
+	for (auto& e : _draw_entities) e->draw(g);
 	_p.draw(g);
-	_quadtree.head_draw(g);
+	_quadtree.head_draw(g);	
 }
 
 void EntityHandler::place_enemy(Game& g, int x, int y)

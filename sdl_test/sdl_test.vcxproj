@@ -151,11 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBasic.cpp" />
     <ClCompile Include="EnemyShooter.cpp" />
     <ClCompile Include="EntityHandler.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="MovingRect.cpp" />
@@ -167,11 +170,14 @@
     <ClCompile Include="TileHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBasic.h" />
     <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="EntityHandler.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="MovingRect.h" />

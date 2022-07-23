@@ -40,9 +40,15 @@ void MovingRect::move_and_collide(Game& g) // moves x and y based on velocity + 
 	_y_vel += _frame_y_vel_change * g._dt;
 	_frame_x_vel_change = 0.f; // reset for next frame
 	_frame_y_vel_change = 0.f;
+
+	// limit
+	// maximum velocity(otherwise *this will go through walls(also outofbounds!)) 
+	constexpr float max_abs_vel = 1.7f; // 1.75 too high, 1.635 safe, 1.7 safe
+	_x_vel = fmax(-max_abs_vel,fmin(_x_vel, max_abs_vel));
+	_y_vel = fmax(-max_abs_vel, fmin(_y_vel, max_abs_vel));
 	
 	set_x(get_x() + _x_vel * g._dt);
-	std::pair<bool, std::array<int, 2>> pos = General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h());
+	auto pos = General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h());
 	if (pos.first) { // will possibly set _x_vel to 0
 		x_collision((float)pos.second[0], (float)pos.second[1], (float)g._cam._grid, (float)g._cam._grid);
 	}
@@ -90,10 +96,12 @@ void MovingRect::go_towards(float x, float y, float speed)
 	change_y_vel(speed * ny);
 }
 
-void MovingRect::intersection(float nx, float ny, MovingRect* e)
+float MovingRect::get_x_vel() const
 {
-	float bounce_acc = 0.005f;
+	return _x_vel;
+}
 
-	change_x_vel(bounce_acc * nx);
-	change_y_vel(bounce_acc * ny);
+float MovingRect::get_y_vel() const
+{
+	return _y_vel;
 }

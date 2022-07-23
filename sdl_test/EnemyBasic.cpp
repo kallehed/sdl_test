@@ -62,7 +62,7 @@ void EnemyBasic::active_logic(Game& g)
 {
 	if (_active_scared) // run away from player
 	{ 
-		go_towards_player(g, (-1)*_active_basic_speed);
+		go_towards_player(g, (-1.f) * _active_basic_speed);
 		_timer += g._dt;
 		if (_timer > 3000) {
 			_active_scared = false;

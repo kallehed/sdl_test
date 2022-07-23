@@ -14,19 +14,17 @@ ShotEnemy::ShotEnemy(float x, float y, float x_vel, float y_vel) : MovingRect(0,
 	_y_dir = y_vel;
 }
 
-void ShotEnemy::logic(Game& g)
+bool ShotEnemy::logic(Game& g)
 {
 	change_x_vel(_x_dir * _speed);
 	change_y_vel(_y_dir * _speed);
 	move_without_colliding(g);
-}
 
-bool ShotEnemy::end_logic(Game& g)  // returns whether to remove self or not
-{
 	// collision with blocking tile
 	if (General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h()).first
 		|| _lives < 1)
 	{
+		delete this;
 		return true;
 	}
 	return false;

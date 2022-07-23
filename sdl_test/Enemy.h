@@ -23,7 +23,7 @@ public:
 
 	Enemy(float x, float y, int max_hp, float activation_radius, float deactivation_radius, float active_time);
 
-	void logic(Game& g);
+	bool logic(Game& g);
 
 	void make_active();
 
@@ -37,15 +37,7 @@ public:
 
 	virtual void active_logic(Game& g) = 0;
 
-	void player_intersection(float nx, float ny);
-	
-	void enemy_intersection(float nx, float ny);
-
-	void shot_intersection(float nx, float ny);
-
 	virtual void take_damage() = 0;
-
-	bool end_logic(Game& g);
 
 	void draw(Game& g) override;
 protected:

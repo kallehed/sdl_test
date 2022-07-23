@@ -11,6 +11,9 @@ private:
 
 	float _shoot_timer = 0.f;
 
+	float _get_away_distance_squared; // defined in cstr
+	float _get_closer_distance_squared;
+
 	static const float _idle_speed;
 	static const float _active_basic_speed;
 
@@ -21,6 +24,8 @@ public:
 	void idle_logic(Game& g);
 	void take_damage();
 	void active_logic(Game& g);
+
+	void draw(Game& g) override;
 
 	void intersection(float nx, float ny, MovingRect* e) override;
 };

@@ -10,6 +10,8 @@ public:
 
 	static int mod(int a, int b);
 
+	static float randf01();
+
 	static float normalize_vector_two_points(float& nx, float& ny, float x1, float y1, float x2, float y2);
 
 	static float decrease_absolute_value(float value, float decrease);
@@ -20,7 +22,8 @@ public:
 	template <typename T>
 	static bool general_rect_intersection(T x1, T y1, T w1, T h1, T x2, T y2, T w2, T h2);
 
-	static std::pair<bool,std::array<int,2>> get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h);
+	// returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
+	static std::pair<bool,std::array<int,4>> get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h);
 
 	static std::vector<std::array<int, 2>> generate_walk_path(Game& g, float x2, float y2, float x1, float y1);
 };

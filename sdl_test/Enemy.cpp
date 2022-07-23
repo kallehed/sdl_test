@@ -1,6 +1,7 @@
 #pragma once
 #include "Game.h"
 #include "General.h"
+#include "Coin.h"
 
 Enemy::Enemy(float x, float y, int max_hp, float activation_radius, float deactivation_radius, float active_time) : MovingRect(x, y, 30.f, 30.f, 0.01f),
 	_max_hp(max_hp), _hp(max_hp), _activation_radius_squared(activation_radius*activation_radius),
@@ -9,7 +10,7 @@ Enemy::Enemy(float x, float y, int max_hp, float activation_radius, float deacti
 	make_idle();
 }
 
-void Enemy::logic(Game& g)
+bool Enemy::logic(Game& g)
 {
 	// handle phases
 	if (!_active) // idle phase
@@ -38,6 +39,16 @@ void Enemy::logic(Game& g)
 	}
 
 	move_and_collide(g);
+
+	// kill self?
+	if (_hp < 1) {
+		// spawn coins?
+		g._entity_handler._entities_to_add.push_back(new Coin(get_mid_x(),get_mid_y(), get_x_vel()/20.f, get_y_vel()/20.f));
+
+		delete this;
+		return true;
+	}
+	return false;
 }
 
 void Enemy::make_active()
@@ -54,7 +65,7 @@ void Enemy::make_idle()
 void Enemy::go_towards_player(Game& g, float speed)
 {
 	//std::cout << "s";
-	go_towards(g._entity_handler._p.get_mid_x(), g._entity_handler._p.get_mid_y(), speed);
+	this->go_towards(g._entity_handler._p.get_mid_x(), g._entity_handler._p.get_mid_y(), speed);
 }
 
 bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
@@ -62,29 +73,6 @@ bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
 	float dx = get_mid_x() - g._entity_handler._p.get_mid_x();
 	float dy = get_mid_y() - g._entity_handler._p.get_mid_y();
 	return dx * dx + dy * dy <= radius_squared;
-}
-
-void Enemy::player_intersection(float nx, float ny)
-{
-}
-void Enemy::enemy_intersection(float nx, float ny) 
-{
-	float bounce_acc = 0.005f;
-
-	change_x_vel(bounce_acc * nx);
-	change_y_vel(bounce_acc * ny);
-}
-
-void Enemy::shot_intersection(float nx, float ny)
-{
-}
-
-bool Enemy::end_logic(Game& g)
-{
-	if (_hp < 1) {
-		return true;
-	}
-	return false;
 }
 
 void Enemy::draw(Game& g)

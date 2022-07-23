@@ -14,9 +14,7 @@ public:
 
 	ShotEnemy(float x, float y, float x_vel, float y_vel);
 
-	void logic(Game& g);
-
-	bool end_logic(Game& g);
+	bool logic(Game& g);
 
 	void hit_something();
 

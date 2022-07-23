@@ -4,11 +4,14 @@
 
 class Game;
 
-enum class MOVING_RECT_TYPES {
+enum class MOVING_RECT_TYPES : char {
 	PLAYER,
 	ENEMY,
 	SHOT,
 	SHOT_ENEMY,
+	COIN,
+	BOMB,
+	EXPLOSION,
 	TOTAL
 };
 
@@ -30,9 +33,11 @@ protected:
 	void go_towards(float x, float y, float speed);
 public:
 	
-	virtual void intersection(float nx, float ny, MovingRect* e);
+	virtual void intersection(float nx, float ny, MovingRect* e) = 0;
 	virtual MOVING_RECT_TYPES get_moving_rect_type() const = 0;
 	virtual void draw(Game& g) = 0;
-	virtual void logic(Game& g) = 0;
-	virtual bool end_logic(Game& g) = 0;
+	virtual bool logic(Game& g) = 0;
+
+	float get_x_vel() const;
+	float get_y_vel() const;
 };

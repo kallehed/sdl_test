@@ -14,27 +14,27 @@ Shot::Shot(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 20.f, 
 	_y_dir = y_vel;
 }
 
-void Shot::logic(Game& g)
+bool Shot::logic(Game& g)
 {
 	change_x_vel(_x_dir*_speed);
 	change_y_vel(_y_dir*_speed);
 	move_without_colliding(g);
-}
 
-bool Shot::end_logic(Game& g)  // returns whether to remove self or not
-{
-	// collision with blocking tile
-	if (General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h()).first
-		|| _lives < 1)
+	// collision with blocking tile == death
+
+	auto res = General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h());
+	if (res.first) {
+		g._tile_handler.hurt_tile(res.second[2], res.second[3]);
+		goto GOTO_destroy_self;
+	}
+	if (_lives < 1)
 	{
+	GOTO_destroy_self:
+		delete this;
 		return true;
 	}
-	return false;
-}
 
-void Shot::hit_something()
-{
-	_lives -= 1;
+	return false;
 }
 
 void Shot::draw(Game& g)
@@ -47,18 +47,25 @@ void Shot::draw(Game& g)
 
 void Shot::intersection(float nx, float ny, MovingRect* e)
 {
-	MOVING_RECT_TYPES e_type = e->get_moving_rect_type();
-
-	if (e_type == MOVING_RECT_TYPES::SHOT)
+	switch (e->get_moving_rect_type()) {
+	case MOVING_RECT_TYPES::SHOT:
 	{
 		float bounce_acc = 0.005f;
 
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
+		break;
 	}
-	else if (e_type == MOVING_RECT_TYPES::ENEMY)
+	case MOVING_RECT_TYPES::ENEMY:
 	{
-		this->hit_something();
+		_lives -= 1;
+		break;
+	}
+	case MOVING_RECT_TYPES::BOMB:
+	{
+		_lives -= 1;
+		break;
+	}
 	}
 
 }

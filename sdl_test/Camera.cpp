@@ -104,8 +104,17 @@ void Camera::draw_grid(Game& g)
 
 void Camera::draw_hud(Game& g)
 {
-	SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 127);
 	Player& p = g._entity_handler._p;
+
+	// hp of player
+	SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 127);
+	
 	SDL_Rect draw_rect = { 25, 25, (int)(100.f*((float)p._hp/p._max_hp)), 20 };
+	SDL_RenderFillRect(g._renderer, &draw_rect);
+
+	// coins of player
+	SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, 127);
+
+	draw_rect = { 25, 50, (int)(10.f * ((float)p._coins / 1)), 20 };
 	SDL_RenderFillRect(g._renderer, &draw_rect);
 }

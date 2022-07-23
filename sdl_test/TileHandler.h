@@ -2,16 +2,23 @@
 
 class Game;
 
+enum class TILE : char {
+	VOID = 0, // higher elements are not walkthrough
+	BLOCK,
+	DESTRUCTABLE
+};
+
 class TileHandler {
 public:
-	static const int _len = 100;
-	bool _block_tiles[_len][_len];
+	static const int _len = 10;
+	TILE _tiles[_len][_len];
 
 	TileHandler();
 	void draw(Game& g);
 	void place_tile(Game& g, int x, int y);
-	bool block_tile_in_range(int i, int j);
-	bool is_block_tile(int i, int j);
+	void hurt_tile(int i, int j);
+	bool tile_in_range(int i, int j) const;
+	bool is_blocking_tile(int i, int j);
 	bool is_path_clear(Game& g, float x1, float y1, float x2, float y2);
 };
 

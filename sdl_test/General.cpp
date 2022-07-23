@@ -7,6 +7,11 @@ int General::mod(int a, int b)
 	return (a % b + b) % b;
 }
 
+// random float between 0 to 1
+float General::randf01() {
+	return ((float)rand()) / ((float)RAND_MAX);
+}
+
 // takes two references, which are set to normalized vectors of two points, returns length
 float General::normalize_vector_two_points(float& nx, float& ny, float x1, float y1, float x2, float y2)
 {
@@ -37,8 +42,8 @@ float General::decrease_absolute_value(float value, float decrease)
 	}
 }
 
-// returns true if any blocking tiles, then gives pos(x, y) of that tile.
-std::pair<bool,std::array<int,2>> General::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
+// returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
+std::pair<bool,std::array<int,4>> General::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
 {
 	int j_start = g._cam.convert_x_to_j(x);
 	int j_end = g._cam.convert_x_to_j((x + w  - 0.01f)) + 1;
@@ -51,13 +56,13 @@ std::pair<bool,std::array<int,2>> General::get_blocking_tile_pos_in_area(Game& g
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			if (g._tile_handler.is_block_tile(i, j))
+			if (g._tile_handler.is_blocking_tile(i, j))
 			{
-				return { true, {j * r_w, i * r_h} };
+				return { true, {j * r_w, i * r_h, i, j} };
 			}
 		}
 	}
-	return { false, {0,0} };
+	return { false, {0,0,0,0} };
 }
 
 // true if it found path, false if no path
@@ -133,7 +138,7 @@ std::vector<std::array<int, 2>> General::generate_walk_path(Game& g, float x2, f
 			int i = best_node->_i + walk_way.first;
 			int j = best_node->_j + walk_way.second;
 			if (i >= 0 && i < k && j >= 0 && j < k) { // inside 2D array
-				if (!g._tile_handler.is_block_tile(global_top_i+i,global_left_j+j)) { // not a blocking tile
+				if (!g._tile_handler.is_blocking_tile(global_top_i+i,global_left_j+j)) { // not a blocking tile
 
 					if (i == local_end_i && j == local_end_j) {
 						// reached end
