@@ -6,7 +6,8 @@ MOVING_RECT_TYPES Shot::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::SHOT;
 }
 
-Shot::Shot(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 20.f, 20.f, 1.f)
+Shot::Shot(MovingRect* owner,float x, float y, float x_vel, float y_vel)
+	: MovingRect(0, 0, 20.f, 20.f, 1.f), _owner(owner)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
@@ -57,7 +58,11 @@ void Shot::intersection(float nx, float ny, MovingRect* e)
 		break;
 	}
 	case MOVING_RECT_TYPES::ENEMY:
+	case MOVING_RECT_TYPES::PLAYER:
 	{
+		if (_owner == e) {
+			break; // DONT HURT OWNER!!!!
+		}
 		_lives -= 1;
 		break;
 	}

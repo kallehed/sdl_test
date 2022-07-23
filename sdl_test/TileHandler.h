@@ -10,7 +10,7 @@ enum class TILE : char {
 
 class TileHandler {
 public:
-	static const int _len = 10;
+	static const int _len = 100;
 	TILE _tiles[_len][_len];
 
 	TileHandler();

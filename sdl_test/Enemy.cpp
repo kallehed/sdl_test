@@ -1,4 +1,4 @@
-#pragma once
+#include "Enemy.h"
 #include "Game.h"
 #include "General.h"
 #include "Coin.h"

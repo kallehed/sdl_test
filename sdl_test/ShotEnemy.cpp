@@ -16,8 +16,8 @@ ShotEnemy::ShotEnemy(float x, float y, float x_vel, float y_vel) : MovingRect(0,
 
 bool ShotEnemy::logic(Game& g)
 {
-	change_x_vel(_x_dir * _speed);
-	change_y_vel(_y_dir * _speed);
+	//change_x_vel(_x_dir * _speed);
+	//change_y_vel(_y_dir * _speed);
 	move_without_colliding(g);
 
 	// collision with blocking tile
@@ -28,11 +28,6 @@ bool ShotEnemy::logic(Game& g)
 		return true;
 	}
 	return false;
-}
-
-void ShotEnemy::hit_something()
-{
-	_lives -= 1;
 }
 
 void ShotEnemy::draw(Game& g)
@@ -57,7 +52,7 @@ void ShotEnemy::intersection(float nx, float ny, MovingRect* e)
 	}
 	else if (e_type == MOVING_RECT_TYPES::PLAYER)
 	{
-		this->hit_something();
+		_lives -= 1;
 	}
 
 }

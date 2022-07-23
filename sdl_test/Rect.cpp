@@ -1,4 +1,5 @@
 #include "Rect.h"
+
 Rect::Rect(float x, float y, float w, float h)
 	: _w(w), _h(h)
 {

@@ -29,7 +29,7 @@ bool Explosion::logic(Game& g)
 			return true;
 		}
 		_explosion_timer += g._dt;
-		if (_explosion_timer >= 2500.f)
+		if (_explosion_timer >= _explosion_time)
 		{
 			delete this;
 			return true;
@@ -40,7 +40,9 @@ bool Explosion::logic(Game& g)
 
 void Explosion::draw(Game& g)
 {
-	SDL_SetRenderDrawColor(g._renderer, 255, 50, 50, 255);
+	int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
+
+	SDL_SetRenderDrawColor(g._renderer, 255, 50, 50, alpha_val);
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 	SDL_RenderFillRect(g._renderer, &rect);

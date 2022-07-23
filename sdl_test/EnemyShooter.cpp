@@ -1,6 +1,6 @@
 #include "EnemyShooter.h"
 #include "Game.h"
-#include "ShotEnemy.h"
+#include "Shot.h"
 
 const float EnemyShooter::_idle_speed = 0.0011f;
 const float EnemyShooter::_active_basic_speed = 0.0015f;
@@ -74,7 +74,8 @@ void EnemyShooter::active_logic(Game& g)
 
 		float x_speed = nx * shot_speed;
 		float y_speed = ny * shot_speed;
-		g._entity_handler._entities_to_add.push_back(new ShotEnemy(get_mid_x(), get_mid_y(), x_speed, y_speed));
+		auto new_shot = new Shot(this, get_mid_x(), get_mid_y(), x_speed, y_speed);
+		g._entity_handler._entities_to_add.push_back(new_shot);
 
 	}
 
@@ -146,6 +147,9 @@ void EnemyShooter::intersection(float nx, float ny, MovingRect* e)
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::SHOT:
 	{
+		if (((Shot*)e)->_owner == this) { // can't shoot self(not instantly anyway)
+			break;
+		}
 		float bounce_acc = 0.05f;
 
 		change_x_vel(bounce_acc * nx);
@@ -167,7 +171,18 @@ void EnemyShooter::intersection(float nx, float ny, MovingRect* e)
 	}
 	case MOVING_RECT_TYPES::BOMB:
 	{
-		make_active();
+		// do nothing? (Boring if enemies flee bomb)
+		break;
+	}
+	case MOVING_RECT_TYPES::EXPLOSION:
+	{
+		float bounce_acc = 0.1f;
+
+		change_x_vel(bounce_acc * nx);
+		change_y_vel(bounce_acc * ny);
+
+		this->take_damage();
+		this->make_active();
 		break;
 	}
 	}

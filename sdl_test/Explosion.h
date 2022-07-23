@@ -1,9 +1,11 @@
 #pragma once
 #include "MovingRect.h"
+
 class Explosion : public MovingRect
 {
 public:
 	float _explosion_timer = 0.f;
+	float _explosion_time = 2500.f;
 	
 	bool _exploded = false;
 

@@ -33,7 +33,15 @@ bool Bomb::logic(Game& g)
 
 void Bomb::draw(Game& g)
 {
-	SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
+
+	if (((((int)_detonation_timer) / 500) % 2) == 0) {
+		SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
+	}
+	else {
+		SDL_SetRenderDrawColor(g._renderer, 50, 0, 0, 255);
+	}
+
+	//SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 	SDL_RenderFillRect(g._renderer, &rect);
@@ -66,7 +74,6 @@ void Bomb::intersection(float nx, float ny, MovingRect* e)
 		change_y_vel(bounce_acc * ny);
 		break;
 	}
-	case MOVING_RECT_TYPES::SHOT_ENEMY:
 	case MOVING_RECT_TYPES::SHOT:
 	{
 		_lives -= 1;
@@ -75,6 +82,11 @@ void Bomb::intersection(float nx, float ny, MovingRect* e)
 
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
+		break;
+	}
+	case MOVING_RECT_TYPES::EXPLOSION:
+	{
+		_lives = 0; // detonate IMMEDIATELY(soon)
 		break;
 	}
 	}

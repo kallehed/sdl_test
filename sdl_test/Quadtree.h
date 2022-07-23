@@ -83,8 +83,8 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index)
                 if (General::rect_intersection<T>(*e1, *e2))
                 {
                     // collision
-                    float dx = e1->get_x() - e2->get_x();
-                    float dy = e1->get_y() - e2->get_y();
+                    float dx = e1->get_mid_x() - e2->get_mid_x();
+                    float dy = e1->get_mid_y() - e2->get_mid_y();
                     float dist = sqrtf(dx * dx + dy * dy);
 
                     float nx = dx / dist;

@@ -107,14 +107,40 @@ void Camera::draw_hud(Game& g)
 	Player& p = g._entity_handler._p;
 
 	// hp of player
-	SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 127);
-	
-	SDL_Rect draw_rect = { 25, 25, (int)(100.f*((float)p._hp/p._max_hp)), 20 };
-	SDL_RenderFillRect(g._renderer, &draw_rect);
+	{
+		// red health bar
+		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 127);
+
+		SDL_Rect draw_rect = { 25, 25, (int)(100.f * ((float)p._hp / p._max_hp)), 20 };
+		SDL_RenderFillRect(g._renderer, &draw_rect);
+
+		// black boundary
+		draw_rect.w = 100;
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+		SDL_RenderDrawRect(g._renderer, &draw_rect);
+	}
 
 	// coins of player
-	SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, 127);
+	{
+		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, 127);
 
-	draw_rect = { 25, 50, (int)(10.f * ((float)p._coins / 1)), 20 };
-	SDL_RenderFillRect(g._renderer, &draw_rect);
+		SDL_Rect draw_rect = { 25, 50, (int)(10.f * ((float)p._coins / 1)), 20 };
+		SDL_RenderFillRect(g._renderer, &draw_rect);
+	}
+
+	// bomb throw charge meter
+	{
+		// green charge (drawn first, BECAUSE: obvious)
+
+		float max_x = 200.f;
+		int charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));
+		SDL_Rect draw_rect = { 25, 75, charge_x, 20  };
+		SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 127);
+		SDL_RenderFillRect(g._renderer, &draw_rect);
+
+		// black boundary
+		draw_rect.w = (int)max_x;
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+		SDL_RenderDrawRect(g._renderer, &draw_rect);
+	}
 }

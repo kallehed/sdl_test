@@ -2,8 +2,6 @@
 
 #include "MovingRect.h"
 #include <vector>
-class Game;
-class Player;
 
 class Enemy : public MovingRect {
 public:

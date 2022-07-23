@@ -6,11 +6,8 @@
 #include <iostream>
 #include <array>
 
-#include "Player.h"
 #include "Camera.h"
 #include "TileHandler.h"
-#include "EnemyHandler.h"
-#include "General.h"
 #include "EntityHandler.h"
 
 class Game {

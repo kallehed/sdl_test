@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Player.h"
-#include "EnemyBasic.h"
-#include "EnemyShooter.h"
-#include "Shot.h"
 #include "QuadTree.h"
 
 class Game;

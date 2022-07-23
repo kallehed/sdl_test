@@ -2,8 +2,6 @@
 #include <vector>
 
 class Game;
-class Rect;
-
 
 class General {
 public:

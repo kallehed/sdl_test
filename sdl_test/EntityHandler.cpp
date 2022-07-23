@@ -1,5 +1,6 @@
 #include "EntityHandler.h"
 #include "Game.h"
+#include "EnemyShooter.h"
 
 EntityHandler::EntityHandler()  : _quadtree(0, 0, 4096, 4096) {}
 
