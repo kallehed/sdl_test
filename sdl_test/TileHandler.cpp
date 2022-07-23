@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "General.h"
 
+#include <cassert>  
+
 TileHandler::TileHandler()
 {
 	for (int i = 0; i < _len; ++i) {
@@ -39,16 +41,22 @@ void TileHandler::place_tile(Game& g, int x, int y)
 	int cam_y = (int)g._cam._y;
 	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
 	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
-	if (tile_in_range(i, j)) {
+	if (tile_in_range(i, j))
+	{
 		_tiles[i][j] = TILE::DESTRUCTABLE;
 	}
 }
 
 void TileHandler::hurt_tile(int i, int j)
 {
-	TILE& tile = _tiles[i][j];
-	if (tile == TILE::DESTRUCTABLE) {
-		tile = TILE::VOID;
+	// can't get "tile" beyond _tiles, even though they are "BLOCK"
+	if (this->tile_in_range(i, j))
+	{ 
+		TILE& tile = _tiles[i][j];
+		if (tile == TILE::DESTRUCTABLE)
+		{
+			tile = TILE::VOID;
+		}
 	}
 }
 

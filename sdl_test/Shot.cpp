@@ -27,6 +27,7 @@ bool Shot::logic(Game& g)
 	if (res.first) {
 		g._tile_handler.hurt_tile(res.second[2], res.second[3]);
 		goto GOTO_destroy_self;
+		//_lives = 0;
 	}
 	if (_lives < 1)
 	{
@@ -49,12 +50,19 @@ void Shot::draw(Game& g)
 void Shot::intersection(float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
+	case MOVING_RECT_TYPES::FIRE_MAGIC:
+	{
+		_x_dir = nx; // change direction
+		_y_dir = ny;
+		_owner = nullptr; // NO ONE OWNS ME ANYMORE, FREEDOM!!!
+		break;
+	}
 	case MOVING_RECT_TYPES::SHOT:
 	{
-		float bounce_acc = 0.005f;
+		/*float bounce_acc = 0.005f; // doesn't do anything
 
 		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
+		change_y_vel(bounce_acc * ny);*/
 		break;
 	}
 	case MOVING_RECT_TYPES::ENEMY:

@@ -6,7 +6,7 @@ EntityHandler::EntityHandler()  : _quadtree(0, 0, 4096, 4096) {}
 
 inline void EntityHandler::do_logic(Game& g, std::vector<MovingRect*>& vec)
 {
-	for (int i = 0; i < vec.size();)
+	/*for (int i = 0; i < vec.size();)
 	{
 		if (vec[i]->logic(g)) // delete if entity returns true
 		{
@@ -14,6 +14,12 @@ inline void EntityHandler::do_logic(Game& g, std::vector<MovingRect*>& vec)
 		}
 		else {
 			++i;
+		}
+	}*/
+	for (int i = ((int)vec.size()) - 1; i > -1; --i) {
+		if (vec[i]->logic(g)) // delete if entity returns true
+		{
+			vec.erase(vec.begin() + i);
 		}
 	}
 }

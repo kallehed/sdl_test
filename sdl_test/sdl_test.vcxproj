@@ -159,6 +159,7 @@
     <ClCompile Include="EnemyShooter.cpp" />
     <ClCompile Include="EntityHandler.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="FireMagic.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="MovingRect.cpp" />
@@ -166,7 +167,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Shot.cpp" />
-    <ClCompile Include="ShotEnemy.cpp" />
     <ClCompile Include="TileHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,13 +178,13 @@
     <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="EntityHandler.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="FireMagic.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="MovingRect.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Shot.h" />
-    <ClInclude Include="ShotEnemy.h" />
     <ClInclude Include="TileHandler.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

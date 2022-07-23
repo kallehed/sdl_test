@@ -1,12 +1,13 @@
-#include "Explosion.h"
+#include "FireMagic.h"
 #include "Game.h"
 
-MOVING_RECT_TYPES Explosion::get_moving_rect_type() const
+MOVING_RECT_TYPES FireMagic::get_moving_rect_type() const
 {
-	return MOVING_RECT_TYPES::EXPLOSION;
+	return MOVING_RECT_TYPES::FIRE_MAGIC;
 }
 
-Explosion::Explosion(float x, float y) : MovingRect(0, 0, 200.f, 200.f, 0.0f)
+FireMagic::FireMagic(MovingRect* owner, float x, float y)
+	: MovingRect(0, 0, 50.f, 50.f, 0.0f), _owner(owner)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
@@ -14,7 +15,7 @@ Explosion::Explosion(float x, float y) : MovingRect(0, 0, 200.f, 200.f, 0.0f)
 
 // first frame, be in _entities, then next, remove self, add to _draw_entities
 // then, wait out a bit, then DELETE SELF, and from _draw_entities
-bool Explosion::logic(Game& g)
+bool FireMagic::logic(Game& g)
 {
 	if (_exploded == false)
 	{
@@ -38,7 +39,7 @@ bool Explosion::logic(Game& g)
 	return false;
 }
 
-void Explosion::draw(Game& g)
+void FireMagic::draw(Game& g)
 {
 	int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
 
@@ -48,6 +49,6 @@ void Explosion::draw(Game& g)
 	SDL_RenderFillRect(g._renderer, &rect);
 }
 
-void Explosion::intersection(float nx, float ny, MovingRect* e)
+void FireMagic::intersection(float nx, float ny, MovingRect* e)
 {
 }

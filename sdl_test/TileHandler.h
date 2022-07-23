@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 class Game;
 
@@ -11,7 +12,8 @@ enum class TILE : char {
 class TileHandler {
 public:
 	static const int _len = 100;
-	TILE _tiles[_len][_len];
+	//TILE _tiles[_len][_len];
+	std::array<std::array<TILE, _len>, _len> _tiles;
 
 	TileHandler();
 	void draw(Game& g);

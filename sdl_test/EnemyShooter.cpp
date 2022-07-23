@@ -185,6 +185,18 @@ void EnemyShooter::intersection(float nx, float ny, MovingRect* e)
 		this->make_active();
 		break;
 	}
+	case MOVING_RECT_TYPES::FIRE_MAGIC:
+	{
+		float bounce_acc = 0.05f;
+
+		change_x_vel(bounce_acc * nx);
+		change_y_vel(bounce_acc * ny);
+
+		take_damage();
+		make_active();
+
+		break;
+	}
 	}
 
 }

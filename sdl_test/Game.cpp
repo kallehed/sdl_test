@@ -81,9 +81,12 @@ void Game::game_loop()
 				else if ((buttons & SDL_BUTTON_RMASK) != 0) { // right mouse pressed
 					
 					std::cout << " right mouse pressed \n";
-					_mouse_btn_pressed_this_frame[2] = true;
-					
+					_mouse_btn_pressed_this_frame[2] = true;	
 				}
+			}
+			if (e.type == SDL_MOUSEWHEEL)
+			{
+				_mouse_scroll = e.wheel.y;
 			}
 		}
 

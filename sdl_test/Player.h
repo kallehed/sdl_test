@@ -1,16 +1,26 @@
 #pragma once
 #include "MovingRect.h"
 
+enum class PLAYER_WEAPON {
+	FIRE_MAGIC,
+	GUN
+};
+
 class Player : public MovingRect {
 public:
 	int _max_hp = 50;
 	int _hp = _max_hp;
 	int _coins = 0;
 
-	float _shoot_timer = 0.f;
+	PLAYER_WEAPON _left_weapon = PLAYER_WEAPON::FIRE_MAGIC;
+
+	float _left_timer = 0.f;
 	float _shoot_time = 400.f; // "reload" time
 
-	//bomb charge meter
+	// gun stuff
+	int _shots = 10;
+
+	//bomb throw charge gauge
 	float _bomb_throw_charge = 0.f;
 	float _bomb_throw_max_charge = 1000.f;
 	signed char _bomb_charge_direction = 1; // 1 = +, -1 = -

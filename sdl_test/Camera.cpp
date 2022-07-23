@@ -128,13 +128,21 @@ void Camera::draw_hud(Game& g)
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 	}
 
+	// shots player has
+	{
+		SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, 127);
+
+		SDL_Rect draw_rect = { 25, 75, 5 * p._shots, 20 };
+		SDL_RenderFillRect(g._renderer, &draw_rect);
+	}
+
 	// bomb throw charge meter
 	{
 		// green charge (drawn first, BECAUSE: obvious)
 
 		float max_x = 200.f;
 		int charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));
-		SDL_Rect draw_rect = { 25, 75, charge_x, 20  };
+		SDL_Rect draw_rect = { 25, 100, charge_x, 20  };
 		SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 127);
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 

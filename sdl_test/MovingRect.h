@@ -8,10 +8,10 @@ enum class MOVING_RECT_TYPES : char {
 	PLAYER,
 	ENEMY,
 	SHOT,
-	SHOT_ENEMY,
 	COIN,
 	BOMB,
 	EXPLOSION,
+	FIRE_MAGIC,
 	TOTAL
 };
 

@@ -25,6 +25,7 @@ public:
 
 	std::array<bool, 3> _mouse_btn_pressed_this_frame = { false, false, false }; // left, middle, right
 	std::array<int, 2> _mouse_pos_on_latest_press = {0, 0};
+	int32_t _mouse_scroll = 0;
 
 	Camera _cam;
 
