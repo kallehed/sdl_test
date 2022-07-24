@@ -98,6 +98,13 @@ bool TileHandler::tile_in_range(int i, int j) const
 	return i >= 0 && j >= 0 && i < _len && j < _len;
 }
 
+TILE TileHandler::get_tile_type(int i, int j) {
+	if (tile_in_range(i, j)) {
+		return _tiles[i][j];
+	}
+	return TILE::VOID;
+}
+
 bool TileHandler::is_blocking_tile(int i, int j)
 {
 	if (tile_in_range(i, j)) {

@@ -134,7 +134,7 @@ void Camera::edit_logic(Game& g)
 		{ 
 			if (!g._tile_handler.remove_tile(g, m_x, m_y)) {
 				// no tiles removed
-				for (int i = g._entity_handler._entities.size() - 1; i > -1; --i) {
+				for (int i = ((int)g._entity_handler._entities.size()) - 1; i > -1; --i) {
 					auto& e = g._entity_handler._entities[i];
 					if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
 						e->get_x(), e->get_y(), e->get_w(), e->get_h()))

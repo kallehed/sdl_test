@@ -3,7 +3,7 @@
 #include "General.h"
 
 void MovingRect::x_collision(TILE tile, float r_x, float r_y, float r_w, float r_h) {
-	if ((int)tile < (int)TILE::TRI_NE || true) {
+	if ((int)tile < (int)TILE::TRI_NE) {
 		_x_vel = 0.f; // a b c a d c
 		if (abs(get_x() + get_w() - r_x) < abs(r_x + r_w - get_x())) {
 			set_x(r_x - get_w()); // left side of r
@@ -12,18 +12,48 @@ void MovingRect::x_collision(TILE tile, float r_x, float r_y, float r_w, float r
 			set_x(r_x + r_w); // right side of r
 		}
 	}
-	else if (tile == TILE::TRI_NE) {
-		set_x(r_x + (get_y() - r_y) + get_w());
+	else {
+		other_collisions(tile, r_x, r_y, r_w, r_h);
 	}
 }
 
 void MovingRect::y_collision(TILE tile, float r_x, float r_y, float r_w, float r_h) {
-	_y_vel = 0.f;
-	if (abs(get_y() + get_h() - r_y) < abs(r_y + r_h - get_y())) {
-		set_y(r_y - get_h()); // up side of r
+	if ((int)tile < (int)TILE::TRI_NE) {
+		_y_vel = 0.f;
+		if (abs(get_y() + get_h() - r_y) < abs(r_y + r_h - get_y())) {
+			set_y(r_y - get_h()); // up side of r
+		}
+		else {
+			set_y(r_y + r_h); // down side of r
+		}
+	} else 
+	{
+		this->other_collisions(tile, r_x, r_y, r_w, r_h);
 	}
-	else {
-		set_y(r_y + r_h); // down side of r
+}
+
+void MovingRect::other_collisions(TILE tile, float r_x, float r_y, float r_w, float r_h)
+{
+	if (tile == TILE::TRI_NE)
+	{
+		// check if actually colliding:
+		if (r_y + (get_x() - r_x) < get_y() + get_h()) {
+			/*if (get_y() + get_h() > r_y + r_h) {
+				//set_x(r_x + r_w);
+				//_x_vel = 0.f;
+			}
+			else if (get_x() < r_x) {
+				//set_y(r_y - get_h());
+				//_y_vel = 0.f;
+			}
+			else*/ {
+				float m = -r_x + r_y;
+				float x = ((get_y() + get_h() + get_x()) - m) / (2);
+				float y = x + m;
+				set_x(x);
+				set_y(y - get_h());
+			}
+		}
 	}
 }
 
@@ -63,7 +93,7 @@ void MovingRect::move_and_collide(Game& g) // moves x and y based on velocity + 
 	info = General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h());
 	if (std::get<0>(info)) {
 		auto pos = std::get<1>(info);
-		x_collision(std::get<2>(info),(float)pos[0], (float)pos[1], g._cam._fgrid, g._cam._fgrid);
+		y_collision(std::get<2>(info),(float)pos[0], (float)pos[1], g._cam._fgrid, g._cam._fgrid);
 	}
 }
 

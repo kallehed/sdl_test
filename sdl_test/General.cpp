@@ -58,7 +58,7 @@ std::tuple<bool,std::array<int,4>, TILE> General::get_blocking_tile_pos_in_area(
 		{
 			if (g._tile_handler.is_blocking_tile(i, j))
 			{
-				return { true, {j * r_w, i * r_h, i, j}, g._tile_handler._tiles[i][j]};
+				return { true, {j * r_w, i * r_h, i, j}, g._tile_handler.get_tile_type(i,j)};
 			}
 		}
 	}
