@@ -24,8 +24,9 @@ bool Shot::logic(Game& g)
 	// collision with blocking tile == death
 
 	auto res = General::get_blocking_tile_pos_in_area(g, get_x(), get_y(), get_w(), get_h());
-	if (res.first) {
-		g._tile_handler.hurt_tile(res.second[2], res.second[3]);
+	if (std::get<0>(res)) {
+		auto pos = std::get<1>(res);
+		g._tile_handler.hurt_tile(pos[2], pos[3]);
 		goto GOTO_destroy_self;
 		//_lives = 0;
 	}

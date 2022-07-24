@@ -43,6 +43,10 @@ bool Player::logic(Game& g)
 		{
 			_left_timer += g._dt;
 
+			// switch left weapon
+			_left_weapon = (PLAYER_WEAPON)((int)_left_weapon + g._mouse_scroll);
+			_left_weapon = (PLAYER_WEAPON)General::mod((int)_left_weapon, (int)PLAYER_WEAPON::TOTAL);
+			
 			switch (_left_weapon) {
 			case PLAYER_WEAPON::FIRE_MAGIC:
 			{
@@ -52,16 +56,13 @@ bool Player::logic(Game& g)
 					{
 						_left_timer = 0.f;
 
-						float e_x = this->get_mid_x();
-						float e_y = this->get_mid_y();
-
 						float nx, ny;
 						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);
 
 						float displacement = 40.f;
 
-						e_x += nx * displacement;
-						e_y += ny * displacement;
+						float e_x = get_mid_x() + nx * displacement;
+						float e_y = get_mid_y()+ ny * displacement;
 
 						FireMagic* e = new FireMagic(this, e_x, e_y);
 						g._entity_handler._entities_to_add.push_back(e);
@@ -99,10 +100,10 @@ bool Player::logic(Game& g)
 		// right weapons
 		{
 			// throw bomb
-			if (_charging_bomb_throw == false) // "not doing anything bomby" state
+			if (!_charging_bomb_throw) // "not doing anything bomby" state
 			{
 				// possibly start charging bomb throw?
-				if (g._mouse_btn_pressed_this_frame[2]) // right mouse => start charging
+				if (_bombs > 0 && g._mouse_btn_pressed_this_frame[2]) // right mouse => start charging
 				{
 					_charging_bomb_throw = true;
 				}
@@ -111,9 +112,8 @@ bool Player::logic(Game& g)
 			{	// "charging bomb throw" state
 
 				// check if right mouse button has been let go
-				if ((buttons & SDL_BUTTON_RMASK) == 0) {
-
-
+				if ((buttons & SDL_BUTTON_RMASK) == 0)
+				{
 					float bomb_speed = 1.5f * _bomb_throw_charge / _bomb_throw_max_charge;
 					float nx, ny;
 					General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);
@@ -126,6 +126,7 @@ bool Player::logic(Game& g)
 					// reset
 					_charging_bomb_throw = false;
 					_bomb_throw_charge = 0.f;
+					--_bombs;
 				}
 				else
 				{

@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include "Game.h"
 #include "General.h"
+#include "EnemyBasic.h"
+#include "EnemyShooter.h"
 
 Camera::Camera() : _x(0.f), _y(0.f), _grid(45), _fgrid(45.f) {
 
@@ -50,28 +52,159 @@ void Camera::edit_logic(Game& g)
 {
 
 	// movement
-	static const float speed = 0.65f;
+	constexpr float speed = 0.65f;
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_RIGHT]) {
+	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
 		_x += speed * g._dt;
 	}
-	if (keys[SDL_SCANCODE_LEFT]) {
+	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A]) {
 		_x -= speed * g._dt;
 	}
-	if (keys[SDL_SCANCODE_DOWN]) {
+	if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S]) {
 		_y += speed * g._dt;
 	}
-	if (keys[SDL_SCANCODE_UP]) {
+	if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W]) {
 		_y -= speed * g._dt;
 	}
 
-	// placing things
-	if (g._mouse_btn_pressed_this_frame[0]) { // place block tile on left click
-		g._tile_handler.place_tile(g, g._mouse_pos_on_latest_press[0], g._mouse_pos_on_latest_press[1]);
+	// placing/removing things by clicking
+	{
+		// scroll _edit
+		_edit = (EDIT)((int)_edit + g._mouse_scroll);
+		_edit = (EDIT)(General::mod((int)_edit, (int)EDIT::TOTAL));
+
+		// mouse x and y, on screen
+		int m_x = g._mouse_pos_on_latest_press[0];
+		int m_y = g._mouse_pos_on_latest_press[1];
+
+		// real x and y, on map
+		float r_x = _x + m_x;
+		float r_y = _y + m_y;
+
+		// place block tile on left click
+		if (g._mouse_btn_pressed_this_frame[0])
+		{ 
+			using enum EDIT;
+			switch (_edit){
+			case BLOCK_TILE:
+			{
+				g._tile_handler.place_tile(g, TILE::BLOCK, m_x, m_y);
+				break;
+			}
+			case TRI_NE:
+			{
+				g._tile_handler.place_tile(g, TILE::TRI_NE, m_x, m_y);
+				break;
+			}
+			case TRI_SE:
+			{
+				g._tile_handler.place_tile(g, TILE::TRI_SE, m_x, m_y);
+				break;
+			}
+			case TRI_NW:
+			{
+				g._tile_handler.place_tile(g, TILE::TRI_NW, m_x, m_y);
+				break;
+			}
+			case TRI_SW:
+			{
+				g._tile_handler.place_tile(g, TILE::TRI_SW, m_x, m_y);
+				break;
+			}
+			case DESTRUCTABLE_TILE:
+			{
+				g._tile_handler.place_tile(g, TILE::DESTRUCTABLE, m_x, m_y);
+				break;
+			}
+			case ENEMY_BASIC:
+			{
+				g._entity_handler._entities.push_back(new EnemyBasic(r_x, r_y));
+				break;
+			}
+			case ENEMY_SHOOTER:
+			{
+				g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
+				break;
+			}
+			}
+
+		}
+		// LEFTclick: delete whatever is in front
+		if (g._mouse_btn_pressed_this_frame[2])
+		{ 
+			if (!g._tile_handler.remove_tile(g, m_x, m_y)) {
+				// no tiles removed
+				for (int i = g._entity_handler._entities.size() - 1; i > -1; --i) {
+					auto& e = g._entity_handler._entities[i];
+					if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
+						e->get_x(), e->get_y(), e->get_w(), e->get_h()))
+					{
+						delete e;
+						g._entity_handler._entities.erase(g._entity_handler._entities.begin() + i);
+						break;
+					}
+				}
+			}
+		}
 	}
-	if (g._mouse_btn_pressed_this_frame[2]) { // place enemy on right click
-		g._entity_handler.place_enemy(g, g._mouse_pos_on_latest_press[0], g._mouse_pos_on_latest_press[1]);
+}
+
+
+
+void Camera::draw_edit(Game& g)
+{
+	draw_grid(g);
+	draw_edit_text(g);
+}
+
+void Camera::draw_text(Game& g, std::string& text, SDL_Color& color, int x, int y, int scale)
+{
+	SDL_Surface* surface = TTF_RenderText_Solid(g._font, text.c_str(), color);
+
+	// now you can convert it into a texture
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(g._renderer, surface);
+
+	SDL_Rect Message_rect = { x,y, surface->w*scale, surface->h*scale };
+
+	SDL_FreeSurface(surface);
+
+	SDL_RenderCopy(g._renderer, texture, NULL, &Message_rect);
+
+	SDL_DestroyTexture(texture);
+}
+
+void Camera::draw_edit_text(Game& g)
+{
+	std::string text;
+	using enum EDIT;
+	switch (_edit) {
+	case BLOCK_TILE:
+		text = "Block Tile";
+		break;
+	case TRI_NE:
+		text = "Triangle NE";
+		break;
+	case TRI_SE:
+		text = "Triangle SE";
+		break;
+	case TRI_NW:
+		text = "Triangle NW";
+		break;
+	case TRI_SW:
+		text = "Triangle SW";
+		break;
+	case DESTRUCTABLE_TILE:
+		text = "Destructible Tile";
+		break;
+	case ENEMY_BASIC:
+		text = "Enemy: Basic";
+		break;
+	case ENEMY_SHOOTER:
+		text = "Enemy: Shooter";
+		break;
 	}
+	SDL_Color c = { 0,0,0 };
+	draw_text(g, text, c, 0, 0, 3);
 }
 
 void Camera::draw_grid(Game& g)
@@ -102,16 +235,25 @@ void Camera::draw_grid(Game& g)
 	}
 }
 
+void Camera::draw_play(Game& g)
+{
+	draw_hud(g);
+}
+
 void Camera::draw_hud(Game& g)
 {
 	Player& p = g._entity_handler._p;
 
 	// hp of player
-	{
+	int hud_x = 25;
+	int hud_y = 25;
+	int hud_y_increase = 25;
+	
+	{ // health
 		// red health bar
 		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 127);
 
-		SDL_Rect draw_rect = { 25, 25, (int)(100.f * ((float)p._hp / p._max_hp)), 20 };
+		SDL_Rect draw_rect = { hud_x, hud_y, (int)(100.f * ((float)p._hp / p._max_hp)), 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 
 		// black boundary
@@ -119,30 +261,57 @@ void Camera::draw_hud(Game& g)
 		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
 		SDL_RenderDrawRect(g._renderer, &draw_rect);
 	}
+	hud_y += hud_y_increase;
 
-	// coins of player
-	{
+	{ // coins of player
 		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, 127);
 
-		SDL_Rect draw_rect = { 25, 50, (int)(10.f * ((float)p._coins / 1)), 20 };
+		SDL_Rect draw_rect = { hud_x, hud_y, (int)(10.f * ((float)p._coins / 1)), 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 	}
+	hud_y += hud_y_increase;
+	
+	{ // left weapon chosen
+		int specific_x = hud_x;
+		for (int i = 0; i < (int)PLAYER_WEAPON::TOTAL; ++i)
+		{	
+			SDL_Rect draw_rect = { specific_x, hud_y, 20, 20 };
+			
+			if ((int)p._left_weapon == i) { // if chosen, mark as green 
+				SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 127);
+				SDL_RenderFillRect(g._renderer, &draw_rect);
+			}
+			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+			SDL_RenderDrawRect(g._renderer, &draw_rect);
+			
+			specific_x += 25;
 
-	// shots player has
-	{
+		}
+	}
+	hud_y += hud_y_increase;
+	
+	{ // shots player has
 		SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, 127);
 
-		SDL_Rect draw_rect = { 25, 75, 5 * p._shots, 20 };
+		SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._shots, 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 	}
+	hud_y += hud_y_increase;
+	
+	{ // boms player has
+		SDL_SetRenderDrawColor(g._renderer, 100, 0, 0, 127);
 
-	// bomb throw charge meter
-	{
+		SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._bombs, 20 };
+		SDL_RenderFillRect(g._renderer, &draw_rect);
+	}
+	hud_y += hud_y_increase;
+
+	{ // bomb throw charge meter
 		// green charge (drawn first, BECAUSE: obvious)
 
 		float max_x = 200.f;
 		int charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));
-		SDL_Rect draw_rect = { 25, 100, charge_x, 20  };
+		SDL_Rect draw_rect = { hud_x, hud_y, charge_x, 20  };
 		SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 127);
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 

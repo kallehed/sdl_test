@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "TileHandler.h"
 
 class Game;
 
@@ -20,8 +21,8 @@ public:
 	template <typename T>
 	static bool general_rect_intersection(T x1, T y1, T w1, T h1, T x2, T y2, T w2, T h2);
 
-	// returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
-	static std::pair<bool,std::array<int,4>> get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h);
+	// returns true if any blocking tiles, then gives pos(x, y), then (i, j), then TILE type, of tile
+	static std::tuple<bool,std::array<int,4>,TILE> get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h);
 
 	static std::vector<std::array<int, 2>> generate_walk_path(Game& g, float x2, float y2, float x1, float y1);
 };

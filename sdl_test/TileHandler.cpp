@@ -17,36 +17,69 @@ void TileHandler::draw(Game& g)
 {	
 	for (int i = 0; i < _len; ++i) {
 		for (int j = 0; j < _len; ++j) {
-			if (_tiles[i][j] == TILE::BLOCK) {
-				int x = g._cam._grid * j;
-				int y = g._cam._grid * i;
-				SDL_Rect rect = { g._cam.convert_x(x), g._cam.convert_y(y), g._cam._grid, g._cam._grid };
-				SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);
-				SDL_RenderFillRect(g._renderer, &rect);
-			}
-			else if (_tiles[i][j] == TILE::DESTRUCTABLE) {
-				int x = g._cam._grid * j;
-				int y = g._cam._grid * i;
-				SDL_Rect rect = { g._cam.convert_x(x), g._cam.convert_y(y), g._cam._grid, g._cam._grid };
-				SDL_SetRenderDrawColor(g._renderer, 25, 150, 25, 255);
-				SDL_RenderFillRect(g._renderer, &rect);
+			TILE tile = _tiles[i][j];
+			if (tile > TILE::VOID) {
+				int x = g._cam.convert_x(g._cam._grid * j);
+				int y = g._cam.convert_y(g._cam._grid * i);
+				if (tile == TILE::BLOCK)
+				{	
+					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
+					SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);
+					SDL_RenderFillRect(g._renderer, &rect);
+				}
+				else if (tile == TILE::TRI_NE) {
+					SDL_Color color = { 0,0,0,255 };
+					SDL_Vertex vert[3];
+					float fx = (float)x;
+					float fy = (float)y;
+					vert[0].position = { fx, fy };
+					vert[0].color = color;
+					vert[1].position = { fx , fy + g._cam._fgrid };
+					vert[1].color = color;
+					vert[2].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+					vert[2].color = color;
+					SDL_RenderGeometry(g._renderer, NULL, vert, 3, NULL, 0);
+				}
+				else if (tile == TILE::DESTRUCTABLE)
+				{
+					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
+					SDL_SetRenderDrawColor(g._renderer, 25, 150, 25, 255);
+					SDL_RenderFillRect(g._renderer, &rect);
+				}
 			}
 		}
 	}
 }
 
-void TileHandler::place_tile(Game& g, int x, int y)
+
+
+void TileHandler::place_tile(Game& g, TILE tile, int x, int y)
 {
+	assert(tile != TILE::TOTAL);
+
 	int cam_x = (int)g._cam._x;
 	int cam_y = (int)g._cam._y;
 	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
 	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
 	if (tile_in_range(i, j))
 	{
-		_tiles[i][j] = TILE::DESTRUCTABLE;
+		_tiles[i][j] = tile;
 	}
 }
-
+bool TileHandler::remove_tile(Game& g, int x, int y) {
+	int cam_x = (int)g._cam._x;
+	int cam_y = (int)g._cam._y;
+	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
+	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
+	if (tile_in_range(i, j)) {
+		if (_tiles[i][j] != TILE::VOID)
+		{
+			_tiles[i][j] = TILE::VOID;
+			return true;
+		} 
+	}
+	return false;
+}
 void TileHandler::hurt_tile(int i, int j)
 {
 	// can't get "tile" beyond _tiles, even though they are "BLOCK"
@@ -95,7 +128,7 @@ bool TileHandler::is_path_clear(Game& g, float x1, float y1, float x2, float y2)
 		y += ny * step;
 
 		auto in_block_tile = General::get_blocking_tile_pos_in_area(g, x, y, tile_size, tile_size);
-		if (in_block_tile.first) {
+		if (std::get<0>(in_block_tile)) {
 			return false;
 		}
 

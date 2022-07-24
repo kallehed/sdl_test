@@ -92,7 +92,7 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index)
 
                     e1->intersection(nx, ny, e2);
                     e2->intersection(-nx, -ny, e1);
-                    break;
+                    //break;
                 }
             }
         }

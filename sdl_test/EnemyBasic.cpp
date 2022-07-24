@@ -115,11 +115,9 @@ void EnemyBasic::active_logic(Game& g)
 
 void EnemyBasic::intersection(float nx, float ny, MovingRect* e)
 {
-	MOVING_RECT_TYPES e_type = e->get_moving_rect_type();
-
-	if (e_type == MOVING_RECT_TYPES::SHOT)
+	switch (e->get_moving_rect_type()) {
+	case MOVING_RECT_TYPES::SHOT:
 	{
-
 		float bounce_acc = 0.05f;
 
 		change_x_vel(bounce_acc * nx);
@@ -128,13 +126,40 @@ void EnemyBasic::intersection(float nx, float ny, MovingRect* e)
 		take_damage();
 
 		make_active(); // become active (aggressive)
+
+		break;
 	}
-	else if (e_type == MOVING_RECT_TYPES::ENEMY)
+	case MOVING_RECT_TYPES::ENEMY:
 	{
 		float bounce_acc = 0.005f;
 
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
+		break;
+	}
+	case MOVING_RECT_TYPES::EXPLOSION:
+	{
+		float bounce_acc = 0.1f;
+
+		change_x_vel(bounce_acc * nx);
+		change_y_vel(bounce_acc * ny);
+
+		this->take_damage();
+		this->make_active();
+		break;
+	}
+	case MOVING_RECT_TYPES::FIRE_MAGIC:
+	{
+		float bounce_acc = 0.05f;
+
+		change_x_vel(bounce_acc * nx);
+		change_y_vel(bounce_acc * ny);
+
+		take_damage();
+		make_active();
+
+		break;
+	}
 	}
 	
 }

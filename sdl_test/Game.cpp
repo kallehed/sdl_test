@@ -9,6 +9,12 @@ Game::Game()
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
+
+	_font = TTF_OpenFont("fonts/8bitoperator.ttf", 12);
+	if (!_font) {
+		std::cout << "Error loading font: " << TTF_GetError() << std::endl;
+		std::cin.get(); // stop
+	}
 }
 
 void Game::start_game()
@@ -45,7 +51,7 @@ void Game::game_loop()
 
 		// reset variables only relevant for the frame
 		_mouse_btn_pressed_this_frame = { false, false, false };
-
+		_mouse_scroll = 0;
 		while (SDL_PollEvent(&e) != 0)
 		{
 			//User requests quit
@@ -121,7 +127,7 @@ void Game::game_draw()
 	SDL_RenderClear(_renderer);
 
 	if (_edit_mode) { // exclusive edit-things-to-draw
-		_cam.draw_grid(*this); // grid
+		_cam.draw_edit(*this); // grid
 	}
 
 	_tile_handler.draw(*this);
@@ -129,7 +135,7 @@ void Game::game_draw()
 	_entity_handler.draw(*this);
 
 	if (!_edit_mode) {
-		_cam.draw_hud(*this);
+		_cam.draw_play(*this);
 	}
 
 	/*SDL_Rect srcrect = {0, 0 , 300, 300};

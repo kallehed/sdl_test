@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Rect.h"
-
+#include "TileHandler.h"
 class Game;
 
 enum class MOVING_RECT_TYPES : char {
@@ -15,10 +15,11 @@ enum class MOVING_RECT_TYPES : char {
 	TOTAL
 };
 
+
 class MovingRect : public Rect {
 private:
-	void x_collision(float r_x, float r_y, float r_w, float r_h);
-	void y_collision(float r_x, float r_y, float r_w, float r_h);
+	void x_collision(TILE tile, float r_x, float r_y, float r_w, float r_h);
+	void y_collision(TILE tile, float r_x, float r_y, float r_w, float r_h);
 	float _frame_x_vel_change = 0.f;
 	float _frame_y_vel_change = 0.f;
 	float _friction;

@@ -43,7 +43,7 @@ float General::decrease_absolute_value(float value, float decrease)
 }
 
 // returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
-std::pair<bool,std::array<int,4>> General::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
+std::tuple<bool,std::array<int,4>, TILE> General::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
 {
 	int j_start = g._cam.convert_x_to_j(x);
 	int j_end = g._cam.convert_x_to_j((x + w  - 0.01f)) + 1;
@@ -58,11 +58,11 @@ std::pair<bool,std::array<int,4>> General::get_blocking_tile_pos_in_area(Game& g
 		{
 			if (g._tile_handler.is_blocking_tile(i, j))
 			{
-				return { true, {j * r_w, i * r_h, i, j} };
+				return { true, {j * r_w, i * r_h, i, j}, g._tile_handler._tiles[i][j]};
 			}
 		}
 	}
-	return { false, {0,0,0,0} };
+	return { false, {0,0,0,0}, TILE::VOID };
 }
 
 // true if it found path, false if no path

@@ -1,9 +1,10 @@
 #pragma once
 #include "MovingRect.h"
 
-enum class PLAYER_WEAPON {
-	FIRE_MAGIC,
-	GUN
+enum class PLAYER_WEAPON : char {
+	FIRE_MAGIC = 0,
+	GUN,
+	TOTAL
 };
 
 class Player : public MovingRect {
@@ -19,6 +20,9 @@ public:
 
 	// gun stuff
 	int _shots = 10;
+
+	// bomb stuff
+	int _bombs = 5;
 
 	//bomb throw charge gauge
 	float _bomb_throw_charge = 0.f;
