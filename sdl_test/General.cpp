@@ -56,9 +56,19 @@ std::tuple<bool,std::array<int,4>, TILE> General::get_blocking_tile_pos_in_area(
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			if (g._tile_handler.is_blocking_tile(i, j))
-			{
-				return { true, {j * r_w, i * r_h, i, j}, g._tile_handler.get_tile_type(i,j)};
+			TILE tile = g._tile_handler.get_tile_type(i, j);
+			if (tile > TILE::VOID) {
+				if (tile < TILE::TRI_NE) {
+				GOTO_RETURN:
+					return { true, {j * r_w, i * r_h, i, j}, tile };
+				}
+				else if (tile == TILE::TRI_NE)
+				{
+					if (i * r_h + (x - j * r_w) < y + h) // actually colliding
+					{
+						goto GOTO_RETURN;
+					}
+				}
 			}
 		}
 	}
