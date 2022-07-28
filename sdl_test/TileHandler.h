@@ -31,6 +31,7 @@ public:
 	void hurt_tile(int i, int j);
 	bool tile_in_range(int i, int j) const;
 	TILE get_tile_type(int i, int j);
+	TILE get_tile_type_reverse(int i, int j);
 	bool is_blocking_tile(int i, int j);
 	bool is_path_clear(Game& g, float x1, float y1, float x2, float y2);
 };

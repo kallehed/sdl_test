@@ -15,16 +15,40 @@ TileHandler::TileHandler()
 
 void TileHandler::draw(Game& g)
 {	
-	for (int i = 0; i < _len; ++i) {
-		for (int j = 0; j < _len; ++j) {
-			TILE tile = _tiles[i][j];
+	float x = g._cam._x;
+	float y = g._cam._y;
+	float w = (float)g._WIDTH;
+	float h = (float)g._HEIGHT;
+	int j_start = g._cam.convert_x_to_j(x);
+	int j_end = g._cam.convert_x_to_j((x + w - 0.01f)) + 1;
+	int i_start = g._cam.convert_y_to_i(y);
+	int i_end = g._cam.convert_y_to_i((y + h - 0.01f)) + 1;
+
+	float r_w = g._cam._fgrid;
+	float r_h = g._cam._fgrid;
+	for (int i = i_start; i < i_end; ++i)
+	{
+		for (int j = j_start; j < j_end; ++j)
+		{
+			TILE tile = this->get_tile_type(i, j);
 			if (tile > TILE::VOID) {
 				int x = g._cam.convert_x(g._cam._grid * j);
 				int y = g._cam.convert_y(g._cam._grid * i);
+				if (i < 0 || j < 0) {
+					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
+					SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 75);
+					SDL_RenderFillRect(g._renderer, &rect);
+				} else 
 				if (tile == TILE::BLOCK)
-				{	
+				{
 					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
 					SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);
+					SDL_RenderFillRect(g._renderer, &rect);
+				}
+				else if (tile == TILE::DESTRUCTABLE)
+				{
+					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
+					SDL_SetRenderDrawColor(g._renderer, 25, 150, 25, 255);
 					SDL_RenderFillRect(g._renderer, &rect);
 				}
 				else if (tile == TILE::TRI_NE) {
@@ -40,18 +64,49 @@ void TileHandler::draw(Game& g)
 					vert[2].color = color;
 					SDL_RenderGeometry(g._renderer, NULL, vert, 3, NULL, 0);
 				}
-				else if (tile == TILE::DESTRUCTABLE)
-				{
-					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
-					SDL_SetRenderDrawColor(g._renderer, 25, 150, 25, 255);
-					SDL_RenderFillRect(g._renderer, &rect);
+				else if (tile == TILE::TRI_SE) {
+					SDL_Color color = { 0,0,0,255 };
+					SDL_Vertex vert[3];
+					float fx = (float)x;
+					float fy = (float)y;
+					vert[0].position = { fx, fy };
+					vert[0].color = color;
+					vert[1].position = { fx , fy + g._cam._fgrid };
+					vert[1].color = color;
+					vert[2].position = { fx + g._cam._fgrid, fy };
+					vert[2].color = color;
+					SDL_RenderGeometry(g._renderer, NULL, vert, 3, NULL, 0);
+				}
+				else if (tile == TILE::TRI_NW) {
+					SDL_Color color = { 0,0,0,255 };
+					SDL_Vertex vert[3];
+					float fx = (float)x;
+					float fy = (float)y;
+					vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+					vert[0].color = color;
+					vert[1].position = { fx , fy + g._cam._fgrid };
+					vert[1].color = color;
+					vert[2].position = { fx + g._cam._fgrid, fy };
+					vert[2].color = color;
+					SDL_RenderGeometry(g._renderer, NULL, vert, 3, NULL, 0);
+				}
+				else if (tile == TILE::TRI_SW) {
+					SDL_Color color = { 0,0,0,255 };
+					SDL_Vertex vert[3];
+					float fx = (float)x;
+					float fy = (float)y;
+					vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+					vert[0].color = color;
+					vert[1].position = { fx , fy };
+					vert[1].color = color;
+					vert[2].position = { fx + g._cam._fgrid, fy };
+					vert[2].color = color;
+					SDL_RenderGeometry(g._renderer, NULL, vert, 3, NULL, 0);
 				}
 			}
 		}
 	}
 }
-
-
 
 void TileHandler::place_tile(Game& g, TILE tile, int x, int y)
 {
@@ -102,7 +157,10 @@ TILE TileHandler::get_tile_type(int i, int j) {
 	if (tile_in_range(i, j)) {
 		return _tiles[i][j];
 	}
-	return TILE::VOID;
+	return TILE::BLOCK;
+}
+TILE TileHandler::get_tile_type_reverse(int i, int j) {
+	return this->get_tile_type(j, i);
 }
 
 bool TileHandler::is_blocking_tile(int i, int j)
