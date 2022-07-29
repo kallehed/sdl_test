@@ -3,14 +3,10 @@
 #include "General.h"
 
 void MovingRect::x_collision(Game& g) {
-	float x = get_x();
-	float y = get_y();
-	float w = get_w();
-	float h = get_h();
-	int j_start = g._cam.convert_x_to_j(x);
-	int j_end = g._cam.convert_x_to_j((x + w - 0.01f)) + 1;
-	int i_start = g._cam.convert_y_to_i(y);
-	int i_end = g._cam.convert_y_to_i((y + h - 0.01f)) + 1;
+	int j_start = g._cam.convert_x_to_j(_x);
+	int j_end = g._cam.convert_x_to_j((_x + _w - 0.01f)) + 1;
+	int i_start = g._cam.convert_y_to_i(_y);
+	int i_end = g._cam.convert_y_to_i((_y + _h - 0.01f)) + 1;
 
 	float r_w = g._cam._fgrid;
 	float r_h = g._cam._fgrid;
@@ -22,22 +18,42 @@ void MovingRect::x_collision(Game& g) {
 			if (tile >= TILE::TRI_NE) {
 				float r_x = j * r_w;
 				float r_y = i * r_h;
+				bool triangle = false;
 				if (tile == TILE::TRI_NE) {
-					// actually colliding, and not jump
-					if (r_y + x - r_x <= y + h) {
-						if (r_y + r_h >= y + h) {
-							set_y(r_y - h + x - r_x);
-							goto GOTO_WHOLE;
+					// actually colliding
+					if (r_y + _x - r_x <= _y + _h) {
+						// and, don't jump
+						if (r_y + r_h >= _y + _h) {
+							set_y(r_y - _h + _x - r_x);
+							triangle = true;
 						}
 					}
 				}
 				else if (tile == TILE::TRI_SE) {
-					if ( x <= r_x + r_w - (y-r_y)) {
-						if (y >= r_y) {
-							set_y(r_y + -x + r_x+r_w);
+					if ( _x <= r_x + r_w - (_y-r_y)) {
+						if (_y >= r_y) {
+							set_y(r_y + -_x + r_x+r_w);
+							triangle = true;
 						}
 					}
 				}
+				else if (tile == TILE::TRI_NW) {
+					if (_x + _w >= r_x + r_y + r_h - _y - _h)  {
+						if (_y+_h <= r_y+r_h) {
+							set_y(r_y + r_h - _h - _x - _w + r_x);
+							triangle = true;
+						}
+					}
+				}
+				else if (tile == TILE::TRI_SW) {
+					if (_x + _w >= r_x + _y - r_y) {
+						if (_y >= r_y) {
+							set_y(r_y - r_x + _x + _w);
+							triangle = true;
+						}
+					}
+				}
+				if (triangle) { goto GOTO_WHOLE; }
 			}
 		}
 	}
@@ -54,8 +70,8 @@ GOTO_WHOLE:
 				float r_y = i * r_h;
 
 				_x_vel = 0.f; // a b c a d c
-				if (abs(x + w - r_x) < abs(r_x + r_w - x)) {
-					set_x(r_x - w); // left side of r
+				if (abs(_x + _w - r_x) < abs(r_x + r_w - _x)) {
+					set_x(r_x - _w); // left side of r
 				}
 				else {
 					set_x(r_x + r_w); // right side of r
@@ -67,14 +83,10 @@ GOTO_WHOLE:
 }
 
 void MovingRect::y_collision(Game& g) {
-	float x = get_x();
-	float y = get_y();
-	float w = get_w();
-	float h = get_h();
-	int j_start = g._cam.convert_x_to_j(x);
-	int j_end = g._cam.convert_x_to_j((x + w - 0.01f)) + 1;
-	int i_start = g._cam.convert_y_to_i(y);
-	int i_end = g._cam.convert_y_to_i((y + h - 0.01f)) + 1;
+	int j_start = g._cam.convert_x_to_j(_x);
+	int j_end = g._cam.convert_x_to_j((_x + _w - 0.01f)) + 1;
+	int i_start = g._cam.convert_y_to_i(_y);
+	int i_end = g._cam.convert_y_to_i((_y + _h - 0.01f)) + 1;
 
 	float r_w = g._cam._fgrid;
 	float r_h = g._cam._fgrid;
@@ -83,26 +95,45 @@ void MovingRect::y_collision(Game& g) {
 		for (int j = j_start; j < j_end; ++j)
 		{
 			TILE tile = g._tile_handler.get_tile_type(i, j);
-			if (tile == TILE::TRI_NE) {
+			if (tile >= TILE::TRI_NE && tile <= TILE::TRI_SW) {
 				float r_x = j * r_w;
 				float r_y = i * r_h;
-				if (r_y + (x - r_x) <= y + h) // actually colliding
-				{
-					if (x >= r_x)
+				bool triangle = false;
+				if (tile == TILE::TRI_NE) {
+					if (r_y + (_x - r_x) <= _y + _h)
 					{
-						set_x(r_x + w + y - r_y);
-						goto GOTO_WHOLE;
+						if (_x >= r_x)
+						{
+							set_x(r_x + _w + _y - r_y);
+							triangle = true;
+						}
 					}
 				}
-			}
-			else if (tile == TILE::TRI_SE) {
-				float r_x = j * r_w;
-				float r_y = i * r_h;
-				if (x <= r_x + r_w - (y - r_y)) {
-					if (x >= r_x) {
-						set_x(r_x - y + r_y + r_h);
+				else if (tile == TILE::TRI_SE) {
+					if (_x <= r_x + r_w - _y + r_y) {
+						if (_x >= r_x) {
+							set_x(r_x - _y + r_y + r_h);
+							triangle = true;
+						}
 					}
 				}
+				else if (tile == TILE::TRI_NW) {
+					if (_x + _w >= r_x + r_y + r_h - _y - _h) {
+						if (_x + _w <= r_x+r_w) {
+							set_x(r_x+r_w - _w - (_y+_h-r_y));
+							triangle = true;
+						}
+					}
+				}
+				else if (tile == TILE::TRI_SW) {
+					if (_x + _w >= r_x + _y - r_y) {
+						if (_x+_w <= r_x+r_w) {
+							set_x(r_x+r_w - _w - (r_y+r_h-_y));
+							triangle = true;
+						}
+					}
+				}
+				if (triangle) { goto GOTO_WHOLE; }
 			}
 		}
 	}
@@ -119,8 +150,8 @@ GOTO_WHOLE:
 				float r_y = i * r_h;
 
 				_y_vel = 0.f;
-				if (abs(y + h - r_y) < abs(r_y + r_h - y)) {
-					set_y(r_y - h); // up side of r
+				if (abs(_y + _h - r_y) < abs(r_y + r_h - _y)) {
+					set_y(r_y - _h); // up side of r
 				}
 				else {
 					set_y(r_y + r_h); // down side of r
@@ -136,6 +167,7 @@ MovingRect::MovingRect(float x, float y, float w, float h, float friction)
 	:  Rect(x, y, w, h), _friction(friction) {
 }
 
+template <bool COLLIDE>
 void MovingRect::move_and_collide(Game& g) // moves x and y based on velocity + collision with block_tiles
 {
 	// collision testing and moving
@@ -158,28 +190,18 @@ void MovingRect::move_and_collide(Game& g) // moves x and y based on velocity + 
 	_y_vel = fmax(-max_abs_vel, fmin(_y_vel, max_abs_vel));
 
 	set_x(get_x() + _x_vel * g._dt);
-	x_collision(g);
+	if constexpr (COLLIDE) {
+		x_collision(g);
+	}
 
 	set_y(get_y() + _y_vel * g._dt);
-	y_collision(g);
+	if constexpr (COLLIDE) {
+		y_collision(g);
+	}
 }
 
-void MovingRect::move_without_colliding(Game& g)
-{
-	float real_x_friction = _friction * g._dt * _x_vel;
-	float real_y_friction = _friction * g._dt * _y_vel;
-
-	_x_vel = General::decrease_absolute_value(_x_vel, real_x_friction);
-	_y_vel = General::decrease_absolute_value(_y_vel, real_y_friction);
-
-	_x_vel += _frame_x_vel_change * g._dt;
-	_y_vel += _frame_y_vel_change * g._dt;
-	_frame_x_vel_change = 0.f; // reset for next frame
-	_frame_y_vel_change = 0.f;
-
-	set_x(get_x() + _x_vel * g._dt);
-	set_y(get_y() + _y_vel * g._dt);
-}
+template void MovingRect::move_and_collide<true>(Game& g);
+template void MovingRect::move_and_collide<false>(Game& g);
 
 void MovingRect::change_x_vel(float change)
 {

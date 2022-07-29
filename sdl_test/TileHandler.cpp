@@ -148,6 +148,27 @@ void TileHandler::hurt_tile(int i, int j)
 	}
 }
 
+template <TILE tile>
+bool TileHandler::intersection_tile(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h) {
+	if constexpr (tile == TILE::TRI_NE) {
+		return t_y + x - t_x <= y + h;
+	}
+	else if constexpr (tile == TILE::TRI_SE) {
+		return  x <= t_x + t_w - y + t_y;
+	}
+	else if constexpr (tile == TILE::TRI_NW) {
+		return x + w >= t_x + t_y + t_h - y - h;
+	}
+	else if constexpr (tile == TILE::TRI_SW) {
+		return x + w >= t_x + y - t_y;
+	}
+}
+
+template bool TileHandler::intersection_tile<TILE::TRI_NE>(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h);
+template bool TileHandler::intersection_tile<TILE::TRI_SE>(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h);
+template bool TileHandler::intersection_tile<TILE::TRI_NW>(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h);
+template bool TileHandler::intersection_tile<TILE::TRI_SW>(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h);
+
 bool TileHandler::tile_in_range(int i, int j) const
 {
 	return i >= 0 && j >= 0 && i < _len && j < _len;
@@ -158,9 +179,6 @@ TILE TileHandler::get_tile_type(int i, int j) {
 		return _tiles[i][j];
 	}
 	return TILE::BLOCK;
-}
-TILE TileHandler::get_tile_type_reverse(int i, int j) {
-	return this->get_tile_type(j, i);
 }
 
 bool TileHandler::is_blocking_tile(int i, int j)

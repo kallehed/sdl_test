@@ -1,7 +1,7 @@
 #pragma once
 
 class Rect {
-private:
+protected:
 	float _x;
 	float _y;
 	float _w;

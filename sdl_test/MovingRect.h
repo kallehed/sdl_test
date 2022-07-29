@@ -27,8 +27,10 @@ private:
 	float _y_vel = 0.f;
 protected:
 	MovingRect(float x, float y, float w, float h, float friction);
+
+	template <bool COLLIDE>
 	void move_and_collide(Game& g);
-	void move_without_colliding(Game& g);
+
 	void change_x_vel(float change);
 	void change_y_vel(float change);
 	void go_towards(float x, float y, float speed);

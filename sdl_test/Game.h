@@ -38,5 +38,7 @@ public:
 	void close_game();
 	void game_loop();
 	void game_logic();
+
+	template <bool EDIT>
 	void game_draw();
 };

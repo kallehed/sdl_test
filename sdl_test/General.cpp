@@ -64,7 +64,25 @@ std::tuple<bool,std::array<int,4>, TILE> General::get_blocking_tile_pos_in_area(
 				}
 				else if (tile == TILE::TRI_NE)
 				{
-					if (i * r_h + (x - j * r_w) < y + h) // actually colliding
+					if (TileHandler::intersection_tile<TILE::TRI_NE>(x, y, w, h, j*r_w, i*r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+				else if (tile == TILE::TRI_SE) {
+					if (TileHandler::intersection_tile<TILE::TRI_SE>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+				else if (tile == TILE::TRI_NW) {
+					if (TileHandler::intersection_tile<TILE::TRI_NW>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+				else if (tile == TILE::TRI_SW) {
+					if (TileHandler::intersection_tile<TILE::TRI_SW>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
 					{
 						goto GOTO_RETURN;
 					}

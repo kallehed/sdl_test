@@ -19,7 +19,7 @@ bool Shot::logic(Game& g)
 {
 	change_x_vel(_x_dir*_speed);
 	change_y_vel(_y_dir*_speed);
-	move_without_colliding(g);
+	move_and_collide<false>(g);
 
 	// collision with blocking tile == death
 

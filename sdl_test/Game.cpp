@@ -98,7 +98,9 @@ void Game::game_loop()
 
 		game_logic();
 
-		game_draw();
+		if (_edit_mode) game_draw<true>();
+		else game_draw<false>();
+		
 
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;
 		if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
@@ -121,23 +123,27 @@ void Game::game_logic()
 	}
 }
 
+template <bool EDIT>
 void Game::game_draw()
 {
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
 	SDL_RenderClear(_renderer);
 
-	if (_edit_mode) { // exclusive edit-things-to-draw
-		_cam.draw_edit(*this); // grid
+	if constexpr (EDIT) { // exclusive edit-things-to-draw
+		_cam.draw_grid(*this); // grid
 	}
 
 	_tile_handler.draw(*this);
 
 	_entity_handler.draw(*this);
 
-	if (!_edit_mode) {
+	if constexpr (!EDIT) {
 		_cam.draw_play(*this);
 	}
 
+	if constexpr (EDIT) { // exclusive edit-things-to-draw
+		_cam.draw_edit_text(*this); // grid
+	}
 	/*SDL_Rect srcrect = {0, 0 , 300, 300};
 	SDL_RenderCopy(gRenderer, gTextures[image_to_display], &srcrect, &dstrect);
 	*/

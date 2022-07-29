@@ -20,8 +20,8 @@ class Camera {
 public:
 	float _x;
 	float _y;
-	const int _grid;
-	const float _fgrid;
+	static const int _grid;
+	static const float _fgrid;
 
 	EDIT _edit = EDIT::BLOCK_TILE;
 
@@ -30,8 +30,8 @@ public:
 	int convert_y(int y) const;
 	float convert_x(float x) const;
 	float convert_y(float y) const;
-	int convert_x_to_j(float x) const;
-	int convert_y_to_i(float y) const;
+	static int convert_x_to_j(float x);
+	static int convert_y_to_i(float y);
 
 	void play_logic(Game& g);
 

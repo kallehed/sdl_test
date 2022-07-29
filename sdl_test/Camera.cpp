@@ -4,7 +4,10 @@
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
 
-Camera::Camera() : _x(0.f), _y(0.f), _grid(45), _fgrid(45.f) {
+const int Camera::_grid = 45;
+const float Camera::_fgrid = 45.f; 
+
+Camera::Camera() : _x(0.f), _y(0.f) {
 
 }
 
@@ -25,12 +28,12 @@ float Camera::convert_y(float y) const
 	return y - (float)_y;
 }
 
-int Camera::convert_x_to_j(float x) const
+int Camera::convert_x_to_j(float x)
 {
 	return (int)floorf(x / _fgrid);
 }
 
-int Camera::convert_y_to_i(float y) const
+int Camera::convert_y_to_i(float y)
 {
 	return (int)floorf(y / _fgrid);
 }

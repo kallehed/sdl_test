@@ -31,7 +31,7 @@ bool Player::logic(Game& g)
 	}
 
 	// let MovingRect handle the rest
-	move_and_collide(g);
+	move_and_collide<true>(g);
 
 	// use weapons(both left and right)
 	{

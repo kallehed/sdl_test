@@ -23,7 +23,7 @@ Coin::Coin(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 30.f, 
 
 bool Coin::logic(Game& g)
 {
-	this->move_and_collide(g);
+	this->move_and_collide<true>(g);
 
 	// death == death
 	if (_lives < 1)

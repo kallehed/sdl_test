@@ -38,7 +38,7 @@ bool Enemy::logic(Game& g)
 		}
 	}
 
-	move_and_collide(g);
+	move_and_collide<true>(g);
 
 	// kill self?
 	if (_hp < 1) {
