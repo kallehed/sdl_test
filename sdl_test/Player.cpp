@@ -9,7 +9,7 @@ MOVING_RECT_TYPES Player::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::PLAYER;
 }
 
-Player::Player() : MovingRect(0.f, 0.f, 40.f, 40.f, 0.009f) {
+Player::Player() : MovingRect(0.f, 0.f, 40.f, 60.f, 0.009f) {
 }
 
 bool Player::logic(Game& g)
@@ -37,7 +37,7 @@ bool Player::logic(Game& g)
 	{
 		
 		int m_x, m_y;
-		Uint32 buttons = SDL_GetMouseState(&m_x, &m_y);
+		Uint32 buttons = g.getMouseState(&m_x, &m_y);
 
 		// left mouse button weapons
 		{
@@ -155,7 +155,8 @@ void Player::draw(Game& g)
 	SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	SDL_RenderDrawRect(g._renderer, &rect);
+	//SDL_RenderDrawRect(g._renderer, &rect);
+	SDL_RenderCopy(g._renderer, g._textures[TEX::RedHuman], NULL, &rect);
 }
 
 void Player::intersection(float nx, float ny, MovingRect* e)
@@ -199,6 +200,12 @@ void Player::intersection(float nx, float ny, MovingRect* e)
 	case MOVING_RECT_TYPES::COIN:
 	{
 		_coins += 1;
+		break;
+	}
+	case MOVING_RECT_TYPES::PICKUPABLE_SHOT:
+	{
+		// 1 to 3 possible gain
+		_shots += 1 + (rand() % 3); 
 		break;
 	}
 	}

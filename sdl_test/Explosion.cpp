@@ -40,12 +40,19 @@ bool Explosion::logic(Game& g)
 
 void Explosion::draw(Game& g)
 {
-	int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
+	/*int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
 
 	SDL_SetRenderDrawColor(g._renderer, 255, 50, 50, alpha_val);
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 	SDL_RenderFillRect(g._renderer, &rect);
+	*/
+
+	int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
+	const SDL_Rect dst = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
+
+	SDL_SetTextureAlphaMod(g._textures[TEX::BombExplosion], (unsigned char)alpha_val);
+	SDL_RenderCopy(g._renderer, g._textures[TEX::BombExplosion], NULL, &dst);
 }
 
 void Explosion::intersection(float nx, float ny, MovingRect* e)

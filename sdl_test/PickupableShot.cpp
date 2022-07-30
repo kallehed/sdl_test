@@ -1,12 +1,13 @@
-#include "Coin.h"
+#include "PickupableShot.h"
+
 #include "Game.h"
 
-MOVING_RECT_TYPES Coin::get_moving_rect_type() const
+MOVING_RECT_TYPES PickupableShot::get_moving_rect_type() const
 {
-	return MOVING_RECT_TYPES::COIN;
+	return MOVING_RECT_TYPES::PICKUPABLE_SHOT;
 }
 
-Coin::Coin(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 30.f, 30.f, 0.003f)
+PickupableShot::PickupableShot(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 30.f, 30.f, 0.003f)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
@@ -15,7 +16,7 @@ Coin::Coin(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 30.f, 
 	change_y_vel(y_vel);
 }
 
-bool Coin::logic(Game& g)
+bool PickupableShot::logic(Game& g)
 {
 	this->move_and_collide<true>(g);
 
@@ -28,17 +29,16 @@ bool Coin::logic(Game& g)
 	return false;
 }
 
-void Coin::draw(Game& g)
+void PickupableShot::draw(Game& g)
 {
-	SDL_SetRenderDrawColor(g._renderer, 255, 255, 0, 255);
+	SDL_SetRenderDrawColor(g._renderer, 98, 12, 93, 255);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_Rect rect = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
 	//SDL_RenderFillRect(g._renderer, &rect);
-
-	SDL_RenderCopy(g._renderer, g._textures[TEX::Coin], NULL, &rect);
+	SDL_RenderCopy(g._renderer, g._textures[TEX::Container], NULL, &rect);
 }
 
-void Coin::intersection(float nx, float ny, MovingRect* e)
+void PickupableShot::intersection(float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::ENEMY:

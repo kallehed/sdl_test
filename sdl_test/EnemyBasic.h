@@ -19,6 +19,7 @@ public:
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
 	EnemyBasic(float x, float y);
+	void draw(Game& g) override;
 	void idle_logic(Game& g);
 	void take_damage();
 	void active_logic(Game& g);

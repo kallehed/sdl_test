@@ -1,13 +1,44 @@
 #include "Game.h"
 
+SDL_Texture* Game::loadTexture(const char* path) {
+
+	SDL_Texture* newTexture = IMG_LoadTexture(_renderer, path);
+	if (newTexture == NULL) {
+		std::cout << "failed loading texture: " << path << "\n";
+	}
+	SDL_SetTextureBlendMode(newTexture, SDL_BLENDMODE_BLEND);
+
+	return newTexture;
+}
+
+void Game::changedScale()
+{
+	SDL_SetWindowSize(_window, _WIDTH * _scale, _HEIGHT * _scale);
+	SDL_RenderSetScale(_renderer, (float)_scale, (float)_scale);
+}
+
+Uint32 Game::getMouseState(int* x, int* y)
+{
+	Uint32 buttons = SDL_GetMouseState(x, y);
+	(*x) /= _scale; // correctly place mouse position when window is bigger
+	(*y) /= _scale;
+
+	return buttons;
+}
+
 Game::Game()
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	_window = SDL_CreateWindow("SDLtest", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _WIDTH, _HEIGHT, SDL_WINDOW_SHOWN);
+	_window = SDL_CreateWindow("SDLtest",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		_WIDTH, _HEIGHT,
+		SDL_WINDOW_SHOWN);
+	
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
-	IMG_Init(IMG_INIT_PNG);
+
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	TTF_Init();
 
 	_font = TTF_OpenFont("fonts/8bitoperator.ttf", 12);
@@ -15,6 +46,33 @@ Game::Game()
 		std::cout << "Error loading font: " << TTF_GetError() << std::endl;
 		std::cin.get(); // stop
 	}
+
+	{
+		const char* paths[TEX::TOTAL] = {
+			"images/FireMagic.png",
+			"images/BombExplosion.jpg",
+			"images/Bullet.png",
+			"images/BlueSlime.png",
+			"images/GreenSlime.png",
+			"images/GreenSlime2.png",
+			"images/Coin.png",
+			"images/Container.png",
+			"images/Bush.png",
+			"images/Bush2.png",
+			"images/RedHuman.png",
+			"images/TreeStump.png",
+			"images/SmallTree1.png",
+			"images/SmallTree2.png",
+		};
+		for (int i = 0; i < TEX::TOTAL; ++i) {
+			_textures[i] = loadTexture(paths[i]);
+		}
+	}
+
+	_tile_handler.TileHandler_construct(*this);
+	
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
 }
 
 void Game::start_game()
@@ -31,6 +89,9 @@ void Game::close_game()
 	//	SDL_DestroyTexture(gTextures[i]);
 	//	gTextures[i] = NULL;
 	//}
+	for (int i = 0; i < TEX::TOTAL; ++i) {
+		SDL_DestroyTexture(_textures[i]);
+	}
 
 	SDL_DestroyRenderer(_renderer);
 	_renderer = NULL;
@@ -59,10 +120,28 @@ void Game::game_loop()
 			{
 				running = false;
 			}
+			else if (e.type == SDL_WINDOWEVENT) {
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
+
+				}
+				break;
+			}
 			else if (e.type == SDL_KEYDOWN) {
 				switch (e.key.keysym.sym) {
 				case SDLK_k: // change edit mode bool
 					_edit_mode = !_edit_mode;
+					break;
+				case SDLK_ESCAPE:
+					running = false;
+					
+					break;
+				case SDLK_o:
+					_scale = std::max(1, _scale-1);
+					changedScale();
+					break;
+				case SDLK_p:
+					_scale = std::min(3, _scale + 1);
+					changedScale();
 					break;
 				}
 			}
@@ -70,7 +149,7 @@ void Game::game_loop()
 				
 				int x, y;
 				Uint32 buttons;
-				buttons = SDL_GetMouseState(&x, &y);
+				buttons = getMouseState(&x, &y);
 				_mouse_pos_on_latest_press = { x, y };
 
 				if ((buttons & SDL_BUTTON_LMASK) != 0) { // left mouse pressed

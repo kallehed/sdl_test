@@ -44,7 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>false</EnableUnitySupport>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -52,7 +52,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>false</EnableUnitySupport>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -163,6 +163,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="MovingRect.cpp" />
+    <ClCompile Include="PickupableShot.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rect.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="MovingRect.h" />
+    <ClInclude Include="PickupableShot.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Shot.h" />
@@ -190,6 +192,11 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\8bitoperator.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\BlueSlime.png" />
+    <Image Include="images\BombExplosion.jpg" />
+    <Image Include="images\FireMagic.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

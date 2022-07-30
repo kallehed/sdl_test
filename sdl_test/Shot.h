@@ -8,6 +8,7 @@ public:
 	int _lives = 1;
 	float _x_dir;
 	float _y_dir;
+	double _degrees_turned;
 	float _speed = 0.05f;
 
 	// which entity created this shot(maybe don't hurt them?)?

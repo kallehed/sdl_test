@@ -75,13 +75,7 @@ bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
 	return dx * dx + dy * dy <= radius_squared;
 }
 
-void Enemy::draw(Game& g)
-{
-	SDL_SetRenderDrawColor(g._renderer, 0, 0, 255, 255);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h()};
-	SDL_RenderFillRect(g._renderer, &rect);
-}
 
 void Enemy::new_walk_path(Game& g) // clear
 {

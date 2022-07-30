@@ -14,14 +14,15 @@ void MovingRect::x_collision(Game& g) {
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			TILE tile = g._tile_handler.get_tile_type(i, j);
+			TILE::TILE tile = g._tile_handler.get_tile_type(i, j);
 			if (tile >= TILE::TRI_NE) {
 				float r_x = j * r_w;
 				float r_y = i * r_h;
 				bool triangle = false;
 				if (tile == TILE::TRI_NE) {
 					// actually colliding
-					if (r_y + _x - r_x <= _y + _h) {
+					if (TileHandler::intersection_tile<TILE::TRI_NE>(_x, _y, _w, _h, r_x, r_y, r_w, r_h))
+					{
 						// and, don't jump
 						if (r_y + r_h >= _y + _h) {
 							set_y(r_y - _h + _x - r_x);
@@ -30,7 +31,7 @@ void MovingRect::x_collision(Game& g) {
 					}
 				}
 				else if (tile == TILE::TRI_SE) {
-					if ( _x <= r_x + r_w - (_y-r_y)) {
+					if (TileHandler::intersection_tile<TILE::TRI_SE>(_x, _y, _w, _h, r_x, r_y, r_w, r_h)) {
 						if (_y >= r_y) {
 							set_y(r_y + -_x + r_x+r_w);
 							triangle = true;
@@ -38,7 +39,7 @@ void MovingRect::x_collision(Game& g) {
 					}
 				}
 				else if (tile == TILE::TRI_NW) {
-					if (_x + _w >= r_x + r_y + r_h - _y - _h)  {
+					if (TileHandler::intersection_tile<TILE::TRI_NW>(_x, _y, _w, _h, r_x, r_y, r_w, r_h))  {
 						if (_y+_h <= r_y+r_h) {
 							set_y(r_y + r_h - _h - _x - _w + r_x);
 							triangle = true;
@@ -46,7 +47,7 @@ void MovingRect::x_collision(Game& g) {
 					}
 				}
 				else if (tile == TILE::TRI_SW) {
-					if (_x + _w >= r_x + _y - r_y) {
+					if (TileHandler::intersection_tile<TILE::TRI_SW>(_x, _y, _w, _h, r_x, r_y, r_w, r_h)) {
 						if (_y >= r_y) {
 							set_y(r_y - r_x + _x + _w);
 							triangle = true;
@@ -63,7 +64,7 @@ GOTO_WHOLE:
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			TILE tile = g._tile_handler.get_tile_type(i, j);
+			TILE::TILE tile = g._tile_handler.get_tile_type(i, j);
 			if (tile > TILE::VOID && tile < TILE::TRI_NE) // whole
 			{
 				float r_x = j * r_w;
@@ -94,23 +95,23 @@ void MovingRect::y_collision(Game& g) {
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			TILE tile = g._tile_handler.get_tile_type(i, j);
+			TILE::TILE tile = g._tile_handler.get_tile_type(i, j);
 			if (tile >= TILE::TRI_NE && tile <= TILE::TRI_SW) {
 				float r_x = j * r_w;
 				float r_y = i * r_h;
 				bool triangle = false;
 				if (tile == TILE::TRI_NE) {
-					if (r_y + (_x - r_x) <= _y + _h)
+					if (TileHandler::intersection_tile<TILE::TRI_NE>(_x, _y, _w, _h, r_x, r_y, r_w, r_h))
 					{
 						if (_x >= r_x)
 						{
-							set_x(r_x + _w + _y - r_y);
+							set_x(r_x + _y + _h - r_y);
 							triangle = true;
 						}
 					}
 				}
 				else if (tile == TILE::TRI_SE) {
-					if (_x <= r_x + r_w - _y + r_y) {
+					if (TileHandler::intersection_tile<TILE::TRI_SE>(_x, _y, _w, _h, r_x, r_y, r_w, r_h)) {
 						if (_x >= r_x) {
 							set_x(r_x - _y + r_y + r_h);
 							triangle = true;
@@ -118,17 +119,17 @@ void MovingRect::y_collision(Game& g) {
 					}
 				}
 				else if (tile == TILE::TRI_NW) {
-					if (_x + _w >= r_x + r_y + r_h - _y - _h) {
+					if (TileHandler::intersection_tile<TILE::TRI_NW>(_x, _y, _w, _h, r_x, r_y, r_w, r_h)) {
 						if (_x + _w <= r_x+r_w) {
-							set_x(r_x+r_w - _w - (_y+_h-r_y));
+							set_x(r_x + r_w - _w - _y - _h + r_y);
 							triangle = true;
 						}
 					}
 				}
 				else if (tile == TILE::TRI_SW) {
-					if (_x + _w >= r_x + _y - r_y) {
+					if (TileHandler::intersection_tile<TILE::TRI_SW>(_x, _y, _w, _h, r_x, r_y, r_w, r_h)) {
 						if (_x+_w <= r_x+r_w) {
-							set_x(r_x+r_w - _w - (r_y+r_h-_y));
+							set_x(r_x + r_w - _w - r_y - r_h + _y);
 							triangle = true;
 						}
 					}
@@ -143,7 +144,7 @@ GOTO_WHOLE:
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			TILE tile = g._tile_handler.get_tile_type(i, j);
+			TILE::TILE tile = g._tile_handler.get_tile_type(i, j);
 			if (tile > TILE::VOID && tile < TILE::TRI_NE) // whole
 			{
 				float r_x = j * r_w;

@@ -43,7 +43,7 @@ float General::decrease_absolute_value(float value, float decrease)
 }
 
 // returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
-std::tuple<bool,std::array<int,4>, TILE> General::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
+std::tuple<bool,std::array<int,4>, char> General::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
 {
 	int j_start = g._cam.convert_x_to_j(x);
 	int j_end = g._cam.convert_x_to_j((x + w  - 0.01f)) + 1;
@@ -56,7 +56,7 @@ std::tuple<bool,std::array<int,4>, TILE> General::get_blocking_tile_pos_in_area(
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			TILE tile = g._tile_handler.get_tile_type(i, j);
+			TILE::TILE tile = g._tile_handler.get_tile_type(i, j);
 			if (tile > TILE::VOID) {
 				if (tile < TILE::TRI_NE) {
 				GOTO_RETURN:

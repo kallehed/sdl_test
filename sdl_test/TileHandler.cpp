@@ -1,20 +1,25 @@
 #include "TileHandler.h"
 #include "Game.h"
+#include "Coin.h"
+#include "PickupableShot.h"
 #include "General.h"
 
 #include <cassert>  
 
-TileHandler::TileHandler()
+void TileHandler::TileHandler_construct(Game& g)
 {
+	// Functionality of tiles
 	for (int i = 0; i < _len; ++i) {
 		for (int j = 0; j < _len; ++j) {
 			_tiles[i][j] = TILE::VOID;
+			_texs[i][j] = TEX::Bush;
 		}
 	}
 }
 
 void TileHandler::draw(Game& g)
 {	
+
 	float x = g._cam._x;
 	float y = g._cam._y;
 	float w = (float)g._WIDTH;
@@ -30,26 +35,33 @@ void TileHandler::draw(Game& g)
 	{
 		for (int j = j_start; j < j_end; ++j)
 		{
-			TILE tile = this->get_tile_type(i, j);
-			if (tile > TILE::VOID) {
+			TEX::TEX tex = this->get_tile_tex(i, j);
+			if (tex >= 0) {
 				int x = g._cam.convert_x(g._cam._grid * j);
 				int y = g._cam.convert_y(g._cam._grid * i);
-				if (i < 0 || j < 0) {
+				SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
+				SDL_RenderCopy(g._renderer, g._textures[tex], NULL, &rect);
+				continue;
+
+				/*
+				/*if (i < 0 || j < 0) {
 					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
 					SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 75);
 					SDL_RenderFillRect(g._renderer, &rect);
 				} else 
-				if (tile == TILE::BLOCK)
+				if (tex == TILE::BLOCK)
 				{
 					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
 					SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);
-					SDL_RenderFillRect(g._renderer, &rect);
+					//SDL_RenderFillRect(g._renderer, &rect);
+					SDL_RenderCopy(g._renderer, g._textures[TEX::SmallTree1], NULL, &rect);
 				}
-				else if (tile == TILE::DESTRUCTABLE)
+				else if (tex == TILE::DESTRUCTABLE)
 				{
 					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
 					SDL_SetRenderDrawColor(g._renderer, 25, 150, 25, 255);
-					SDL_RenderFillRect(g._renderer, &rect);
+					//SDL_RenderFillRect(g._renderer, &rect);
+					SDL_RenderCopy(g._renderer, g._textures[TEX::Bush2], NULL, &rect);
 				}
 				else if (tile == TILE::TRI_NE) {
 					SDL_Color color = { 0,0,0,255 };
@@ -102,13 +114,14 @@ void TileHandler::draw(Game& g)
 					vert[2].position = { fx + g._cam._fgrid, fy };
 					vert[2].color = color;
 					SDL_RenderGeometry(g._renderer, NULL, vert, 3, NULL, 0);
-				}
+				}*/
 			}
 		}
 	}
+	
 }
 
-void TileHandler::place_tile(Game& g, TILE tile, int x, int y)
+void TileHandler::place_tile(Game& g, TILE::TILE tile, int x, int y)
 {
 	assert(tile != TILE::TOTAL);
 
@@ -135,26 +148,52 @@ bool TileHandler::remove_tile(Game& g, int x, int y) {
 	}
 	return false;
 }
-void TileHandler::hurt_tile(int i, int j)
+void TileHandler::hurt_tile(Game& g, int i, int j)
 {
 	// can't get "tile" beyond _tiles, even though they are "BLOCK"
 	if (this->tile_in_range(i, j))
-	{ 
-		TILE& tile = _tiles[i][j];
+	{
+		TILE::TILE& tile = _tiles[i][j];
 		if (tile == TILE::DESTRUCTABLE)
 		{
 			tile = TILE::VOID;
+
+			// possibly drop items?
+			{
+
+				float rand = General::randf01();
+				if (rand >= 0.5f) {
+					float x = ((float)j + 0.5f)* g._cam._fgrid;
+					float y = ((float)i + 0.5f) * g._cam._fgrid;
+					float x_vel = (General::randf01() - 0.5f) / 15.f;
+					float y_vel = (General::randf01() - 0.5f) / 15.f;
+					if (rand <= 0.8f) {
+						// drop coin
+						Coin* coin = new Coin(x,y, x_vel, y_vel);
+						g._entity_handler._entities_to_add.push_back(coin);
+					}
+					else if (rand <= 0.9f) {
+						// drop pickupable shot
+						PickupableShot* shot = new PickupableShot(x, y, x_vel, y_vel);
+						g._entity_handler._entities_to_add.push_back(shot);
+					}
+					else {
+						// drop pickupable bomb
+						
+					}
+				}
+			}
 		}
 	}
 }
 
-template <TILE tile>
+template <TILE::TILE tile>
 bool TileHandler::intersection_tile(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h) {
 	if constexpr (tile == TILE::TRI_NE) {
 		return t_y + x - t_x <= y + h;
 	}
 	else if constexpr (tile == TILE::TRI_SE) {
-		return  x <= t_x + t_w - y + t_y;
+		return x <= t_x + t_w - y + t_y;
 	}
 	else if constexpr (tile == TILE::TRI_NW) {
 		return x + w >= t_x + t_y + t_h - y - h;
@@ -174,12 +213,20 @@ bool TileHandler::tile_in_range(int i, int j) const
 	return i >= 0 && j >= 0 && i < _len && j < _len;
 }
 
-TILE TileHandler::get_tile_type(int i, int j) {
+TILE::TILE TileHandler::get_tile_type(int i, int j) {
 	if (tile_in_range(i, j)) {
 		return _tiles[i][j];
 	}
 	return TILE::BLOCK;
 }
+
+TEX::TEX TileHandler::get_tile_tex(int i, int j) {
+	if (tile_in_range(i, j)) {
+		return _texs[i][j];
+	}
+	return TEX::SmallTree1;
+}
+
 
 bool TileHandler::is_blocking_tile(int i, int j)
 {

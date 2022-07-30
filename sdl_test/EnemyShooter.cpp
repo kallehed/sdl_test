@@ -16,6 +16,13 @@ EnemyShooter::EnemyShooter(float x, float y) : Enemy(x, y, 20, 200.f, 300.f, 500
 	_get_closer_distance_squared = powf(300.f - 50 * General::randf01(), 2);
 }
 
+void EnemyShooter::draw(Game& g)
+{
+	SDL_SetRenderDrawColor(g._renderer, 150, 0, 225, 255);
+
+	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_RenderFillRect(g._renderer, &rect);
+}
 
 void EnemyShooter::idle_logic(Game& g)
 {
@@ -132,14 +139,6 @@ void EnemyShooter::active_logic(Game& g)
 	else {
 		// best bounds, stay still?
 	}
-}
-
-void EnemyShooter::draw(Game& g)
-{
-	SDL_SetRenderDrawColor(g._renderer, 0, 50, 200, 255);
-
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	SDL_RenderFillRect(g._renderer, &rect);
 }
 
 void EnemyShooter::intersection(float nx, float ny, MovingRect* e)

@@ -21,11 +21,10 @@ public:
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
 	EnemyShooter(float x, float y);
+	void draw(Game& g) override;
 	void idle_logic(Game& g);
 	void take_damage();
 	void active_logic(Game& g);
-
-	void draw(Game& g) override;
 
 	void intersection(float nx, float ny, MovingRect* e) override;
 };

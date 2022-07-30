@@ -19,7 +19,8 @@ public:
 	float _shoot_time = 400.f; // "reload" time
 
 	// gun stuff
-	int _shots = 10;
+	//int _shots = 10;
+	int _shots = 50;
 
 	// bomb stuff
 	int _bombs = 5;

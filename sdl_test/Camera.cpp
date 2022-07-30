@@ -4,8 +4,6 @@
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
 
-const int Camera::_grid = 45;
-const float Camera::_fgrid = 45.f; 
 
 Camera::Camera() : _x(0.f), _y(0.f) {
 
@@ -94,6 +92,11 @@ void Camera::edit_logic(Game& g)
 				g._tile_handler.place_tile(g, TILE::BLOCK, m_x, m_y);
 				break;
 			}
+			case DESTRUCTABLE_TILE:
+			{
+				g._tile_handler.place_tile(g, TILE::DESTRUCTABLE, m_x, m_y);
+				break;
+			}
 			case TRI_NE:
 			{
 				g._tile_handler.place_tile(g, TILE::TRI_NE, m_x, m_y);
@@ -112,11 +115,6 @@ void Camera::edit_logic(Game& g)
 			case TRI_SW:
 			{
 				g._tile_handler.place_tile(g, TILE::TRI_SW, m_x, m_y);
-				break;
-			}
-			case DESTRUCTABLE_TILE:
-			{
-				g._tile_handler.place_tile(g, TILE::DESTRUCTABLE, m_x, m_y);
 				break;
 			}
 			case ENEMY_BASIC:
@@ -184,6 +182,9 @@ void Camera::draw_edit_text(Game& g)
 	case BLOCK_TILE:
 		text = "Block Tile";
 		break;
+	case DESTRUCTABLE_TILE:
+		text = "Destructible Tile";
+		break;
 	case TRI_NE:
 		text = "Triangle NE";
 		break;
@@ -195,9 +196,6 @@ void Camera::draw_edit_text(Game& g)
 		break;
 	case TRI_SW:
 		text = "Triangle SW";
-		break;
-	case DESTRUCTABLE_TILE:
-		text = "Destructible Tile";
 		break;
 	case ENEMY_BASIC:
 		text = "Enemy: Basic";

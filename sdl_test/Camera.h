@@ -6,11 +6,11 @@ struct SDL_Color;
 
 enum class EDIT : char {
 	BLOCK_TILE = 0,
+	DESTRUCTABLE_TILE,
 	TRI_NE,
 	TRI_SE,
 	TRI_NW,
 	TRI_SW,
-	DESTRUCTABLE_TILE,
 	ENEMY_BASIC,
 	ENEMY_SHOOTER,
 	TOTAL
@@ -20,8 +20,8 @@ class Camera {
 public:
 	float _x;
 	float _y;
-	static const int _grid;
-	static const float _fgrid;
+	const int _grid = 50;
+	const float _fgrid = (float)_grid;
 
 	EDIT _edit = EDIT::BLOCK_TILE;
 
@@ -30,8 +30,8 @@ public:
 	int convert_y(int y) const;
 	float convert_x(float x) const;
 	float convert_y(float y) const;
-	static int convert_x_to_j(float x);
-	static int convert_y_to_i(float y);
+	int convert_x_to_j(float x);
+	int convert_y_to_i(float y);
 
 	void play_logic(Game& g);
 

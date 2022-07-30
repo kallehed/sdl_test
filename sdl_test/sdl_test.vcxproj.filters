@@ -66,6 +66,9 @@
     <ClCompile Include="FireMagic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PickupableShot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -119,10 +122,24 @@
     <ClInclude Include="FireMagic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PickupableShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\8bitoperator.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\FireMagic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BombExplosion.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlueSlime.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
