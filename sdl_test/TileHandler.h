@@ -1,9 +1,11 @@
 #pragma once
-#include "Game.h"
+#include <array>
 
 // defines only shape and game logic AND look
 // TYPES are specified by FULL CAPITAL,
 // inbetween are look specific
+class Game;
+
 namespace TILE {
 	enum TILE : int8_t {
 		VOID = 0, // higher elements are not walkthrough, and are drawn
@@ -19,10 +21,31 @@ namespace TILE {
 	};
 }
 
+namespace TEX {
+	enum TEX : int8_t {
+		VOID = -1,
+		FireMagic = 0,
+		BombExplosion,
+		Bullet,
+		BlueSlime,
+		GreenSlime1,
+		GreenSlime2,
+		RedHuman,
+		Coin,
+		Container,
+
+		Bush, // Beginning of tile images is at TEX::Bush
+		Bush2,
+		TreeStump,
+		SmallTree1,
+		SmallTree2,
+		TOTAL
+	};
+}
+
 class TileHandler {
 public:
 	static const int _len = 50;
-	//TILE _tiles[_len][_len];
 	// _tiles represents functionality
 	std::array<std::array<TILE::TILE, _len>, _len> _tiles;
 	std::array<std::array<TEX::TEX, _len>, _len> _texs;

@@ -1,10 +1,11 @@
 #include "Game.h"
 
-SDL_Texture* Game::loadTexture(const char* path) {
-
+SDL_Texture* Game::loadTexture(const char* path)
+{
 	SDL_Texture* newTexture = IMG_LoadTexture(_renderer, path);
 	if (newTexture == NULL) {
 		std::cout << "failed loading texture: " << path << "\n";
+		std::cin.get();
 	}
 	SDL_SetTextureBlendMode(newTexture, SDL_BLENDMODE_BLEND);
 
@@ -55,11 +56,12 @@ Game::Game()
 			"images/BlueSlime.png",
 			"images/GreenSlime.png",
 			"images/GreenSlime2.png",
+			"images/RedHuman.png",
 			"images/Coin.png",
 			"images/Container.png",
+
 			"images/Bush.png",
 			"images/Bush2.png",
-			"images/RedHuman.png",
 			"images/TreeStump.png",
 			"images/SmallTree1.png",
 			"images/SmallTree2.png",
@@ -71,7 +73,8 @@ Game::Game()
 
 	_tile_handler.TileHandler_construct(*this);
 	
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	// at 1 or 2, makes text very blurry.
+	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
 }
 
@@ -182,10 +185,13 @@ void Game::game_loop()
 		
 
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;
-		if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
-		_dt = 1000.f*(SDL_GetPerformanceCounter() - start_time)/((float)SDL_GetPerformanceFrequency());
-		_dt = std::min(_MAX_DT, _dt); // no less than 30 fps simulated.
-		
+		if (_ticks % 60 == 0) {
+			if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
+			
+		}
+		_dt = 1000.f * (SDL_GetPerformanceCounter() - start_time) / ((float)SDL_GetPerformanceFrequency());
+		_dt = std::min(_MAX_DT, _dt); // no less than 50 fps simulated.
+		++_ticks;
 	}
 }
 

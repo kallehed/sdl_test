@@ -49,6 +49,14 @@ void Camera::play_logic(Game& g)
 	//if (_x < 0) _x = 0;
 	//if (_y < 0) _y = 0;
 }
+
+template <typename T>
+void scroll_enum(Game& g, T& e, T total) {
+	// scroll _edit
+	e = (T)(e + g._mouse_scroll);
+	e = (T)(General::mod((int)e, total));
+}
+
 void Camera::edit_logic(Game& g)
 {
 
@@ -70,53 +78,29 @@ void Camera::edit_logic(Game& g)
 
 	// placing/removing things by clicking
 	{
-		// scroll _edit
-		_edit = (EDIT)((int)_edit + g._mouse_scroll);
-		_edit = (EDIT)(General::mod((int)_edit, (int)EDIT::TOTAL));
+		// change _edit_mode
+		if (keys[SDL_SCANCODE_L]) {
+			_edit_mode = (EDIT_MODE::EDIT_MODE)(General::mod(_edit_mode + 1, EDIT_MODE::TOTAL ));
+		}
 
 		// mouse x and y, on screen
-		int m_x = g._mouse_pos_on_latest_press[0];
-		int m_y = g._mouse_pos_on_latest_press[1];
-
+		int m_x;
+		int m_y;
+		Uint32 buttons = g.getMouseState(&m_x, &m_y);
+		
 		// real x and y, on map
 		float r_x = _x + m_x;
 		float r_y = _y + m_y;
 
-		// place block tile on left click
-		if (g._mouse_btn_pressed_this_frame[0])
-		{ 
-			using enum EDIT;
-			switch (_edit){
-			case BLOCK_TILE:
-			{
-				g._tile_handler.place_tile(g, TILE::BLOCK, m_x, m_y);
-				break;
+		if (_edit_mode == EDIT_MODE::TILE) {
+			// scroll _edit
+			scroll_enum(g, _edit_tile, TILE::TOTAL);
+			
+			if ((buttons & SDL_BUTTON_LMASK) != 0) {
+				g._tile_handler.place_tile(g, _edit_tile, m_x, m_y);
 			}
-			case DESTRUCTABLE_TILE:
-			{
-				g._tile_handler.place_tile(g, TILE::DESTRUCTABLE, m_x, m_y);
-				break;
-			}
-			case TRI_NE:
-			{
-				g._tile_handler.place_tile(g, TILE::TRI_NE, m_x, m_y);
-				break;
-			}
-			case TRI_SE:
-			{
-				g._tile_handler.place_tile(g, TILE::TRI_SE, m_x, m_y);
-				break;
-			}
-			case TRI_NW:
-			{
-				g._tile_handler.place_tile(g, TILE::TRI_NW, m_x, m_y);
-				break;
-			}
-			case TRI_SW:
-			{
-				g._tile_handler.place_tile(g, TILE::TRI_SW, m_x, m_y);
-				break;
-			}
+
+			/*
 			case ENEMY_BASIC:
 			{
 				g._entity_handler._entities.push_back(new EnemyBasic(r_x, r_y));
@@ -127,7 +111,21 @@ void Camera::edit_logic(Game& g)
 				g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
 				break;
 			}
-			}
+			}*/
+		}
+		else if (_edit_mode == EDIT_MODE::TEX) {
+			scroll_enum(g, _edit_tex, TEX::TOTAL);
+
+		}
+		else if (_edit_mode == EDIT_MODE::ENTITY) {
+			scroll_enum(g, _edit_entity, ENTITIES::TOTAL);
+
+		}
+
+		// place block tile on left click
+		if (g._mouse_btn_pressed_this_frame[0])
+		{ 
+			
 
 		}
 		// LEFTclick: delete whatever is in front
@@ -158,9 +156,9 @@ void Camera::draw_edit(Game& g)
 	draw_edit_text(g);
 }
 
-void Camera::draw_text(Game& g, std::string& text, SDL_Color& color, int x, int y, int scale)
+void Camera::draw_text(Game& g, const char* text, const SDL_Color& color, int x, int y, int scale)
 {
-	SDL_Surface* surface = TTF_RenderText_Solid(g._font, text.c_str(), color);
+	SDL_Surface* surface = TTF_RenderText_Solid(g._font, text, color);
 
 	// now you can convert it into a texture
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(g._renderer, surface);
@@ -176,8 +174,54 @@ void Camera::draw_text(Game& g, std::string& text, SDL_Color& color, int x, int 
 
 void Camera::draw_edit_text(Game& g)
 {
-	std::string text;
-	using enum EDIT;
+	
+	
+
+	if (_edit_mode == EDIT_MODE::TILE)
+	{
+		const char* text = "ERROR TILE";
+
+		using namespace TILE;
+		switch (_edit_tile) {
+		case VOID:
+			text = "Void Tile";
+			break;
+		case BLOCK:
+			text = "Block Tile";
+			break;
+		case DESTRUCTABLE:
+			text = "Destructable Tile";
+			break;
+		case TRI_NE:
+			text = "Triangle NE";
+			break;
+		case TRI_SE:
+			text = "Triangle SE";
+			break;
+		case TRI_NW:
+			text = "Triangle NW";
+			break;
+		case TRI_SW:
+			text = "Triangle SW";
+			break;
+		}
+		SDL_Color c = { 0,0,0 };
+		draw_text(g, text, c, 0, 0, 3);
+		
+	}
+	else if (_edit_mode == EDIT_MODE::TEX) {
+		SDL_Color c = { 0,0,0 };
+		draw_text(g, "TEX:", c, 0, 0, 3);
+		
+		// draw texture of tile
+		SDL_Rect rect = { 100, 0, g._cam._grid, g._cam._grid };
+		SDL_RenderCopy(g._renderer, g._textures[_edit_tex], NULL, &rect);
+	}
+
+	
+	return;
+	/*
+	using namespace EDIT;
 	switch (_edit) {
 	case BLOCK_TILE:
 		text = "Block Tile";
@@ -206,6 +250,7 @@ void Camera::draw_edit_text(Game& g)
 	}
 	SDL_Color c = { 0,0,0 };
 	draw_text(g, text, c, 0, 0, 3);
+	*/
 }
 
 void Camera::draw_grid(Game& g)

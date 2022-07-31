@@ -10,38 +10,7 @@
 #include "TileHandler.h"
 #include "EntityHandler.h"
 
-//enum class TEXT {
-//	FireMagic = 0,
-//	BombExplosion,
-//	Bullet,
-//	BlueSlime,
-//	GreenSlime,
-//	GreenSlime2,
-//	Coin,
-//	Container,
-//	Bush,
-//	TOTAL
-//};
-namespace TEX {
-	enum TEX {
-		FireMagic = 0,
-		BombExplosion,
-		Bullet,
-		BlueSlime,
-		GreenSlime1,
-		GreenSlime2,
-		Coin,
-		Container,
-
-		Bush, // Beginning of tile images is at TEX::Bush
-		Bush2,
-		RedHuman,
-		TreeStump,
-		SmallTree1,
-		SmallTree2,
-		TOTAL
-	};
-}
+// DONT HAVE ENUMS/OTHER CLASSES THAN GAME/STRUCTS IN THIS FILE!!!!
 
 class Game {
 public:
@@ -49,6 +18,7 @@ public:
 	const int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
 	int _scale = 1;
 
+	long long _ticks = 0;
 
 	SDL_Window* _window = nullptr;
 	SDL_Renderer* _renderer = nullptr;
@@ -58,7 +28,7 @@ public:
 	SDL_Texture* _textures[TEX::TOTAL];
 
 	float _dt = 0; // time for previous frame to run in MS
-	const float _MAX_DT = 1000.f / 45.f; // 45 is the lowest framerate allowed. Also maximum _dt
+	const float _MAX_DT = 1000.f / 50.f; // 50 is the lowest framerate allowed. Also maximum _dt
 
 	bool _edit_mode = false;
 

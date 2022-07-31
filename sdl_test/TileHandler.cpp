@@ -12,7 +12,7 @@ void TileHandler::TileHandler_construct(Game& g)
 	for (int i = 0; i < _len; ++i) {
 		for (int j = 0; j < _len; ++j) {
 			_tiles[i][j] = TILE::VOID;
-			_texs[i][j] = TEX::Bush;
+			_texs[i][j] = TEX::VOID;
 		}
 	}
 }
@@ -36,7 +36,7 @@ void TileHandler::draw(Game& g)
 		for (int j = j_start; j < j_end; ++j)
 		{
 			TEX::TEX tex = this->get_tile_tex(i, j);
-			if (tex >= 0) {
+			if (tex > TEX::VOID) {
 				int x = g._cam.convert_x(g._cam._grid * j);
 				int y = g._cam.convert_y(g._cam._grid * i);
 				SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
@@ -44,11 +44,6 @@ void TileHandler::draw(Game& g)
 				continue;
 
 				/*
-				/*if (i < 0 || j < 0) {
-					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
-					SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 75);
-					SDL_RenderFillRect(g._renderer, &rect);
-				} else 
 				if (tex == TILE::BLOCK)
 				{
 					SDL_Rect rect = { x, y, g._cam._grid, g._cam._grid };
@@ -121,6 +116,7 @@ void TileHandler::draw(Game& g)
 	
 }
 
+// TAKES MOUSE POSITION RELATIVE TO SCREEN FOR SOME REASON
 void TileHandler::place_tile(Game& g, TILE::TILE tile, int x, int y)
 {
 	assert(tile != TILE::TOTAL);
@@ -132,6 +128,7 @@ void TileHandler::place_tile(Game& g, TILE::TILE tile, int x, int y)
 	if (tile_in_range(i, j))
 	{
 		_tiles[i][j] = tile;
+		_texs[i][j] = g._cam._edit_tex;
 	}
 }
 bool TileHandler::remove_tile(Game& g, int x, int y) {
