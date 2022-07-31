@@ -137,11 +137,9 @@ bool TileHandler::remove_tile(Game& g, int x, int y) {
 	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
 	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
 	if (tile_in_range(i, j)) {
-		if (_tiles[i][j] != TILE::VOID)
-		{
-			_tiles[i][j] = TILE::VOID;
-			return true;
-		} 
+		_tiles[i][j] = TILE::VOID;
+		_texs[i][j] = TEX::VOID;
+		return true;
 	}
 	return false;
 }
@@ -154,6 +152,7 @@ void TileHandler::hurt_tile(Game& g, int i, int j)
 		if (tile == TILE::DESTRUCTABLE)
 		{
 			tile = TILE::VOID;
+			_texs[i][j] = TEX::VOID;
 
 			// possibly drop items?
 			{

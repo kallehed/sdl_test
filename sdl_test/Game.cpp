@@ -116,6 +116,8 @@ void Game::game_loop()
 		// reset variables only relevant for the frame
 		_mouse_btn_pressed_this_frame = { false, false, false };
 		_mouse_scroll = 0;
+		for (int i = 0; i < _keys_frame.size(); ++i) _keys_frame[i] = false;
+
 		while (SDL_PollEvent(&e) != 0)
 		{
 			//User requests quit
@@ -123,20 +125,16 @@ void Game::game_loop()
 			{
 				running = false;
 			}
-			else if (e.type == SDL_WINDOWEVENT) {
-				if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
-
-				}
-				break;
-			}
 			else if (e.type == SDL_KEYDOWN) {
+				if (e.key.keysym.sym < _keys_frame.size()) {
+					_keys_frame[e.key.keysym.sym] = true;
+				}
 				switch (e.key.keysym.sym) {
 				case SDLK_k: // change edit mode bool
 					_edit_mode = !_edit_mode;
 					break;
 				case SDLK_ESCAPE:
 					running = false;
-					
 					break;
 				case SDLK_o:
 					_scale = std::max(1, _scale-1);
@@ -187,7 +185,6 @@ void Game::game_loop()
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;
 		if (_ticks % 60 == 0) {
 			if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
-			
 		}
 		_dt = 1000.f * (SDL_GetPerformanceCounter() - start_time) / ((float)SDL_GetPerformanceFrequency());
 		_dt = std::min(_MAX_DT, _dt); // no less than 50 fps simulated.

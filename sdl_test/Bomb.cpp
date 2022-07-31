@@ -77,6 +77,7 @@ void Bomb::intersection(float nx, float ny, MovingRect* e)
 	case MOVING_RECT_TYPES::SHOT:
 	{
 		_lives -= 1;
+		_detonation_timer /= 2.f; // halve time til explosion
 
 		float bounce_acc = 0.04f;
 

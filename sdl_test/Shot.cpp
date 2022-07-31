@@ -55,6 +55,7 @@ void Shot::intersection(float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::FIRE_MAGIC:
+	case MOVING_RECT_TYPES::EXPLOSION:
 	{
 		_x_dir = nx; // change direction
 		_y_dir = ny;

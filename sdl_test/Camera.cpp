@@ -79,7 +79,8 @@ void Camera::edit_logic(Game& g)
 	// placing/removing things by clicking
 	{
 		// change _edit_mode
-		if (keys[SDL_SCANCODE_L]) {
+		//if (keys[SDL_SCANCODE_L]) {
+		if (g._keys_frame[SDLK_l]) {
 			_edit_mode = (EDIT_MODE::EDIT_MODE)(General::mod(_edit_mode + 1, EDIT_MODE::TOTAL ));
 		}
 
@@ -101,16 +102,7 @@ void Camera::edit_logic(Game& g)
 			}
 
 			/*
-			case ENEMY_BASIC:
-			{
-				g._entity_handler._entities.push_back(new EnemyBasic(r_x, r_y));
-				break;
-			}
-			case ENEMY_SHOOTER:
-			{
-				g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
-				break;
-			}
+			
 			}*/
 		}
 		else if (_edit_mode == EDIT_MODE::TEX) {
@@ -120,14 +112,26 @@ void Camera::edit_logic(Game& g)
 		else if (_edit_mode == EDIT_MODE::ENTITY) {
 			scroll_enum(g, _edit_entity, ENTITIES::TOTAL);
 
+			// left click to place entity
+			if (g._mouse_btn_pressed_this_frame[0])
+			{
+				using namespace ENTITIES;
+				switch (_edit_entity) {
+				case ENEMY_BASIC:
+				{
+					g._entity_handler._entities.push_back(new EnemyBasic(r_x, r_y));
+					break;
+				}
+				case ENEMY_SHOOTER:
+				{
+					g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
+					break;
+				}
+				}
+			}
+
 		}
 
-		// place block tile on left click
-		if (g._mouse_btn_pressed_this_frame[0])
-		{ 
-			
-
-		}
 		// LEFTclick: delete whatever is in front
 		if (g._mouse_btn_pressed_this_frame[2])
 		{ 
@@ -166,7 +170,8 @@ void Camera::draw_text(Game& g, const char* text, const SDL_Color& color, int x,
 	SDL_Rect Message_rect = { x,y, surface->w*scale, surface->h*scale };
 
 	SDL_FreeSurface(surface);
-
+	SDL_SetRenderDrawColor(g._renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(g._renderer, &Message_rect);
 	SDL_RenderCopy(g._renderer, texture, NULL, &Message_rect);
 
 	SDL_DestroyTexture(texture);
@@ -174,9 +179,6 @@ void Camera::draw_text(Game& g, const char* text, const SDL_Color& color, int x,
 
 void Camera::draw_edit_text(Game& g)
 {
-	
-	
-
 	if (_edit_mode == EDIT_MODE::TILE)
 	{
 		const char* text = "ERROR TILE";
@@ -209,13 +211,30 @@ void Camera::draw_edit_text(Game& g)
 		draw_text(g, text, c, 0, 0, 3);
 		
 	}
-	else if (_edit_mode == EDIT_MODE::TEX) {
+	else if (_edit_mode == EDIT_MODE::TEX)
+	{
 		SDL_Color c = { 0,0,0 };
 		draw_text(g, "TEX:", c, 0, 0, 3);
 		
 		// draw texture of tile
 		SDL_Rect rect = { 100, 0, g._cam._grid, g._cam._grid };
 		SDL_RenderCopy(g._renderer, g._textures[_edit_tex], NULL, &rect);
+	}
+	else if (_edit_mode == EDIT_MODE::ENTITY)
+	{
+		const char* text = "ERROR ENTITY";
+
+		using namespace ENTITIES;
+		switch (_edit_entity) {
+		case ENEMY_BASIC:
+			text = "Enemy: Basic";
+			break;
+		case ENEMY_SHOOTER:
+			text = "Enemy: Shooter";
+			break;
+		}
+		SDL_Color c = { 0,0,0 };
+		draw_text(g, text, c, 0, 0, 3);
 	}
 
 	
@@ -289,6 +308,7 @@ void Camera::draw_play(Game& g)
 void Camera::draw_hud(Game& g)
 {
 	Player& p = g._entity_handler._p;
+	int a = 180; // alpha
 
 	// hp of player
 	int hud_x = 25;
@@ -297,20 +317,20 @@ void Camera::draw_hud(Game& g)
 	
 	{ // health
 		// red health bar
-		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 127);
+		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, a);
 
 		SDL_Rect draw_rect = { hud_x, hud_y, (int)(100.f * ((float)p._hp / p._max_hp)), 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 
 		// black boundary
 		draw_rect.w = 100;
-		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
 		SDL_RenderDrawRect(g._renderer, &draw_rect);
 	}
 	hud_y += hud_y_increase;
 
 	{ // coins of player
-		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, 127);
+		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, a);
 
 		SDL_Rect draw_rect = { hud_x, hud_y, (int)(10.f * ((float)p._coins / 1)), 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
@@ -324,10 +344,10 @@ void Camera::draw_hud(Game& g)
 			SDL_Rect draw_rect = { specific_x, hud_y, 20, 20 };
 			
 			if ((int)p._left_weapon == i) { // if chosen, mark as green 
-				SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 127);
+				SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, a);
 				SDL_RenderFillRect(g._renderer, &draw_rect);
 			}
-			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
 			SDL_RenderDrawRect(g._renderer, &draw_rect);
 			
 			specific_x += 25;
@@ -337,7 +357,7 @@ void Camera::draw_hud(Game& g)
 	hud_y += hud_y_increase;
 	
 	{ // shots player has
-		SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, 127);
+		SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, a);
 
 		SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._shots, 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
@@ -345,7 +365,7 @@ void Camera::draw_hud(Game& g)
 	hud_y += hud_y_increase;
 	
 	{ // boms player has
-		SDL_SetRenderDrawColor(g._renderer, 100, 0, 0, 127);
+		SDL_SetRenderDrawColor(g._renderer, 100, 0, 0, a);
 
 		SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._bombs, 20 };
 		SDL_RenderFillRect(g._renderer, &draw_rect);
@@ -358,12 +378,12 @@ void Camera::draw_hud(Game& g)
 		float max_x = 200.f;
 		int charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));
 		SDL_Rect draw_rect = { hud_x, hud_y, charge_x, 20  };
-		SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 127);
+		SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, a);
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 
 		// black boundary
 		draw_rect.w = (int)max_x;
-		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
 		SDL_RenderDrawRect(g._renderer, &draw_rect);
 	}
 }

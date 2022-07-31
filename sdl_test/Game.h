@@ -36,6 +36,9 @@ public:
 	std::array<int, 2> _mouse_pos_on_latest_press = {0, 0};
 	int32_t _mouse_scroll = 0;
 
+	// keys pressed THIS frame, access with [SDLK_x]
+	std::array<bool, 256> _keys_frame;
+
 	Camera _cam;
 
 	TileHandler _tile_handler;

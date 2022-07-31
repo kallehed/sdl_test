@@ -50,7 +50,7 @@ bool Player::logic(Game& g)
 			switch (_left_weapon) {
 			case PLAYER_WEAPON::FIRE_MAGIC:
 			{
-				if ((buttons & SDL_BUTTON_LMASK) != 0)
+				if (g._mouse_btn_pressed_this_frame[0]) // left
 				{
 					if (_left_timer > 300.f)
 					{
