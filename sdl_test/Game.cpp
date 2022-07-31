@@ -72,6 +72,7 @@ Game::Game()
 	}
 
 	_tile_handler.TileHandler_construct(*this);
+	_cam.construct(*this);
 	
 	// at 1 or 2, makes text very blurry.
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");

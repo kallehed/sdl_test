@@ -13,7 +13,6 @@ Shot::Shot(MovingRect* owner,float x, float y, float x_vel, float y_vel)
 	set_y(y - get_half_h());
 	_x_dir = x_vel;
 	_y_dir = y_vel;
-	
 
 	_degrees_turned = atan2((double)y_vel, (double)x_vel) * (180.0/M_PI);
 }

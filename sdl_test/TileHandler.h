@@ -45,7 +45,7 @@ namespace TEX {
 
 class TileHandler {
 public:
-	static const int _len = 50;
+	static constexpr int _len = 50;
 	// _tiles represents functionality
 	std::array<std::array<TILE::TILE, _len>, _len> _tiles;
 	std::array<std::array<TEX::TEX, _len>, _len> _texs;
@@ -56,7 +56,7 @@ public:
 
 	// returns true if tile changed, otherwise false
 	bool remove_tile(Game& g, int x, int y);
-	void hurt_tile(Game& g, int i, int j);
+	bool hurt_tile(Game& g, int i, int j);
 
 	template<TILE::TILE tile>
 	static bool intersection_tile(float x, float y, float w, float h, float t_x, float t_y, float t_w, float t_h);

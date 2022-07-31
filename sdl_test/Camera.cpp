@@ -3,10 +3,13 @@
 #include "General.h"
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
+#include <fstream>
 
 
-Camera::Camera() : _x(0.f), _y(0.f) {
-
+void Camera::construct(Game& g)
+{
+	_save_btn.construct(g, 0, 200, "SAVE");
+	_load_btn.construct(g, 0, 300, "LOAD");
 }
 
 int Camera::convert_x(int x) const {
@@ -59,7 +62,6 @@ void scroll_enum(Game& g, T& e, T total) {
 
 void Camera::edit_logic(Game& g)
 {
-
 	// movement
 	constexpr float speed = 0.65f;
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -76,83 +78,155 @@ void Camera::edit_logic(Game& g)
 		_y -= speed * g._dt;
 	}
 
-	// placing/removing things by clicking
+	// placing/removing things by clicking + buttons
 	{
 		// change _edit_mode
-		//if (keys[SDL_SCANCODE_L]) {
 		if (g._keys_frame[SDLK_l]) {
 			_edit_mode = (EDIT_MODE::EDIT_MODE)(General::mod(_edit_mode + 1, EDIT_MODE::TOTAL ));
 		}
 
-		// mouse x and y, on screen
-		int m_x;
-		int m_y;
-		Uint32 buttons = g.getMouseState(&m_x, &m_y);
-		
-		// real x and y, on map
-		float r_x = _x + m_x;
-		float r_y = _y + m_y;
-
-		if (_edit_mode == EDIT_MODE::TILE) {
-			// scroll _edit
-			scroll_enum(g, _edit_tile, TILE::TOTAL);
-			
-			if ((buttons & SDL_BUTTON_LMASK) != 0) {
-				g._tile_handler.place_tile(g, _edit_tile, m_x, m_y);
-			}
-
-			/*
-			
-			}*/
-		}
-		else if (_edit_mode == EDIT_MODE::TEX) {
-			scroll_enum(g, _edit_tex, TEX::TOTAL);
-
-		}
-		else if (_edit_mode == EDIT_MODE::ENTITY) {
-			scroll_enum(g, _edit_entity, ENTITIES::TOTAL);
-
-			// left click to place entity
-			if (g._mouse_btn_pressed_this_frame[0])
+		// buttons
+		BTN::BTN save_btn_state = _save_btn.logic(g);
+		BTN::BTN load_btn_state = _load_btn.logic(g);
+		if (save_btn_state > BTN::NOTHING || load_btn_state > BTN::NOTHING) {
+			// do btn stuff
+			if (save_btn_state == BTN::CLICKED_ON)
 			{
-				using namespace ENTITIES;
-				switch (_edit_entity) {
-				case ENEMY_BASIC:
+				// save button clicked! SAVE
+				std::cout << "SAVE\n";
+
+				/* Format of saves/save.txt:
+				* first "tiles_height" int32_t, how many vertical tiles
+				* second "tiles_width" int32_t, how many horizontal tiles
+				* then, total_tiles times, two data will appear,
+				* first for TILE::TILE, second TEX::TEX.
+				* 
+				*/
+
+				std::ofstream myfile;
+				myfile.open("saves/save.txt", std::ios::out | std::ios::binary);
+				
+				// write current state to save
 				{
-					g._entity_handler._entities.push_back(new EnemyBasic(r_x, r_y));
-					break;
+					// total_tiles
+					int32_t tiles_height = g._tile_handler._len;
+					myfile.write((char*)(& tiles_height), sizeof(tiles_height));
+
+					int32_t tiles_width = g._tile_handler._len;
+					myfile.write((char*)(&tiles_width), sizeof(tiles_width));
+
+					// TILE::TILE + TEX::TEX objects, _len*_len times
+					for (int i = 0; i < g._tile_handler._len; ++i) {
+						for (int j = 0; j < g._tile_handler._len; ++j) {
+							myfile.write((char*)(&g._tile_handler._tiles[i][j]), sizeof(TILE::TILE));
+							myfile.write((char*)(&g._tile_handler._texs[i][j]), sizeof(TEX::TEX));
+						}
+					}
 				}
-				case ENEMY_SHOOTER:
+				myfile.close();
+			}
+			else if (load_btn_state == BTN::CLICKED_ON)
+			{
+				// load button clicked! LOAD
+				std::cout << "LOAD\n";
+
+				std::ifstream myfile;
+				myfile.open("saves/save.txt", std::ios::in | std::ios::binary);
+				
+				int32_t tiles_height;
+				myfile.read((char*)(&tiles_height), sizeof(tiles_height));
+
+				int32_t tiles_width;
+				myfile.read((char*)(&tiles_width), sizeof(tiles_width));
+
+				for (int i = 0; i < tiles_height; ++i) {
+					for (int j = 0; j < tiles_width; ++j) {
+						if (g._tile_handler.tile_in_range(i, j))
+						{
+							myfile.read((char*)(&g._tile_handler._tiles[i][j]), sizeof(TILE::TILE));
+							myfile.read((char*)(&g._tile_handler._texs[i][j]), sizeof(TEX::TEX));
+						}
+						else {
+							std::cout << "ERROR, SAVE FILE TILES OUT OF BOUNDS\n";
+							std::cin.get();
+						}
+					}
+				}
+				myfile.close();
+
+			}
+		}
+		else {
+			// place/delete things stuff
+
+			// mouse x and y, on screen
+			int m_x;
+			int m_y;
+			Uint32 buttons = g.getMouseState(&m_x, &m_y);
+
+			// real x and y, on map
+			float r_x = _x + m_x;
+			float r_y = _y + m_y;
+
+			if (_edit_mode == EDIT_MODE::TILE) {
+				// scroll _edit
+				scroll_enum(g, _edit_tile, TILE::TOTAL);
+
+				if ((buttons & SDL_BUTTON_LMASK) != 0) {
+					g._tile_handler.place_tile(g, _edit_tile, m_x, m_y);
+				}
+
+				/*
+
+				}*/
+			}
+			else if (_edit_mode == EDIT_MODE::TEX) {
+				scroll_enum(g, _edit_tex, TEX::TOTAL);
+
+			}
+			else if (_edit_mode == EDIT_MODE::ENTITY) {
+				scroll_enum(g, _edit_entity, ENTITIES::TOTAL);
+
+				// left click to place entity
+				if (g._mouse_btn_pressed_this_frame[0])
 				{
-					g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
-					break;
+					using namespace ENTITIES;
+					switch (_edit_entity) {
+					case ENEMY_BASIC:
+					{
+						g._entity_handler._entities.push_back(new EnemyBasic(r_x, r_y));
+						break;
+					}
+					case ENEMY_SHOOTER:
+					{
+						g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
+						break;
+					}
+					}
 				}
-				}
+
 			}
 
-		}
-
-		// LEFTclick: delete whatever is in front
-		if (g._mouse_btn_pressed_this_frame[2])
-		{ 
-			if (!g._tile_handler.remove_tile(g, m_x, m_y)) {
-				// no tiles removed
-				for (int i = ((int)g._entity_handler._entities.size()) - 1; i > -1; --i) {
-					auto& e = g._entity_handler._entities[i];
-					if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
-						e->get_x(), e->get_y(), e->get_w(), e->get_h()))
-					{
-						delete e;
-						g._entity_handler._entities.erase(g._entity_handler._entities.begin() + i);
-						break;
+			// LEFTclick: delete whatever is in front
+			if (g._mouse_btn_pressed_this_frame[2])
+			{
+				if (!g._tile_handler.remove_tile(g, m_x, m_y)) {
+					// no tiles removed
+					for (int i = ((int)g._entity_handler._entities.size()) - 1; i > -1; --i) {
+						auto& e = g._entity_handler._entities[i];
+						if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
+							e->get_x(), e->get_y(), e->get_w(), e->get_h()))
+						{
+							delete e;
+							g._entity_handler._entities.erase(g._entity_handler._entities.begin() + i);
+							break;
+						}
 					}
 				}
 			}
 		}
 	}
 }
-
-
 
 void Camera::draw_edit(Game& g)
 {
@@ -237,39 +311,10 @@ void Camera::draw_edit_text(Game& g)
 		draw_text(g, text, c, 0, 0, 3);
 	}
 
-	
-	return;
-	/*
-	using namespace EDIT;
-	switch (_edit) {
-	case BLOCK_TILE:
-		text = "Block Tile";
-		break;
-	case DESTRUCTABLE_TILE:
-		text = "Destructible Tile";
-		break;
-	case TRI_NE:
-		text = "Triangle NE";
-		break;
-	case TRI_SE:
-		text = "Triangle SE";
-		break;
-	case TRI_NW:
-		text = "Triangle NW";
-		break;
-	case TRI_SW:
-		text = "Triangle SW";
-		break;
-	case ENEMY_BASIC:
-		text = "Enemy: Basic";
-		break;
-	case ENEMY_SHOOTER:
-		text = "Enemy: Shooter";
-		break;
-	}
-	SDL_Color c = { 0,0,0 };
-	draw_text(g, text, c, 0, 0, 3);
-	*/
+	// other edit draw stuff
+	_save_btn.draw(g);
+	_load_btn.draw(g);
+
 }
 
 void Camera::draw_grid(Game& g)

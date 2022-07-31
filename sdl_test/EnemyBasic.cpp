@@ -2,9 +2,6 @@
 #include "Game.h"
 #include <math.h>
 
-const float EnemyBasic::_idle_speed = 0.001f;
-const float EnemyBasic::_active_basic_speed = 0.0015f;
-
 MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 {
 	return MOVING_RECT_TYPES::ENEMY;
@@ -51,7 +48,8 @@ void EnemyBasic::idle_logic(Game& g)
 	}
 }
 
-void EnemyBasic::take_damage() {
+void EnemyBasic::take_damage()
+{
 	_hp -= 5;
 
 	// possibly get scared

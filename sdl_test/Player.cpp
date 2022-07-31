@@ -15,7 +15,7 @@ Player::Player() : MovingRect(0.f, 0.f, 40.f, 60.f, 0.009f) {
 bool Player::logic(Game& g)
 {
 	// change velocities according to keys pressed
-	static const float acc = 0.0023f;
+	static constexpr float acc = 0.0023f;
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
 		change_x_vel(acc);

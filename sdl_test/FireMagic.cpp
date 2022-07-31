@@ -32,7 +32,10 @@ bool FireMagic::logic(Game& g)
 			{
 				for (int j = j_start; j < j_end; ++j)
 				{
-					g._tile_handler.hurt_tile(g, i, j);
+					if (g._tile_handler.hurt_tile(g, i, j))
+					{
+						return false; // only kill one destructable
+					}
 				}
 			}
 		}

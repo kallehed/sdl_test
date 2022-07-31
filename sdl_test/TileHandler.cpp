@@ -136,14 +136,15 @@ bool TileHandler::remove_tile(Game& g, int x, int y) {
 	int cam_y = (int)g._cam._y;
 	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
 	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
-	if (tile_in_range(i, j)) {
+	if (tile_in_range(i, j) && (_tiles[i][j] != TILE::VOID && _texs[i][j] != TEX::VOID)) {
 		_tiles[i][j] = TILE::VOID;
 		_texs[i][j] = TEX::VOID;
 		return true;
 	}
 	return false;
 }
-void TileHandler::hurt_tile(Game& g, int i, int j)
+// return true if tile was hurt
+bool TileHandler::hurt_tile(Game& g, int i, int j)
 {
 	// can't get "tile" beyond _tiles, even though they are "BLOCK"
 	if (this->tile_in_range(i, j))
@@ -179,8 +180,10 @@ void TileHandler::hurt_tile(Game& g, int i, int j)
 					}
 				}
 			}
+			return true;
 		}
 	}
+	return false;
 }
 
 template <TILE::TILE tile>

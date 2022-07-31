@@ -9,8 +9,8 @@ private:
 	float _idle_x_dir = 0.f;
 	float _idle_y_dir = 0.f;
 
-	static const float _idle_speed;
-	static const float _active_basic_speed;
+	static constexpr float _idle_speed = 0.001f;
+	static constexpr float _active_basic_speed = 0.0015f;
 
 	bool _active_scared = false;
 	bool _active_increased_speed = false;

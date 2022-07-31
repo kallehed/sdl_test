@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "TileHandler.h"
+#include "Button.h"
 
 class Game;
 struct SDL_Color;
@@ -37,8 +38,8 @@ namespace ENTITIES {
 
 class Camera {
 public:
-	float _x;
-	float _y;
+	float _x = 0.f;
+	float _y = 0.f;
 	const int _grid = 50;
 	const float _fgrid = (float)_grid;
 
@@ -49,7 +50,11 @@ public:
 	TEX::TEX _edit_tex = TEX::Bush;
 	ENTITIES::ENTITIES _edit_entity = ENTITIES::ENEMY_BASIC;
 
-	Camera();
+	Button _save_btn;
+	Button _load_btn;
+
+	void construct(Game& g);
+
 	int convert_x(int x) const;
 	int convert_y(int y) const;
 	float convert_x(float x) const;
