@@ -1,47 +1,8 @@
 #pragma once
 #include <array>
+#include "enums.h"
 
-// defines only shape and game logic AND look
-// TYPES are specified by FULL CAPITAL,
-// inbetween are look specific
 class Game;
-
-namespace TILE {
-	enum TILE : int8_t {
-		VOID = 0, // higher elements are not walkthrough, and are drawn
-		BLOCK,
-		DESTRUCTABLE,
-
-		TRI_NE, // triangle, hypothenuse towards north east
-		TRI_SE, // south east,
-		TRI_NW, // north west,
-		TRI_SW, // ...
-
-		TOTAL
-	};
-}
-
-namespace TEX {
-	enum TEX : int8_t {
-		VOID = -1,
-		FireMagic = 0,
-		BombExplosion,
-		Bullet,
-		BlueSlime,
-		GreenSlime1,
-		GreenSlime2,
-		RedHuman,
-		Coin,
-		Container,
-
-		Bush, // Beginning of tile images is at TEX::Bush
-		Bush2,
-		TreeStump,
-		SmallTree1,
-		SmallTree2,
-		TOTAL
-	};
-}
 
 class TileHandler {
 public:
@@ -51,6 +12,10 @@ public:
 	std::array<std::array<TEX::TEX, _len>, _len> _texs;
 
 	void TileHandler_construct(Game& g);
+
+	void draw_textures(Game& g);
+
+	void draw_shapes(Game& g);
 	void draw(Game& g);
 	void place_tile(Game& g, TILE::TILE tile, int x, int y);
 

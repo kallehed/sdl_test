@@ -180,6 +180,7 @@
     <ClInclude Include="EnemyBasic.h" />
     <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="EntityHandler.h" />
+    <ClInclude Include="enums.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="FireMagic.h" />
     <ClInclude Include="Game.h" />

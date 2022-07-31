@@ -2,20 +2,10 @@
 
 #include "Rect.h"
 #include "TileHandler.h"
+#include "enums.h"
+
 class Game;
 class Camera;
-
-enum class MOVING_RECT_TYPES : char {
-	PLAYER,
-	ENEMY,
-	SHOT,
-	COIN,
-	PICKUPABLE_SHOT,
-	BOMB,
-	EXPLOSION,
-	FIRE_MAGIC,
-	TOTAL
-};
 
 class MovingRect : public Rect {
 private:

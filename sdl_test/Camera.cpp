@@ -5,11 +5,12 @@
 #include "EnemyShooter.h"
 #include <fstream>
 
-
 void Camera::construct(Game& g)
 {
-	_save_btn.construct(g, 0, 200, "SAVE");
-	_load_btn.construct(g, 0, 300, "LOAD");
+	using namespace CAM_BTN;
+	_btns[SAVE].construct(g, 0, 200, "SAVE");
+	_btns[LOAD].construct(g, 0, 250, "LOAD");
+	_btns[VIEW].construct(g, 0, 300, "VIEW");
 }
 
 int Camera::convert_x(int x) const {
@@ -86,11 +87,18 @@ void Camera::edit_logic(Game& g)
 		}
 
 		// buttons
-		BTN::BTN save_btn_state = _save_btn.logic(g);
-		BTN::BTN load_btn_state = _load_btn.logic(g);
-		if (save_btn_state > BTN::NOTHING || load_btn_state > BTN::NOTHING) {
+		std::array<BTN::BTN, CAM_BTN::TOTAL> btn_states;
+		bool any_hovered_on = false;
+		for (int i = 0; i < CAM_BTN::TOTAL; ++i) {
+			btn_states[i] = _btns[i].logic(g);
+			if (btn_states[i] > BTN::NOTHING) {
+				any_hovered_on = true;
+			}
+		}
+
+		if (any_hovered_on) {
 			// do btn stuff
-			if (save_btn_state == BTN::CLICKED_ON)
+			if (btn_states[CAM_BTN::SAVE] == BTN::CLICKED_ON)
 			{
 				// save button clicked! SAVE
 				std::cout << "SAVE\n";
@@ -125,7 +133,7 @@ void Camera::edit_logic(Game& g)
 				}
 				myfile.close();
 			}
-			else if (load_btn_state == BTN::CLICKED_ON)
+			else if (btn_states[CAM_BTN::LOAD] == BTN::CLICKED_ON)
 			{
 				// load button clicked! LOAD
 				std::cout << "LOAD\n";
@@ -153,10 +161,25 @@ void Camera::edit_logic(Game& g)
 					}
 				}
 				myfile.close();
+			}
+			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
+				_cam_view = (CAM_VIEW::CAM_VIEW)((_cam_view + 1) % CAM_VIEW::TOTAL);
 
+				if (_cam_view == CAM_VIEW::TEX) {
+					_texs_visible = true;
+					_shapes_visible = false;
+				}
+				else if (_cam_view == CAM_VIEW::SHAPE) {
+					_texs_visible = false;
+					_shapes_visible = true;
+				}
+				else if (_cam_view == CAM_VIEW::BOTH) {
+					_texs_visible = true;
+					_shapes_visible = true;
+				}
 			}
 		}
-		else {
+		else { // no button was hovered over
 			// place/delete things stuff
 
 			// mouse x and y, on screen
@@ -312,8 +335,9 @@ void Camera::draw_edit_text(Game& g)
 	}
 
 	// other edit draw stuff
-	_save_btn.draw(g);
-	_load_btn.draw(g);
+	for (int i = 0; i < CAM_BTN::TOTAL; ++i) {
+		_btns[i].draw(g);
+	}
 
 }
 

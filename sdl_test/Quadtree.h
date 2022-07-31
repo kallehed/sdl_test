@@ -4,7 +4,6 @@
 #include "General.h"
 #include <SDL.h>
 
-
 // Type which to store pointers to. PER NODE, pointers til node splits, MAX_DEPTH
 template<typename T, int PER_NODE, int MAX_DEPTH>
 class Quadtree

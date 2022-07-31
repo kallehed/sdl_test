@@ -1,17 +1,9 @@
 #pragma once
 
 #include <SDL.h>
+#include "enums.h"
 
 class Game;
-
-namespace BTN {
-	enum BTN : int8_t {
-		NOTHING = 0,
-		HELD_OVER,
-		CLICKED_ON,
-		TOTAL
-	};
-}
 
 class Button
 {

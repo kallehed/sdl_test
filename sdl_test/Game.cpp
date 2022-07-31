@@ -215,7 +215,6 @@ void Game::game_draw()
 	if constexpr (EDIT) { // exclusive edit-things-to-draw
 		_cam.draw_grid(*this); // grid
 	}
-
 	_tile_handler.draw(*this);
 
 	_entity_handler.draw(*this);

@@ -1,11 +1,6 @@
 #pragma once
 #include "MovingRect.h"
-
-enum class PLAYER_WEAPON : char {
-	FIRE_MAGIC = 0,
-	GUN,
-	TOTAL
-};
+#include "enums.h"
 
 class Player : public MovingRect {
 public:
