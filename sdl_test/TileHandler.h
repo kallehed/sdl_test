@@ -18,6 +18,7 @@ public:
 	void draw_shapes(Game& g);
 	void draw(Game& g);
 	void place_tile(Game& g, TILE::TILE tile, int x, int y);
+	void place_tex(Game& g, TEX::TEX tile, int x, int y);
 
 	// returns true if tile changed, otherwise false
 	bool remove_tile(Game& g, int x, int y);

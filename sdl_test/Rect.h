@@ -1,12 +1,12 @@
 #pragma once
 
 class Rect {
-protected:
+public:
 	float _x;
 	float _y;
 	float _w;
 	float _h;
-public:
+
 	Rect(float x, float y, float w, float h);
 	void set_x(float x);
 	void set_y(float y);

@@ -109,6 +109,10 @@ void Camera::edit_logic(Game& g)
 				* then, total_tiles times, two data will appear,
 				* first for TILE::TILE, second TEX::TEX.
 				* 
+				* int32_t, nr of EnemyBasic
+				* two floats for each EnemyBasic, which represent x and y
+				* 
+				* Same for EnemyShooter
 				*/
 
 				std::ofstream myfile;
@@ -130,6 +134,47 @@ void Camera::edit_logic(Game& g)
 							myfile.write((char*)(&g._tile_handler._texs[i][j]), sizeof(TEX::TEX));
 						}
 					}
+
+					// Enemy Basic
+					{
+						std::vector<MovingRect*> vecEB; // basic
+						std::vector<MovingRect*> vecES; // shooter
+						auto& entities = g._entity_handler._entities;
+						for (int i = 0; i < entities.size(); ++i) {
+							if (dynamic_cast<EnemyBasic*>(entities[i])) {
+								// IS ENEMY: BASIC
+								vecEB.emplace_back(entities[i]);
+							}
+							else if (dynamic_cast<EnemyShooter*>(entities[i])) {
+								// IS ENEMY: BASIC
+								vecES.emplace_back(entities[i]);
+							}
+						}
+						{ // enemy basics
+							int32_t total = (int32_t)vecEB.size();
+							myfile.write((char*)(&total), sizeof(total));
+
+							// write x, and y's
+							for (MovingRect* e : vecEB) {
+								float x = e->_x;
+								myfile.write((char*)(&x), sizeof(x));
+								float y = e->_y;
+								myfile.write((char*)(&y), sizeof(y));
+							}
+						}
+						{ // enemy shooters
+							int32_t total = (int32_t)vecES.size();
+							myfile.write((char*)(&total), sizeof(total));
+
+							// write x, and y's
+							for (MovingRect* e : vecES) {
+								float x = e->_x;
+								myfile.write((char*)(&x), sizeof(x));
+								float y = e->_y;
+								myfile.write((char*)(&y), sizeof(y));
+							}
+						}
+					}
 				}
 				myfile.close();
 			}
@@ -137,6 +182,14 @@ void Camera::edit_logic(Game& g)
 			{
 				// load button clicked! LOAD
 				std::cout << "LOAD\n";
+
+				// delete all entities.
+				{
+					for (const auto& e : g._entity_handler._entities) {
+						delete e;
+					}
+					g._entity_handler._entities.clear();
+				}
 
 				std::ifstream myfile;
 				myfile.open("saves/save.txt", std::ios::in | std::ios::binary);
@@ -160,6 +213,33 @@ void Camera::edit_logic(Game& g)
 						}
 					}
 				}
+
+				// load entities
+				// enemy basic
+				{
+					int32_t total;
+					myfile.read((char*)&total, sizeof(total));
+
+					for (int i = 0; i < total; ++i) {
+						std::array<float, 2> pos;
+						myfile.read((char*)&pos, sizeof(pos));
+						EnemyBasic* e = new EnemyBasic(pos[0], pos[1]);
+						g._entity_handler._entities.emplace_back(e);
+					}
+				}
+				// enemy shooter
+				{
+					int32_t total;
+					myfile.read((char*)&total, sizeof(total));
+
+					for (int i = 0; i < total; ++i) {
+						std::array<float, 2> pos;
+						myfile.read((char*)&pos, sizeof(pos));
+						EnemyShooter* e = new EnemyShooter(pos[0], pos[1]);
+						g._entity_handler._entities.emplace_back(e);
+					}
+				}
+
 				myfile.close();
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
@@ -197,15 +277,14 @@ void Camera::edit_logic(Game& g)
 
 				if ((buttons & SDL_BUTTON_LMASK) != 0) {
 					g._tile_handler.place_tile(g, _edit_tile, m_x, m_y);
+					g._tile_handler.place_tex(g, _edit_tex, m_x, m_y);
 				}
-
-				/*
-
-				}*/
 			}
 			else if (_edit_mode == EDIT_MODE::TEX) {
 				scroll_enum(g, _edit_tex, TEX::TOTAL);
-
+				if ((buttons & SDL_BUTTON_LMASK) != 0) {
+					g._tile_handler.place_tex(g, _edit_tex, m_x, m_y);
+				}
 			}
 			else if (_edit_mode == EDIT_MODE::ENTITY) {
 				scroll_enum(g, _edit_entity, ENTITIES::TOTAL);

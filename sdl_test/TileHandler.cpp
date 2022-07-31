@@ -155,9 +155,24 @@ void TileHandler::place_tile(Game& g, TILE::TILE tile, int x, int y)
 	if (tile_in_range(i, j))
 	{
 		_tiles[i][j] = tile;
+	}
+}
+
+// TAKES MOUSE POSITION RELATIVE TO SCREEN FOR SOME REASON
+void TileHandler::place_tex(Game& g, TEX::TEX tile, int x, int y)
+{
+	assert(tile != TEX::TOTAL);
+
+	int cam_x = (int)g._cam._x;
+	int cam_y = (int)g._cam._y;
+	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
+	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
+	if (tile_in_range(i, j))
+	{
 		_texs[i][j] = g._cam._edit_tex;
 	}
 }
+
 bool TileHandler::remove_tile(Game& g, int x, int y) {
 	int cam_x = (int)g._cam._x;
 	int cam_y = (int)g._cam._y;
