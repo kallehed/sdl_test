@@ -33,6 +33,12 @@ bool Player::logic(Game& g)
 	// let MovingRect handle the rest
 	move_and_collide<true>(g);
 
+	// fire magic logic
+	{
+		_fire_magic_current += _fire_magic_increase * g._dt;
+		_fire_magic_current = std::min(_fire_magic_current, _fire_magic_max);
+	}
+
 	// use weapons(both left and right)
 	{
 		
@@ -52,9 +58,10 @@ bool Player::logic(Game& g)
 			{
 				if (g._mouse_btn_pressed_this_frame[0]) // left
 				{
-					if (_left_timer > 300.f)
+					if (_left_timer > 150.f && _fire_magic_current >= _fire_magic_cost)
 					{
 						_left_timer = 0.f;
+						_fire_magic_current -= _fire_magic_cost;
 
 						float nx, ny;
 						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);

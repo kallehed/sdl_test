@@ -10,6 +10,13 @@ public:
 
 	PLAYER_WEAPON _left_weapon = PLAYER_WEAPON::FIRE_MAGIC;
 
+	// Fire magic stuff
+	float _fire_magic_max = 1000.f;
+	float _fire_magic_current = _fire_magic_max;
+	float _fire_magic_cost = 225.f;
+	float _fire_magic_increase = 0.175f;
+	
+
 	float _left_timer = 0.f;
 	float _shoot_time = 400.f; // "reload" time
 

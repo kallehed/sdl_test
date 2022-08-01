@@ -504,11 +504,32 @@ void Camera::draw_hud(Game& g)
 	}
 	hud_y += hud_y_increase;
 	
-	{ // shots player has
-		SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, a);
+	{ // left weapon "ammo" left
+		if (p._left_weapon == PLAYER_WEAPON::FIRE_MAGIC)
+		{
+			float dim = 10.f; // divide width by this
 
-		SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._shots, 20 };
-		SDL_RenderFillRect(g._renderer, &draw_rect);
+			int charge_x = (int)(p._fire_magic_current/dim);
+			SDL_Rect draw_rect = { hud_x, hud_y, charge_x, 20 };
+
+			/*SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, a);
+			SDL_RenderFillRect(g._renderer, &draw_rect);*/
+
+			SDL_SetTextureAlphaMod(g._textures[TEX::FireMagic], 255);
+			SDL_RenderCopy(g._renderer, g._textures[TEX::FireMagic], NULL, &draw_rect);
+
+			// black boundary
+			draw_rect.w = (int)(p._fire_magic_max/dim);
+			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
+			SDL_RenderDrawRect(g._renderer, &draw_rect);
+		}
+		else if (p._left_weapon == PLAYER_WEAPON::GUN)
+		{ // shots player has
+			SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, a);
+
+			SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._shots, 20 };
+			SDL_RenderFillRect(g._renderer, &draw_rect);
+		}
 	}
 	hud_y += hud_y_increase;
 	
