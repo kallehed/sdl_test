@@ -65,6 +65,7 @@ Game::Game()
 			"images/TreeStump.png",
 			"images/SmallTree1.png",
 			"images/SmallTree2.png",
+			"images/GreenSquare.png",
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
 			_textures[i] = loadTexture(paths[i]);

@@ -312,18 +312,22 @@ void Camera::edit_logic(Game& g)
 			// LEFTclick: delete whatever is in front
 			if (g._mouse_btn_pressed_this_frame[2])
 			{
-				if (!g._tile_handler.remove_tile(g, m_x, m_y)) {
-					// no tiles removed
-					for (int i = ((int)g._entity_handler._entities.size()) - 1; i > -1; --i) {
-						auto& e = g._entity_handler._entities[i];
-						if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
-							e->get_x(), e->get_y(), e->get_w(), e->get_h()))
-						{
-							delete e;
-							g._entity_handler._entities.erase(g._entity_handler._entities.begin() + i);
-							break;
-						}
+				bool entity_removed = false;
+				for (int i = ((int)g._entity_handler._entities.size()) - 1; i > -1; --i) {
+					auto& e = g._entity_handler._entities[i];
+					if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
+						e->get_x(), e->get_y(), e->get_w(), e->get_h()))
+					{
+						delete e;
+						g._entity_handler._entities.erase(g._entity_handler._entities.begin() + i);
+						entity_removed = true;
+						break;
 					}
+				}
+				// no entities removed
+				if (!entity_removed) {
+					!g._tile_handler.remove_tile(g, m_x, m_y);
+
 				}
 			}
 		}

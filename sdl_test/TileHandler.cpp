@@ -35,13 +35,17 @@ void TileHandler::draw_textures(Game& g)
 		for (int j = j_start; j < j_end; ++j)
 		{
 			TEX::TEX tex = this->get_tile_tex(i, j);
+			int r_x = g._cam.convert_x(g._cam._grid * j);
+			int r_y = g._cam.convert_y(g._cam._grid * i);
+			SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
+			SDL_RenderCopy(g._renderer, g._textures[TEX::GreenSquare], NULL, &rect);
 			if (tex > TEX::VOID) {
 				int r_x = g._cam.convert_x(g._cam._grid * j);
 				int r_y = g._cam.convert_y(g._cam._grid * i);
 				SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
 
 				SDL_RenderCopy(g._renderer, g._textures[tex], NULL, &rect);
-			}	
+			}
 		}
 	}
 }
@@ -178,7 +182,7 @@ bool TileHandler::remove_tile(Game& g, int x, int y) {
 	int cam_y = (int)g._cam._y;
 	int i = (y + cam_y - General::mod(y + cam_y, g._cam._grid)) / g._cam._grid;
 	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
-	if (tile_in_range(i, j) && (_tiles[i][j] != TILE::VOID && _texs[i][j] != TEX::VOID)) {
+	if (tile_in_range(i, j) && (_tiles[i][j] != TILE::VOID || _texs[i][j] != TEX::VOID)) {
 		_tiles[i][j] = TILE::VOID;
 		_texs[i][j] = TEX::VOID;
 		return true;

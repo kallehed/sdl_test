@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Enemy.h"
+#include "General.h"
 
 class EnemyBasic : public Enemy {
 private:
 	bool _idle_state = false;
-	float _timer = 0.f;
+	float _timer = 3000.f * General::randf01();
 	float _idle_x_dir = 0.f;
 	float _idle_y_dir = 0.f;
 

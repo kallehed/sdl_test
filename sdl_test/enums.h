@@ -55,6 +55,7 @@ namespace TEX {
 		TreeStump,
 		SmallTree1,
 		SmallTree2,
+		GreenSquare,
 
 		TOTAL
 	};

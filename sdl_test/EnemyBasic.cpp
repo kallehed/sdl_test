@@ -31,7 +31,7 @@ void EnemyBasic::idle_logic(Game& g)
 	{
 		if (_timer > 3000.f) {
 			_idle_state = true;
-			_timer = 0.f;
+			_timer = 1000.f * General::randf01();
 
 			float random_radians = ((float)M_PI * (rand() % 360)) / 180.f;
 			_idle_x_dir = cos(random_radians);
