@@ -39,12 +39,77 @@ void TileHandler::draw_textures(Game& g)
 			int r_y = g._cam.convert_y(g._cam._grid * i);
 			SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
 			SDL_RenderCopy(g._renderer, g._textures[TEX::GreenSquare], NULL, &rect);
+			
+			TILE::TILE tile = this->get_tile_type(i, j);
 			if (tex > TEX::VOID) {
 				int r_x = g._cam.convert_x(g._cam._grid * j);
 				int r_y = g._cam.convert_y(g._cam._grid * i);
-				SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
+				if (tile < TILE::TRI_NE) {
 
-				SDL_RenderCopy(g._renderer, g._textures[tex], NULL, &rect);
+					SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
+
+					SDL_RenderCopy(g._renderer, g._textures[tex], NULL, &rect);
+				}
+				else if (tile == TILE::TRI_NE) {
+					SDL_Vertex vert[3];
+					float fx = (float)r_x;
+					float fy = (float)r_y;
+					vert[0].position = { fx, fy };
+					vert[0].color = { 255, 255, 255, 255 };
+					vert[0].tex_coord = { 0.f,0.f };
+					vert[1].position = { fx , fy + g._cam._fgrid };
+					vert[1].color = { 255, 255, 255, 255 };
+					vert[1].tex_coord = { 0.f, 1.f };
+					vert[2].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+					vert[2].color = { 255, 255, 255, 255 };
+					vert[2].tex_coord = { 1.f, 1.f };
+					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+				}
+				else if (tile == TILE::TRI_SE) {
+					SDL_Vertex vert[3];
+					float fx = (float)r_x;
+					float fy = (float)r_y;
+					vert[0].position = { fx, fy };
+					vert[0].color = { 255, 255, 255, 255 };
+					vert[0].tex_coord = { 0.f,0.f };
+					vert[1].position = { fx , fy + g._cam._fgrid };
+					vert[1].color = { 255, 255, 255, 255 };
+					vert[1].tex_coord = { 0.f, 1.f };
+					vert[2].position = { fx + g._cam._fgrid, fy };
+					vert[2].color = { 255, 255, 255, 255 };
+					vert[2].tex_coord = { 1.f, 0.f };
+					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+				}
+				else if (tile == TILE::TRI_NW) {
+					SDL_Vertex vert[3];
+					float fx = (float)r_x;
+					float fy = (float)r_y;
+					vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+					vert[0].color = { 255, 255, 255, 255 };
+					vert[0].tex_coord = { 1.f,1.f };
+					vert[1].position = { fx , fy + g._cam._fgrid };
+					vert[1].color = { 255, 255, 255, 255 };
+					vert[1].tex_coord = { 0.f, 1.f };
+					vert[2].position = { fx + g._cam._fgrid, fy };
+					vert[2].color = { 255, 255, 255, 255 };
+					vert[2].tex_coord = { 1.f, 0.f };
+					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+				}
+				else if (tile == TILE::TRI_SW) {
+					SDL_Vertex vert[3];
+					float fx = (float)r_x;
+					float fy = (float)r_y;
+					vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+					vert[0].color = { 255, 255, 255, 255 };
+					vert[0].tex_coord = { 1.f,1.f };
+					vert[1].position = { fx , fy };
+					vert[1].color = { 255, 255, 255, 255 };
+					vert[1].tex_coord = { 0.f, 0.f };
+					vert[2].position = { fx + g._cam._fgrid, fy };
+					vert[2].color = { 255, 255, 255, 255 };
+					vert[2].tex_coord = { 1.f, 0.f };
+					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+				}
 			}
 		}
 	}
