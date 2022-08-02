@@ -17,7 +17,7 @@ void TileHandler::TileHandler_construct(Game& g)
 	}
 }
 
-void TileHandler::draw_textures(Game& g)
+void TileHandler::draw_textures(Game& g, int alpha)
 {
 	float x = g._cam._x;
 	float y = g._cam._y;
@@ -38,6 +38,7 @@ void TileHandler::draw_textures(Game& g)
 			int r_x = g._cam.convert_x(g._cam._grid * j);
 			int r_y = g._cam.convert_y(g._cam._grid * i);
 			SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
+			SDL_SetTextureAlphaMod(g._textures[TEX::GreenSquare],alpha);
 			SDL_RenderCopy(g._renderer, g._textures[TEX::GreenSquare], NULL, &rect);
 			
 			TILE::TILE tile = this->get_tile_type(i, j);
@@ -47,68 +48,71 @@ void TileHandler::draw_textures(Game& g)
 				if (tile < TILE::TRI_NE) {
 
 					SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
-
+					SDL_SetTextureAlphaMod(g._textures[tex], alpha);
 					SDL_RenderCopy(g._renderer, g._textures[tex], NULL, &rect);
 				}
-				else if (tile == TILE::TRI_NE) {
-					SDL_Vertex vert[3];
-					float fx = (float)r_x;
-					float fy = (float)r_y;
-					vert[0].position = { fx, fy };
-					vert[0].color = { 255, 255, 255, 255 };
-					vert[0].tex_coord = { 0.f,0.f };
-					vert[1].position = { fx , fy + g._cam._fgrid };
-					vert[1].color = { 255, 255, 255, 255 };
-					vert[1].tex_coord = { 0.f, 1.f };
-					vert[2].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
-					vert[2].color = { 255, 255, 255, 255 };
-					vert[2].tex_coord = { 1.f, 1.f };
-					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
-				}
-				else if (tile == TILE::TRI_SE) {
-					SDL_Vertex vert[3];
-					float fx = (float)r_x;
-					float fy = (float)r_y;
-					vert[0].position = { fx, fy };
-					vert[0].color = { 255, 255, 255, 255 };
-					vert[0].tex_coord = { 0.f,0.f };
-					vert[1].position = { fx , fy + g._cam._fgrid };
-					vert[1].color = { 255, 255, 255, 255 };
-					vert[1].tex_coord = { 0.f, 1.f };
-					vert[2].position = { fx + g._cam._fgrid, fy };
-					vert[2].color = { 255, 255, 255, 255 };
-					vert[2].tex_coord = { 1.f, 0.f };
-					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
-				}
-				else if (tile == TILE::TRI_NW) {
-					SDL_Vertex vert[3];
-					float fx = (float)r_x;
-					float fy = (float)r_y;
-					vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
-					vert[0].color = { 255, 255, 255, 255 };
-					vert[0].tex_coord = { 1.f,1.f };
-					vert[1].position = { fx , fy + g._cam._fgrid };
-					vert[1].color = { 255, 255, 255, 255 };
-					vert[1].tex_coord = { 0.f, 1.f };
-					vert[2].position = { fx + g._cam._fgrid, fy };
-					vert[2].color = { 255, 255, 255, 255 };
-					vert[2].tex_coord = { 1.f, 0.f };
-					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
-				}
-				else if (tile == TILE::TRI_SW) {
-					SDL_Vertex vert[3];
-					float fx = (float)r_x;
-					float fy = (float)r_y;
-					vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
-					vert[0].color = { 255, 255, 255, 255 };
-					vert[0].tex_coord = { 1.f,1.f };
-					vert[1].position = { fx , fy };
-					vert[1].color = { 255, 255, 255, 255 };
-					vert[1].tex_coord = { 0.f, 0.f };
-					vert[2].position = { fx + g._cam._fgrid, fy };
-					vert[2].color = { 255, 255, 255, 255 };
-					vert[2].tex_coord = { 1.f, 0.f };
-					SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+				else {
+					SDL_Color color = { 255, 255, 255, (Uint8)alpha };
+					if (tile == TILE::TRI_NE) {
+						SDL_Vertex vert[3];
+						float fx = (float)r_x;
+						float fy = (float)r_y;
+						vert[0].position = { fx, fy };
+						vert[0].color = color;
+						vert[0].tex_coord = { 0.f,0.f };
+						vert[1].position = { fx , fy + g._cam._fgrid };
+						vert[1].color = color;
+						vert[1].tex_coord = { 0.f, 1.f };
+						vert[2].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+						vert[2].color = color;
+						vert[2].tex_coord = { 1.f, 1.f };
+						SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+					}
+					else if (tile == TILE::TRI_SE) {
+						SDL_Vertex vert[3];
+						float fx = (float)r_x;
+						float fy = (float)r_y;
+						vert[0].position = { fx, fy };
+						vert[0].color = color;
+						vert[0].tex_coord = { 0.f,0.f };
+						vert[1].position = { fx , fy + g._cam._fgrid };
+						vert[1].color = color;
+						vert[1].tex_coord = { 0.f, 1.f };
+						vert[2].position = { fx + g._cam._fgrid, fy };
+						vert[2].color = color;
+						vert[2].tex_coord = { 1.f, 0.f };
+						SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+					}
+					else if (tile == TILE::TRI_NW) {
+						SDL_Vertex vert[3];
+						float fx = (float)r_x;
+						float fy = (float)r_y;
+						vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+						vert[0].color = color;
+						vert[0].tex_coord = { 1.f,1.f };
+						vert[1].position = { fx , fy + g._cam._fgrid };
+						vert[1].color = color;
+						vert[1].tex_coord = { 0.f, 1.f };
+						vert[2].position = { fx + g._cam._fgrid, fy };
+						vert[2].color = color;
+						vert[2].tex_coord = { 1.f, 0.f };
+						SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+					}
+					else if (tile == TILE::TRI_SW) {
+						SDL_Vertex vert[3];
+						float fx = (float)r_x;
+						float fy = (float)r_y;
+						vert[0].position = { fx + g._cam._fgrid, fy + g._cam._fgrid };
+						vert[0].color = color;
+						vert[0].tex_coord = { 1.f,1.f };
+						vert[1].position = { fx , fy };
+						vert[1].color = color;
+						vert[1].tex_coord = { 0.f, 0.f };
+						vert[2].position = { fx + g._cam._fgrid, fy };
+						vert[2].color = color;
+						vert[2].tex_coord = { 1.f, 0.f };
+						SDL_RenderGeometry(g._renderer, g._textures[tex], vert, 3, NULL, 0);
+					}
 				}
 			}
 		}
@@ -204,11 +208,15 @@ void TileHandler::draw_shapes(Game& g) {
 
 void TileHandler::draw(Game& g)
 {
-	if (g._cam._shapes_visible) {
+	if (g._cam._cam_view == CAM_VIEW::SHAPE) {
 		draw_shapes(g);
 	}
-	if (g._cam._texs_visible) {
-		draw_textures(g);
+	else if (g._cam._cam_view == CAM_VIEW::TEX) {
+		draw_textures(g, 255);
+	}
+	else if (g._cam._cam_view == CAM_VIEW::HALF) {
+		draw_shapes(g);
+		draw_textures(g, 127);
 	}
 }
 

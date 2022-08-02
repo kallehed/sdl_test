@@ -36,14 +36,16 @@ namespace TILE {
 	};
 }
 
-// Textures
+// Textures. WARNING: ONLY ADD TEXTURES TO END!!!! OTHERWISE TEXTURES WILL BE SWAPPED WHEN LOADING SAVE
 namespace TEX {
 	enum TEX : char {
 		VOID = -1,
 		FireMagic = 0,
 		BombExplosion,
 		Bullet,
+		MagicOrb,
 		BlueSlime,
+		Wizard,
 		GreenSlime1,
 		GreenSlime2,
 		RedHuman,
@@ -56,6 +58,8 @@ namespace TEX {
 		SmallTree1,
 		SmallTree2,
 		GreenSquare,
+		CobbleStone,
+		CobbleWall,
 
 		TOTAL
 	};
@@ -106,7 +110,7 @@ namespace CAM_VIEW {
 	enum CAM_VIEW : char {
 		TEX,
 		SHAPE,
-		BOTH,
+		HALF,
 
 		TOTAL
 	};

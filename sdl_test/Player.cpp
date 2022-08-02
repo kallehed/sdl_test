@@ -152,7 +152,6 @@ bool Player::logic(Game& g)
 			}
 		}
 	}
-
 	return false;
 }
 
@@ -163,7 +162,11 @@ void Player::draw(Game& g)
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 	//SDL_RenderDrawRect(g._renderer, &rect);
-	SDL_RenderCopy(g._renderer, g._textures[TEX::RedHuman], NULL, &rect);
+	//SDL_RenderCopy(g._renderer, g._textures[TEX::RedHuman], NULL, &rect);
+
+	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+	SDL_RenderCopyEx(g._renderer, g._textures[TEX::RedHuman], NULL, &rect, NULL, NULL, flip);
 }
 
 void Player::intersection(float nx, float ny, MovingRect* e)

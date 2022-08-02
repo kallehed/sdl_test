@@ -6,7 +6,7 @@ MOVING_RECT_TYPES Explosion::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::EXPLOSION;
 }
 
-Explosion::Explosion(float x, float y) : MovingRect(0, 0, 200.f, 200.f, 0.0f)
+Explosion::Explosion(float x, float y) : MovingRect(0, 0, 300.f, 300.f, 0.0f)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());

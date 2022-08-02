@@ -19,7 +19,7 @@ public:
 	int _max_hp;
 	int _hp;
 
-	Enemy(float x, float y, int max_hp, float activation_radius, float deactivation_radius, float active_time);
+	Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time);
 
 	bool logic(Game& g);
 

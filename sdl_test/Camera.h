@@ -10,7 +10,7 @@ class Camera {
 public:
 	float _x = 0.f;
 	float _y = 0.f;
-	const int _grid = 50;
+	const int _grid = 55;
 	const float _fgrid = (float)_grid;
 
 	EDIT_MODE::EDIT_MODE _edit_mode = EDIT_MODE::TILE;
@@ -22,9 +22,6 @@ public:
 	std::array<Button, CAM_BTN::TOTAL> _btns;
 
 	CAM_VIEW::CAM_VIEW _cam_view = CAM_VIEW::TEX;
-
-	bool _texs_visible = true;
-	bool _shapes_visible = true;
 
 	void construct(Game& g);
 

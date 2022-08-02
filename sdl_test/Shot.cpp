@@ -6,15 +6,20 @@ MOVING_RECT_TYPES Shot::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::SHOT;
 }
 
-Shot::Shot(MovingRect* owner,float x, float y, float x_vel, float y_vel)
-	: MovingRect(0, 0, 25.f, 25.f, 1.f), _owner(owner)
+Shot::Shot(MovingRect* owner,float x, float y, float x_vel, float y_vel, TEX::TEX image)
+	: MovingRect(0, 0, 25.f, 25.f, 1.f), _owner(owner), _image(image)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
 	_x_dir = x_vel;
 	_y_dir = y_vel;
+	turn_according_to_dir();
+}
 
-	_degrees_turned = atan2((double)y_vel, (double)x_vel) * (180.0/M_PI);
+void Shot::turn_according_to_dir()
+{
+
+	_degrees_turned = atan2((double)_y_dir, (double)_x_dir) * (180.0 / M_PI);
 }
 
 bool Shot::logic(Game& g)
@@ -44,10 +49,10 @@ void Shot::draw(Game& g)
 {
 	SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 255);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)(get_w()*1.4f),(int)(get_h()*1.4f) };
 	//SDL_RenderFillRect(g._renderer, &rect);
 
-	SDL_RenderCopyEx(g._renderer, g._textures[TEX::Bullet], NULL, &rect, _degrees_turned, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(g._renderer, g._textures[_image], NULL, &rect, _degrees_turned, NULL, SDL_FLIP_NONE);
 }
 
 void Shot::intersection(float nx, float ny, MovingRect* e)
@@ -58,7 +63,7 @@ void Shot::intersection(float nx, float ny, MovingRect* e)
 	{
 		_x_dir = nx; // change direction
 		_y_dir = ny;
-		_degrees_turned = atan2((double)ny, (double)nx) * (180.0 / M_PI);
+		turn_according_to_dir();
 		_owner = nullptr; // NO ONE OWNS ME ANYMORE, FREEDOM!!!
 		break;
 	}
@@ -68,6 +73,17 @@ void Shot::intersection(float nx, float ny, MovingRect* e)
 
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);*/
+		// *** CHANGE
+		{
+			if (_owner != e) {
+				_x_dir = nx;
+				_y_dir = ny;
+				turn_according_to_dir();
+				//change_x_vel(_x_dir * _speed);
+				//change_y_vel(_y_dir * _speed);
+				_owner = e; // don't bounce into same thing next frame
+			}
+		}
 		break;
 	}
 	case MOVING_RECT_TYPES::ENEMY:

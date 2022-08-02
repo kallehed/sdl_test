@@ -1,5 +1,6 @@
 #pragma once
 #include "MovingRect.h"
+#include "enums.h"
 
 class Game;
 
@@ -11,12 +12,16 @@ public:
 	double _degrees_turned;
 	float _speed = 0.05f;
 
+	TEX::TEX _image;
+
 	// which entity created this shot(maybe don't hurt them?)?
 	MovingRect* _owner;
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
-	Shot(MovingRect* owner, float x, float y, float x_vel, float y_vel);
+	Shot(MovingRect* owner, float x, float y, float x_vel, float y_vel, TEX::TEX image = TEX::Bullet);
+
+	void turn_according_to_dir();
 
 	bool logic(Game& g) override;
 

@@ -244,19 +244,6 @@ void Camera::edit_logic(Game& g)
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
 				_cam_view = (CAM_VIEW::CAM_VIEW)((_cam_view + 1) % CAM_VIEW::TOTAL);
-
-				if (_cam_view == CAM_VIEW::TEX) {
-					_texs_visible = true;
-					_shapes_visible = false;
-				}
-				else if (_cam_view == CAM_VIEW::SHAPE) {
-					_texs_visible = false;
-					_shapes_visible = true;
-				}
-				else if (_cam_view == CAM_VIEW::BOTH) {
-					_texs_visible = true;
-					_shapes_visible = true;
-				}
 			}
 		}
 		else { // no button was hovered over

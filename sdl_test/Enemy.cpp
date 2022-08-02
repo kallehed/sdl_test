@@ -3,7 +3,7 @@
 #include "General.h"
 #include "Coin.h"
 
-Enemy::Enemy(float x, float y, int max_hp, float activation_radius, float deactivation_radius, float active_time) : MovingRect(x, y, 30.f, 30.f, 0.01f),
+Enemy::Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time) : MovingRect(x, y, w, h, 0.01f),
 	_max_hp(max_hp), _hp(max_hp), _activation_radius_squared(activation_radius*activation_radius),
 	_deactivation_radius_squared(deactivation_radius*deactivation_radius), _active_time(active_time)
 {

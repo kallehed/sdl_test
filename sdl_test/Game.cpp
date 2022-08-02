@@ -53,7 +53,9 @@ Game::Game()
 			"images/FireMagic.png",
 			"images/BombExplosion.jpg",
 			"images/Bullet.png",
+			"images/MagicOrb.png",
 			"images/BlueSlime.png",
+			"images/Wizard.png",
 			"images/GreenSlime.png",
 			"images/GreenSlime2.png",
 			"images/RedHuman.png",
@@ -66,6 +68,8 @@ Game::Game()
 			"images/SmallTree1.png",
 			"images/SmallTree2.png",
 			"images/GreenSquare.png",
+			"images/CobbleStone.png",
+			"images/CobbleWall.png",
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
 			_textures[i] = loadTexture(paths[i]);

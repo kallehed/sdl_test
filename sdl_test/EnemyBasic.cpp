@@ -7,7 +7,7 @@ MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::ENEMY;
 }
 
-EnemyBasic::EnemyBasic(float x, float y) : Enemy(x, y, 20, 120.f, 150.f, 5000.f)
+EnemyBasic::EnemyBasic(float x, float y) : Enemy(x, y,30.f,30.f, 20, 120.f, 150.f, 5000.f)
 {
 
 }
