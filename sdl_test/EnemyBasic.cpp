@@ -17,13 +17,14 @@ void EnemyBasic::draw(Game& g)
 	SDL_SetRenderDrawColor(g._renderer, 0, 0, 255, 255);
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	SDL_RenderFillRect(g._renderer, &rect);
+	//SDL_RenderFillRect(g._renderer, &rect);
 
 	// 0 is nothing, 1 is flip horizontally
-	SDL_RendererFlip flip = (get_x_vel() > 0) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
-	SDL_RenderCopyEx(g._renderer, g._textures[TEX::BlueSlime], NULL, &rect, NULL, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(g._renderer, g._textures[TEX::BlueSlime], NULL, &rect, NULL, NULL, flip);
 }
+
 void EnemyBasic::idle_logic(Game& g)
 {
 	_timer += g._dt;
