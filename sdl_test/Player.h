@@ -12,6 +12,11 @@ public:
 	float _invi_time = 500.f;
 	float _invi_timer = 0.f;
 
+	// walk animation stuff
+	bool _forward = true; // facing forwawrd
+	bool _right = true; // facing right
+	float _walk_animation_timer = 0.f;
+
 	PLAYER_WEAPON _left_weapon = PLAYER_WEAPON::FIRE_MAGIC;
 
 	// Fire magic stuff

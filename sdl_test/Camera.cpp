@@ -3,6 +3,7 @@
 #include "General.h"
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
+#include "Npc.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -309,6 +310,10 @@ void Camera::edit_logic(Game& g)
 						g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
 						break;
 					}
+					case NPC:
+					{
+						g._entity_handler._entities.push_back(new Npc(r_x, r_y));
+					}
 					}
 				}
 
@@ -415,6 +420,9 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		case ENEMY_SHOOTER:
 			text = "Enemy: Shooter";
+			break;
+		case NPC:
+			text = "NPC";
 			break;
 		}
 		SDL_Color c = { 0,0,0 };

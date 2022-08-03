@@ -38,8 +38,8 @@ void TileHandler::draw_textures(Game& g, int alpha)
 			int r_x = g._cam.convert_x(g._cam._grid * j);
 			int r_y = g._cam.convert_y(g._cam._grid * i);
 			SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
-			SDL_SetTextureAlphaMod(g._textures[TEX::GreenSquare],alpha);
-			SDL_RenderCopy(g._renderer, g._textures[TEX::GreenSquare], NULL, &rect);
+			SDL_SetTextureAlphaMod(g._textures[TEX::SquareGreen],alpha);
+			SDL_RenderCopy(g._renderer, g._textures[TEX::SquareGreen], NULL, &rect);
 			
 			TILE::TILE tile = this->get_tile_type(i, j);
 			if (tex > TEX::VOID) {

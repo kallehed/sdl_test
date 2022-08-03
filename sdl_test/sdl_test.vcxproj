@@ -164,6 +164,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="MovingRect.cpp" />
+    <ClCompile Include="Npc.cpp" />
     <ClCompile Include="PickupableShot.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="MovingRect.h" />
+    <ClInclude Include="Npc.h" />
     <ClInclude Include="PickupableShot.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />

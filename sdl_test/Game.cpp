@@ -53,6 +53,7 @@ Game::Game()
 			"images/FireMagic.png",
 			"images/BombExplosion.jpg",
 			"images/Bomb.png",
+			"images/BombRed.png",
 			"images/Bullet.png",
 			"images/MagicOrb.png",
 			"images/BlueSlime.png",
@@ -60,6 +61,11 @@ Game::Game()
 			"images/GreenSlime.png",
 			"images/GreenSlime2.png",
 			"images/RedHuman.png",
+			"images/RedHumanWalk1.png",
+			"images/RedHumanWalk2.png",
+			"images/RedHumanBackwards.png",
+			"images/RedHumanBackwardsWalk1.png",
+			"images/RedHumanBackwardsWalk2.png",
 			"images/Coin.png",
 			"images/Container.png",
 
@@ -68,10 +74,15 @@ Game::Game()
 			"images/TreeStump.png",
 			"images/SmallTree1.png",
 			"images/SmallTree2.png",
-			"images/GreenSquare.png",
+			"images/SquareGreen.png",
+			"images/SquareStone.png",
+			"images/SquareSwamp.png",
 			"images/CobbleStone.png",
 			"images/CobbleWall.png",
-			"images/BombRed.png",
+			"images/FlowerRed.png",
+			"images/FlowerBlue1.png",
+			"images/FlowerBlue2.png",
+			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
 			_textures[i] = loadTexture(paths[i]);

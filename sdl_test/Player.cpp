@@ -19,15 +19,19 @@ bool Player::logic(Game& g)
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
 		change_x_vel(acc);
+		_right = true;
 	}
 	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A]) {
 		change_x_vel(-acc);
+		_right = false;
 	}
 	if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S]) {
 		change_y_vel(acc);
+		_forward = true;
 	}
 	if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W]) {
 		change_y_vel(-acc);
+		_forward = false;
 	}
 
 	// let MovingRect handle the rest
@@ -168,21 +172,41 @@ void Player::draw(Game& g)
 	//SDL_RenderDrawRect(g._renderer, &rect);
 	//SDL_RenderCopy(g._renderer, g._textures[TEX::RedHuman], NULL, &rect);
 
-	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+	SDL_RendererFlip flip = _right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+	// first choice texture
+	SDL_Texture* tex = _forward ? g._textures[TEX::RedHuman] : g._textures[TEX::RedHumanBackwards];
+
+	// walk animation, if walking
+	constexpr float walk_bound = 0.02f;
+	if (std::abs(get_x_vel()) > walk_bound || std::abs(get_y_vel()) > walk_bound) {
+		// should walk
+
+		if ((((int)_walk_animation_timer) / 200) % 2 == 0) {
+			tex = _forward ? g._textures[TEX::RedHumanWalk1] : g._textures[TEX::RedHumanBackwardsWalk1];
+		}
+		else {
+			tex = _forward ? g._textures[TEX::RedHumanWalk2] : g._textures[TEX::RedHumanBackwardsWalk2];
+		}
+		_walk_animation_timer += g._dt;
+	}
+	else {
+		_walk_animation_timer = 0.f;
+	}
+	
 
 	if (_invi_timer > 0.f) {
 		if ((((int)_invi_timer) / 50) % 2 == 0) {
-			SDL_SetTextureColorMod(g._textures[TEX::RedHuman], 100, 100, 100);
+			SDL_SetTextureColorMod(tex, 100, 100, 100);
 		}
 		else {
-			SDL_SetTextureColorMod(g._textures[TEX::RedHuman], 200, 200, 200);
+			SDL_SetTextureColorMod(tex, 200, 200, 200);
 		}
 	}
 	else {
-		SDL_SetTextureColorMod(g._textures[TEX::RedHuman], 255, 255, 255);
+		SDL_SetTextureColorMod(tex, 255, 255, 255);
 	}
 
-	SDL_RenderCopyEx(g._renderer, g._textures[TEX::RedHuman], NULL, &rect, NULL, NULL, flip);
+	SDL_RenderCopyEx(g._renderer, tex, NULL, &rect, NULL, NULL, flip);
 }
 
 void Player::take_damage(Game& g)
