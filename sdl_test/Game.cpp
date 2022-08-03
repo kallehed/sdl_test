@@ -52,6 +52,7 @@ Game::Game()
 		const char* paths[TEX::TOTAL] = {
 			"images/FireMagic.png",
 			"images/BombExplosion.jpg",
+			"images/Bomb.png",
 			"images/Bullet.png",
 			"images/MagicOrb.png",
 			"images/BlueSlime.png",
@@ -70,6 +71,7 @@ Game::Game()
 			"images/GreenSquare.png",
 			"images/CobbleStone.png",
 			"images/CobbleWall.png",
+			"images/BombRed.png",
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
 			_textures[i] = loadTexture(paths[i]);
@@ -194,6 +196,10 @@ void Game::game_loop()
 		}
 		_dt = 1000.f * (SDL_GetPerformanceCounter() - start_time) / ((float)SDL_GetPerformanceFrequency());
 		_dt = std::min(_MAX_DT, _dt); // no less than 50 fps simulated.
+		_dt *= _slow_motion_factor;
+		_slow_motion_factor += 0.02f;
+		_slow_motion_factor = std::min(1.f, _slow_motion_factor);
+
 		++_ticks;
 	}
 }

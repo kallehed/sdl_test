@@ -22,7 +22,8 @@ protected:
 
     int32_t node_add(int32_t index, T* elem, int x, int y, int w, int h, int depth);
 
-    void node_do_intersection(int32_t index);
+    template <typename G>
+    void node_do_intersection(int32_t index, G& g);
 
     template <typename G>
     void node_draw(int32_t index, G& g, int x, int y, int w, int h, int depth);
@@ -34,7 +35,8 @@ protected:
 public:
     Quadtree(int x, int y, int w, int h); 
     void add_to_head(T* elem);
-    void head_do_intersection();
+    template <typename G>
+    void head_do_intersection(G& g);
     template <typename G>
     void head_draw(G& g);
     void clear();
@@ -67,7 +69,8 @@ int32_t Quadtree<T, PER_NODE, MAX_DEPTH>::node_add(int32_t index, T* elem, int x
 }
 
 template <typename T, int PER_NODE, int MAX_DEPTH>
-void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index)
+template <typename G>
+void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index, G& g)
 {
     if (index >= 0) // node has data
     {
@@ -89,8 +92,8 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index)
                     float nx = dx / dist;
                     float ny = dy / dist;
 
-                    e1->intersection(nx, ny, e2);
-                    e2->intersection(-nx, -ny, e1);
+                    e1->intersection(g, nx, ny, e2);
+                    e2->intersection(g, -nx, -ny, e1);
                     //break;
                 }
             }
@@ -101,10 +104,10 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index)
         // child nodes do intersection
         size_t real_index = ((size_t)(-index)) - 1;
 
-        this->node_do_intersection(_nodes[real_index + 0]);
-        this->node_do_intersection(_nodes[real_index + 1]);
-        this->node_do_intersection(_nodes[real_index + 2]);
-        this->node_do_intersection(_nodes[real_index + 3]);
+        this->node_do_intersection(_nodes[real_index + 0], g);
+        this->node_do_intersection(_nodes[real_index + 1], g);
+        this->node_do_intersection(_nodes[real_index + 2], g);
+        this->node_do_intersection(_nodes[real_index + 3], g);
     }
 }
 
@@ -234,9 +237,10 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::add_to_head(T* elem)
 }
 
 template <typename T, int PER_NODE, int MAX_DEPTH>
-void Quadtree<T, PER_NODE, MAX_DEPTH>::head_do_intersection()
+template <typename G>
+void Quadtree<T, PER_NODE, MAX_DEPTH>::head_do_intersection(G& g)
 {
-    this->node_do_intersection(_head);
+    this->node_do_intersection(_head, g);
 }
 
 template <typename T, int PER_NODE, int MAX_DEPTH>

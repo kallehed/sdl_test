@@ -75,8 +75,6 @@ bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
 	return dx * dx + dy * dy <= radius_squared;
 }
 
-
-
 void Enemy::new_walk_path(Game& g) // clear
 {
 	_path_progress = 1;

@@ -42,7 +42,7 @@ void EntityHandler::logic(Game& g)
 	}
 	_quadtree.add_to_head(&_p);
 
-	_quadtree.head_do_intersection();
+	_quadtree.head_do_intersection(g);
 	
 	// add entities
 	for (auto e : _entities_to_add)

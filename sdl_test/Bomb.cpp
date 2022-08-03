@@ -33,21 +33,25 @@ bool Bomb::logic(Game& g)
 
 void Bomb::draw(Game& g)
 {
+	SDL_Texture* tex = NULL;
 
 	if (((((int)_detonation_timer) / 500) % 2) == 0) {
-		SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
+		//SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
+		tex = g._textures[TEX::Bomb];
 	}
 	else {
-		SDL_SetRenderDrawColor(g._renderer, 50, 0, 0, 255);
+		//SDL_SetRenderDrawColor(g._renderer, 50, 0, 0, 255);
+		tex = g._textures[TEX::BombRed];
 	}
 
 	//SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
 
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	SDL_RenderFillRect(g._renderer, &rect);
+	//SDL_RenderFillRect(g._renderer, &rect);
+	SDL_RenderCopy(g._renderer, tex, NULL, &rect);
 }
 
-void Bomb::intersection(float nx, float ny, MovingRect* e)
+void Bomb::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::ENEMY:

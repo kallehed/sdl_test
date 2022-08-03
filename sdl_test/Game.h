@@ -29,6 +29,8 @@ public:
 
 	float _dt = 0; // time for previous frame to run in MS
 	const float _MAX_DT = 1000.f / 50.f; // 50 is the lowest framerate allowed. Also maximum _dt
+	
+	float _slow_motion_factor = 0.5f;
 
 	bool _edit_mode = false;
 

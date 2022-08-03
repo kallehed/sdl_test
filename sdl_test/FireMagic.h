@@ -18,6 +18,6 @@ public:
 
 	void draw(Game& g) override;
 
-	void intersection(float nx, float ny, MovingRect* e) override;
+	void intersection(Game& g, float nx, float ny, MovingRect* e) override;
 };
 

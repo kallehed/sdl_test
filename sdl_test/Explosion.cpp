@@ -55,6 +55,6 @@ void Explosion::draw(Game& g)
 	SDL_RenderCopy(g._renderer, g._textures[TEX::BombExplosion], NULL, &dst);
 }
 
-void Explosion::intersection(float nx, float ny, MovingRect* e)
+void Explosion::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 }

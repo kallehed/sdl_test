@@ -6,13 +6,13 @@ MOVING_RECT_TYPES Shot::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::SHOT;
 }
 
-Shot::Shot(MovingRect* owner,float x, float y, float x_vel, float y_vel, TEX::TEX image)
-	: MovingRect(0, 0, 25.f, 25.f, 1.f), _owner(owner), _image(image)
+Shot::Shot(MovingRect* owner,float x, float y, float x_dir, float y_dir, float speed, TEX::TEX image)
+	: MovingRect(0, 0, 25.f, 25.f, 1.f), _owner(owner), _image(image), _speed(speed)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
-	_x_dir = x_vel;
-	_y_dir = y_vel;
+	_x_dir = x_dir;
+	_y_dir = y_dir;
 	turn_according_to_dir();
 }
 
@@ -24,8 +24,12 @@ void Shot::turn_according_to_dir()
 
 bool Shot::logic(Game& g)
 {
+	_ASSERT(abs(_x_dir) <= 1.f);
+	_ASSERT(abs(_y_dir) <= 1.f);
+
 	change_x_vel(_x_dir*_speed);
 	change_y_vel(_y_dir*_speed);
+
 	move_and_collide<false>(g);
 
 	// collision with blocking tile == death
@@ -49,13 +53,13 @@ void Shot::draw(Game& g)
 {
 	SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, 255);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)(get_w()*1.4f),(int)(get_h()*1.4f) };
+	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)(get_w()*1.2f),(int)(get_h()*1.2f) };
 	//SDL_RenderFillRect(g._renderer, &rect);
 
 	SDL_RenderCopyEx(g._renderer, g._textures[_image], NULL, &rect, _degrees_turned, NULL, SDL_FLIP_NONE);
 }
 
-void Shot::intersection(float nx, float ny, MovingRect* e)
+void Shot::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::FIRE_MAGIC:

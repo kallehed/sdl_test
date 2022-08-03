@@ -38,7 +38,7 @@ void PickupableShot::draw(Game& g)
 	SDL_RenderCopy(g._renderer, g._textures[TEX::Container], NULL, &rect);
 }
 
-void PickupableShot::intersection(float nx, float ny, MovingRect* e)
+void PickupableShot::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::ENEMY:

@@ -33,6 +33,13 @@ bool Player::logic(Game& g)
 	// let MovingRect handle the rest
 	move_and_collide<true>(g);
 
+	// invincibility
+	{
+		if (_invi_timer > 0.f) {
+			_invi_timer -= g._dt;
+		}
+	}
+
 	// fire magic logic
 	{
 		_fire_magic_current += _fire_magic_increase * g._dt;
@@ -90,13 +97,10 @@ bool Player::logic(Game& g)
 						--_shots;
 
 						// shoot projectile "Shot"
-						float shot_speed = 0.5f;
+						float speed = 0.028f;
 						float nx, ny;
 						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);
-
-						float x_speed = nx * shot_speed;
-						float y_speed = ny * shot_speed;
-						g._entity_handler._entities_to_add.push_back(new Shot(this, get_mid_x(), get_mid_y(), x_speed, y_speed));
+						g._entity_handler._entities_to_add.push_back(new Shot(this, get_mid_x(), get_mid_y(), nx, ny, speed));
 					}
 				}
 				break;
@@ -166,10 +170,33 @@ void Player::draw(Game& g)
 
 	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
+	if (_invi_timer > 0.f) {
+		if ((((int)_invi_timer) / 50) % 2 == 0) {
+			SDL_SetTextureColorMod(g._textures[TEX::RedHuman], 100, 100, 100);
+		}
+		else {
+			SDL_SetTextureColorMod(g._textures[TEX::RedHuman], 200, 200, 200);
+		}
+	}
+	else {
+		SDL_SetTextureColorMod(g._textures[TEX::RedHuman], 255, 255, 255);
+	}
+
 	SDL_RenderCopyEx(g._renderer, g._textures[TEX::RedHuman], NULL, &rect, NULL, NULL, flip);
 }
 
-void Player::intersection(float nx, float ny, MovingRect* e)
+void Player::take_damage(Game& g)
+{
+	if (_invi_timer <= 0.f) {
+		_hp -= 5;
+		_invi_timer = _invi_time;
+
+		g._cam.shake(g, 250.f, 20.f);
+		g._slow_motion_factor = 0.5f;
+	}
+}
+
+void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type())
 	{
@@ -180,7 +207,7 @@ void Player::intersection(float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		_hp -= 5;
+		take_damage(g);
 		break;
 	}
 	case MOVING_RECT_TYPES::SHOT:
@@ -194,7 +221,7 @@ void Player::intersection(float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		_hp -= 5;
+		take_damage(g);
 		break;
 	}
 	case MOVING_RECT_TYPES::EXPLOSION:
@@ -204,7 +231,7 @@ void Player::intersection(float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		_hp -= 5;
+		take_damage(g);
 		break;
 	}
 	case MOVING_RECT_TYPES::COIN:

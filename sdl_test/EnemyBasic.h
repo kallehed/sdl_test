@@ -13,6 +13,8 @@ private:
 	static constexpr float _idle_speed = 0.001f;
 	static constexpr float _active_basic_speed = 0.0015f;
 
+	float _hurt_timer = 0.f;
+	
 	bool _active_scared = false;
 	bool _active_increased_speed = false;
 
@@ -25,6 +27,6 @@ public:
 	void take_damage();
 	void active_logic(Game& g);
 
-	void intersection(float nx, float ny, MovingRect* e) override;
+	void intersection(Game& g, float nx, float ny, MovingRect* e) override;
 };
 

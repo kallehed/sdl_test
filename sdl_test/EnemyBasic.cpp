@@ -22,6 +22,14 @@ void EnemyBasic::draw(Game& g)
 	// 0 is nothing, 1 is flip horizontally
 	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
+	if (_hurt_timer > 0.f) {
+		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 100, 100, 100);
+		_hurt_timer -= g._dt;
+	}
+	else {
+		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 255, 255, 255);
+	}
+
 	SDL_RenderCopyEx(g._renderer, g._textures[TEX::BlueSlime], NULL, &rect, NULL, NULL, flip);
 }
 
@@ -52,6 +60,7 @@ void EnemyBasic::idle_logic(Game& g)
 void EnemyBasic::take_damage()
 {
 	_hp -= 5;
+	_hurt_timer = 150.f;
 
 	// possibly get scared
 	int randint = rand() % 100;
@@ -124,7 +133,7 @@ void EnemyBasic::active_logic(Game& g)
 	}
 }
 
-void EnemyBasic::intersection(float nx, float ny, MovingRect* e)
+void EnemyBasic::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::SHOT:

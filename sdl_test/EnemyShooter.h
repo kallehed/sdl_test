@@ -11,6 +11,8 @@ private:
 
 	float _shoot_timer = 0.f;
 
+	float _hurt_timer = 0.f;
+
 	float _get_away_distance_squared; // defined in cstr
 	float _get_closer_distance_squared;
 
@@ -26,6 +28,6 @@ public:
 	void take_damage();
 	void active_logic(Game& g);
 
-	void intersection(float nx, float ny, MovingRect* e) override;
+	void intersection(Game& g,float nx, float ny, MovingRect* e) override;
 };
 

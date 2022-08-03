@@ -13,6 +13,13 @@ void Camera::construct(Game& g)
 	_btns[VIEW].construct(g, 0, 300, "VIEW");
 }
 
+void Camera::shake(Game& g, float time, float intensity)
+{
+	_shake_timer = time;
+	_shake_intensity = intensity;
+	
+}
+
 int Camera::convert_x(int x) const {
 	return x - (int)_x;
 }
@@ -49,6 +56,16 @@ void Camera::play_logic(Game& g)
 	float speed = 0.2f;
 	_x += (target_x - _x) * speed;
 	_y += (target_y - _y) * speed;
+
+	//if (_shake_timer > 0.f) {
+		//_shake_timer -= g._dt;
+
+	_x += General::randf01() * _shake_intensity;
+	_y += General::randf01() * _shake_intensity;
+	_shake_intensity /= 1.5f;
+	_shake_intensity = std::max(0.f, _shake_intensity);
+
+	//}
 
 	//if (_x < 0) _x = 0;
 	//if (_y < 0) _y = 0;
@@ -110,7 +127,7 @@ void Camera::edit_logic(Game& g)
 				* first for TILE::TILE, second TEX::TEX.
 				* 
 				* int32_t, nr of EnemyBasic
-				* two floats for each EnemyBasic, which represent x and y
+				* two int32_t for each EnemyBasic, which represent i and j (TILES)
 				* 
 				* Same for EnemyShooter
 				*/
@@ -156,10 +173,11 @@ void Camera::edit_logic(Game& g)
 
 							// write x, and y's
 							for (MovingRect* e : vecEB) {
-								float x = e->_x;
-								myfile.write((char*)(&x), sizeof(x));
-								float y = e->_y;
-								myfile.write((char*)(&y), sizeof(y));
+								int32_t i = convert_y_to_i(e->_y);
+								myfile.write((char*)(&i), sizeof(i));
+								int32_t j = convert_x_to_j(e->_x);
+								myfile.write((char*)(&j), sizeof(j));
+								
 							}
 						}
 						{ // enemy shooters
@@ -168,10 +186,11 @@ void Camera::edit_logic(Game& g)
 
 							// write x, and y's
 							for (MovingRect* e : vecES) {
-								float x = e->_x;
-								myfile.write((char*)(&x), sizeof(x));
-								float y = e->_y;
-								myfile.write((char*)(&y), sizeof(y));
+								int32_t i = convert_y_to_i(e->_y);
+								myfile.write((char*)(&i), sizeof(i));
+								int32_t j = convert_x_to_j(e->_x);
+								myfile.write((char*)(&j), sizeof(j));
+
 							}
 						}
 					}
@@ -221,9 +240,9 @@ void Camera::edit_logic(Game& g)
 					myfile.read((char*)&total, sizeof(total));
 
 					for (int i = 0; i < total; ++i) {
-						std::array<float, 2> pos;
+						std::array<int32_t, 2> pos; // i and j (y and x)
 						myfile.read((char*)&pos, sizeof(pos));
-						EnemyBasic* e = new EnemyBasic(pos[0], pos[1]);
+						EnemyBasic* e = new EnemyBasic(pos[1]*_fgrid, pos[0]*_fgrid);
 						g._entity_handler._entities.emplace_back(e);
 					}
 				}
@@ -233,13 +252,12 @@ void Camera::edit_logic(Game& g)
 					myfile.read((char*)&total, sizeof(total));
 
 					for (int i = 0; i < total; ++i) {
-						std::array<float, 2> pos;
+						std::array<int32_t, 2> pos;
 						myfile.read((char*)&pos, sizeof(pos));
-						EnemyShooter* e = new EnemyShooter(pos[0], pos[1]);
+						EnemyShooter* e = new EnemyShooter(pos[1]*_fgrid, pos[0]*_fgrid);
 						g._entity_handler._entities.emplace_back(e);
 					}
 				}
-
 				myfile.close();
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
@@ -313,8 +331,7 @@ void Camera::edit_logic(Game& g)
 				}
 				// no entities removed
 				if (!entity_removed) {
-					!g._tile_handler.remove_tile(g, m_x, m_y);
-
+					g._tile_handler.remove_tile(g, m_x, m_y);
 				}
 			}
 		}

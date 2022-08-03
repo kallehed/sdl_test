@@ -38,7 +38,7 @@ void Coin::draw(Game& g)
 	SDL_RenderCopy(g._renderer, g._textures[TEX::Coin], NULL, &rect);
 }
 
-void Coin::intersection(float nx, float ny, MovingRect* e)
+void Coin::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::ENEMY:

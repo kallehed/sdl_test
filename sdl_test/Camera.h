@@ -23,7 +23,13 @@ public:
 
 	CAM_VIEW::CAM_VIEW _cam_view = CAM_VIEW::TEX;
 
+	// shaking
+	float _shake_timer = 0.f;
+	float _shake_intensity = 1.f;
+
 	void construct(Game& g);
+
+	void shake(Game& g, float time, float intensity);
 
 	int convert_x(int x) const;
 	int convert_y(int y) const;

@@ -72,6 +72,6 @@ void FireMagic::draw(Game& g)
 	SDL_RenderCopy(g._renderer, g._textures[TEX::FireMagic], NULL, &dst);
 }
 
-void FireMagic::intersection(float nx, float ny, MovingRect* e)
+void FireMagic::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 }

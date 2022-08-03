@@ -23,6 +23,14 @@ void EnemyShooter::draw(Game& g)
 
 	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
+	if (_hurt_timer > 0.f) {
+		SDL_SetTextureColorMod(g._textures[TEX::Wizard], 100, 100, 100);
+		_hurt_timer -= g._dt;
+	}
+	else {
+		SDL_SetTextureColorMod(g._textures[TEX::Wizard], 255, 255, 255);
+	}
+
 	SDL_RenderCopyEx(g._renderer, g._textures[TEX::Wizard], NULL, &rect, NULL, NULL, flip);
 }
 
@@ -52,7 +60,7 @@ void EnemyShooter::idle_logic(Game& g)
 
 void EnemyShooter::take_damage() {
 	_hp -= 5;
-
+	_hurt_timer = 150.f;
 	// possibly get scared
 	/*int randint = rand() % 100;
 	if (randint >= 80) // 20 % chance
@@ -76,14 +84,12 @@ void EnemyShooter::active_logic(Game& g)
 	{
 		_shoot_timer = 0.f + 200.f*(General::randf01() - 0.5f);
 		// shoot projectile "Shot"
-		float shot_speed = 0.5f;
+		float speed = 0.028f;
 		float nx, ny;
 		Player& p = g._entity_handler._p;
 		General::normalize_vector_two_points(nx, ny, get_mid_x(), get_mid_y(), p.get_mid_x(), p.get_mid_y());
 
-		float x_speed = nx * shot_speed;
-		float y_speed = ny * shot_speed;
-		auto new_shot = new Shot(this, get_mid_x(), get_mid_y(), x_speed, y_speed, TEX::MagicOrb);
+		auto new_shot = new Shot(this, get_mid_x(), get_mid_y(), nx, ny, speed, TEX::MagicOrb);
 		g._entity_handler._entities_to_add.push_back(new_shot);
 
 	}
@@ -143,7 +149,7 @@ void EnemyShooter::active_logic(Game& g)
 	}
 }
 
-void EnemyShooter::intersection(float nx, float ny, MovingRect* e)
+void EnemyShooter::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::SHOT:

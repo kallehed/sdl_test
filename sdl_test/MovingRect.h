@@ -27,7 +27,7 @@ protected:
 	void go_towards(float x, float y, float speed);
 public:
 	
-	virtual void intersection(float nx, float ny, MovingRect* e) = 0;
+	virtual void intersection(Game& g, float nx, float ny, MovingRect* e) = 0;
 	virtual MOVING_RECT_TYPES get_moving_rect_type() const = 0;
 	virtual void draw(Game& g) = 0;
 	virtual bool logic(Game& g) = 0;

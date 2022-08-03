@@ -41,27 +41,30 @@ namespace TEX {
 	enum TEX : char {
 		VOID = -1,
 		FireMagic = 0,
-		BombExplosion,
-		Bullet,
-		MagicOrb,
-		BlueSlime,
-		Wizard,
-		GreenSlime1,
-		GreenSlime2,
-		RedHuman,
-		Coin,
-		Container,
+		BombExplosion = 1,
+		Bomb = 2,
+		Bullet = 3,
+		MagicOrb = 4,
+		BlueSlime = 5,
+		Wizard = 6,
+		GreenSlime1 = 7,
+		GreenSlime2 = 8,
+		RedHuman = 9,
+		Coin = 10,
+		Container = 11,
 
-		Bush, // Beginning of tile images is at TEX::Bush
-		Bush2,
-		TreeStump,
-		SmallTree1,
-		SmallTree2,
-		GreenSquare,
-		CobbleStone,
-		CobbleWall,
+		Bush = 12, // Beginning of tile images is at TEX::Bush, except, NOT
+		Bush2 = 13,
+		TreeStump = 14,
+		SmallTree1 = 15,
+		SmallTree2 = 16,
+		GreenSquare = 17,
+		CobbleStone = 18,
+		CobbleWall = 19,
 
-		TOTAL
+		BombRed = 20,
+
+		TOTAL = 21
 	};
 }
 
