@@ -2,6 +2,7 @@
 #include "TileHandler.h"
 #include "Button.h"
 #include "enums.h"
+#include <string>
 
 class Game;
 struct SDL_Color;
@@ -41,6 +42,10 @@ public:
 	void play_logic(Game& g);
 
 	void edit_logic(Game& g);
+
+	void save_to_file(Game& g);
+
+	void load_from_file(Game& g);
 
 	void draw_edit(Game& g);
 	void draw_text(Game& g, const char* text, const SDL_Color& color, int x, int y, int scale);

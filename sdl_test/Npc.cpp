@@ -21,6 +21,11 @@ bool Npc::logic(Game& g)
 	if (_talking_to)
 	{
 		_speaking_timer += g._dt;
+		constexpr float threshold = 400.f;
+		if (threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y())) {
+			// don't show
+			_talking_to = false;
+		}
 
 		if (_text_slide_done)
 		{

@@ -12,6 +12,7 @@ void Camera::construct(Game& g)
 	_btns[SAVE].construct(g, 0, 200, "SAVE");
 	_btns[LOAD].construct(g, 0, 250, "LOAD");
 	_btns[VIEW].construct(g, 0, 300, "VIEW");
+	_btns[SET_POS].construct(g, 0, 350, "SET POS");
 }
 
 void Camera::shake(Game& g, float time, float intensity)
@@ -119,150 +120,19 @@ void Camera::edit_logic(Game& g)
 			if (btn_states[CAM_BTN::SAVE] == BTN::CLICKED_ON)
 			{
 				// save button clicked! SAVE
-				std::cout << "SAVE\n";
-
-				/* Format of saves/save.txt:
-				* first "tiles_height" int32_t, how many vertical tiles
-				* second "tiles_width" int32_t, how many horizontal tiles
-				* then, total_tiles times, two data will appear,
-				* first for TILE::TILE, second TEX::TEX.
-				* 
-				* int32_t, nr of EnemyBasic
-				* two int32_t for each EnemyBasic, which represent i and j (TILES)
-				* 
-				* Same for EnemyShooter
-				*/
-
-				std::ofstream myfile;
-				myfile.open("saves/save.txt", std::ios::out | std::ios::binary);
-				
-				// write current state to save
-				{
-					// total_tiles
-					int32_t tiles_height = g._tile_handler._len;
-					myfile.write((char*)(& tiles_height), sizeof(tiles_height));
-
-					int32_t tiles_width = g._tile_handler._len;
-					myfile.write((char*)(&tiles_width), sizeof(tiles_width));
-
-					// TILE::TILE + TEX::TEX objects, _len*_len times
-					for (int i = 0; i < g._tile_handler._len; ++i) {
-						for (int j = 0; j < g._tile_handler._len; ++j) {
-							myfile.write((char*)(&g._tile_handler._tiles[i][j]), sizeof(TILE::TILE));
-							myfile.write((char*)(&g._tile_handler._texs[i][j]), sizeof(TEX::TEX));
-						}
-					}
-
-					// Enemy Basic
-					{
-						std::vector<MovingRect*> vecEB; // basic
-						std::vector<MovingRect*> vecES; // shooter
-						auto& entities = g._entity_handler._entities;
-						for (int i = 0; i < entities.size(); ++i) {
-							if (dynamic_cast<EnemyBasic*>(entities[i])) {
-								// IS ENEMY: BASIC
-								vecEB.emplace_back(entities[i]);
-							}
-							else if (dynamic_cast<EnemyShooter*>(entities[i])) {
-								// IS ENEMY: BASIC
-								vecES.emplace_back(entities[i]);
-							}
-						}
-						{ // enemy basics
-							int32_t total = (int32_t)vecEB.size();
-							myfile.write((char*)(&total), sizeof(total));
-
-							// write x, and y's
-							for (MovingRect* e : vecEB) {
-								int32_t i = convert_y_to_i(e->_y);
-								myfile.write((char*)(&i), sizeof(i));
-								int32_t j = convert_x_to_j(e->_x);
-								myfile.write((char*)(&j), sizeof(j));
-								
-							}
-						}
-						{ // enemy shooters
-							int32_t total = (int32_t)vecES.size();
-							myfile.write((char*)(&total), sizeof(total));
-
-							// write x, and y's
-							for (MovingRect* e : vecES) {
-								int32_t i = convert_y_to_i(e->_y);
-								myfile.write((char*)(&i), sizeof(i));
-								int32_t j = convert_x_to_j(e->_x);
-								myfile.write((char*)(&j), sizeof(j));
-
-							}
-						}
-					}
-				}
-				myfile.close();
+				save_to_file(g);
 			}
 			else if (btn_states[CAM_BTN::LOAD] == BTN::CLICKED_ON)
 			{
 				// load button clicked! LOAD
-				std::cout << "LOAD\n";
-
-				// delete all entities.
-				{
-					for (const auto& e : g._entity_handler._entities) {
-						delete e;
-					}
-					g._entity_handler._entities.clear();
-				}
-
-				std::ifstream myfile;
-				myfile.open("saves/save.txt", std::ios::in | std::ios::binary);
-				
-				int32_t tiles_height;
-				myfile.read((char*)(&tiles_height), sizeof(tiles_height));
-
-				int32_t tiles_width;
-				myfile.read((char*)(&tiles_width), sizeof(tiles_width));
-
-				for (int i = 0; i < tiles_height; ++i) {
-					for (int j = 0; j < tiles_width; ++j) {
-						if (g._tile_handler.tile_in_range(i, j))
-						{
-							myfile.read((char*)(&g._tile_handler._tiles[i][j]), sizeof(TILE::TILE));
-							myfile.read((char*)(&g._tile_handler._texs[i][j]), sizeof(TEX::TEX));
-						}
-						else {
-							std::cout << "ERROR, SAVE FILE TILES OUT OF BOUNDS\n";
-							std::cin.get();
-						}
-					}
-				}
-
-				// load entities
-				// enemy basic
-				{
-					int32_t total;
-					myfile.read((char*)&total, sizeof(total));
-
-					for (int i = 0; i < total; ++i) {
-						std::array<int32_t, 2> pos; // i and j (y and x)
-						myfile.read((char*)&pos, sizeof(pos));
-						EnemyBasic* e = new EnemyBasic(pos[1]*_fgrid, pos[0]*_fgrid);
-						g._entity_handler._entities.emplace_back(e);
-					}
-				}
-				// enemy shooter
-				{
-					int32_t total;
-					myfile.read((char*)&total, sizeof(total));
-
-					for (int i = 0; i < total; ++i) {
-						std::array<int32_t, 2> pos;
-						myfile.read((char*)&pos, sizeof(pos));
-						EnemyShooter* e = new EnemyShooter(pos[1]*_fgrid, pos[0]*_fgrid);
-						g._entity_handler._entities.emplace_back(e);
-					}
-				}
-				myfile.close();
+				load_from_file(g);
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
 				_cam_view = (CAM_VIEW::CAM_VIEW)((_cam_view + 1) % CAM_VIEW::TOTAL);
+			}
+			else if (btn_states[CAM_BTN::SET_POS] == BTN::CLICKED_ON) {
+				g._entity_handler._p.set_x(_x + g._WIDTH / 2);
+				g._entity_handler._p.set_y(_y + g._HEIGHT / 2);
 			}
 		}
 		else { // no button was hovered over
@@ -341,6 +211,161 @@ void Camera::edit_logic(Game& g)
 			}
 		}
 	}
+}
+
+void Camera::save_to_file(Game& g)
+{
+	/* FILE FORMAT:
+	* 
+	* each statement should end with a \n
+	* 
+	* TILE
+	* attributes: i, j, tile, tex
+	* END
+	* 
+	* ENTITY
+	* attributes: i, j, type
+	* type : EnemyBasic, EnemyShooter, Npc, Player
+	* 
+	* 
+	*/
+
+	std::cout << "SAVE\n";
+
+	// Create and open a text file
+	std::ofstream f("saves/save.txt");
+
+	// (TILE)s
+	for (int i = 0; i < g._tile_handler._len; ++i) {
+		for (int j = 0; j < g._tile_handler._len; ++j) {
+			f << "TILE\n";
+			f << "i\n" << i << "\n";
+			f << "j\n" << j << "\n";
+			f << "tile\n" << std::to_string(g._tile_handler.get_tile_type(i, j)) << "\n";
+			f << "tex\n" << std::to_string(g._tile_handler.get_tile_tex(i, j)) << "\n";
+			f << "END\n";
+		}
+	}
+
+	// (ENEMY)s
+	for (auto e : g._entity_handler._entities) {
+		if (dynamic_cast<Enemy*>(e) || dynamic_cast<Npc*>(e)) {
+			f << "ENTITY\n";
+			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
+			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
+			if (dynamic_cast<EnemyBasic*>(e)) {
+				f << "type\n" << "EnemyBasic\n";
+			}
+			else if (dynamic_cast<EnemyShooter*>(e)) {
+				f << "type\n" << "EnemyShooter\n";
+			}
+			else if (dynamic_cast<Npc*>(e)) {
+				f << "type\n" << "Npc\n";
+			}
+			f << "END\n";
+		}
+	}
+
+	// Player position
+	{
+		f << "ENTITY\n";
+		f << "i\n" << std::to_string(g._cam.convert_y_to_i(g._entity_handler._p._y)) << "\n";
+		f << "j\n" << std::to_string(g._cam.convert_x_to_j(g._entity_handler._p._x)) << "\n";
+		f << "type\n" << "Player\n";
+		f << "END\n";
+	}
+
+	// Close the file
+	f.close();
+}
+
+void Camera::load_from_file(Game& g)
+{
+	std::cout << "LOAD\n";
+
+	// delete all entities.
+	{
+		for (const auto& e : g._entity_handler._entities) {
+			delete e;
+		}
+		g._entity_handler._entities.clear();
+	}
+
+	std::string t;
+
+	// Read from the text file
+	std::ifstream f("saves/save.txt");
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (std::getline(f, t)) {
+		// Output the text from the file
+		if (t == "TILE") {
+			int i = 0, j = 0;
+			TILE::TILE tile = TILE::BLOCK;
+			TEX::TEX tex = TEX::FireMagic;
+
+			while (t != "END") {
+				std::getline(f, t);
+				if (t == "i") {
+					std::getline(f, t);
+					i = std::stoi(t);
+				}
+				else if (t == "j") {
+					std::getline(f, t);
+					j = std::stoi(t);
+				}
+				else if (t == "tile") {
+					std::getline(f, t);
+					tile = (TILE::TILE)std::stoi(t);
+				}
+				else if (t == "tex") {
+					std::getline(f, t);
+					tex = (TEX::TEX)std::stoi(t);
+				}
+			}
+			_ASSERT(i >= 0 && j >= 0 && i < g._tile_handler._len && j < g._tile_handler._len);
+			g._tile_handler._tiles[i][j] = tile;
+			g._tile_handler._texs[i][j] = tex;
+		}
+		else if (t == "ENTITY") {
+			int i = 0, j = 0;
+			std::string type = "EnemyBasic";
+			while (t != "END") {
+				std::getline(f, t);
+				if (t == "i") {
+					std::getline(f, t);
+					i = std::stoi(t);
+				}
+				else if (t == "j") {
+					std::getline(f, t);
+					j = std::stoi(t);
+				}
+				else if (t == "type") {
+					std::getline(f, t);
+					type = t;
+				}
+			}
+			if (type == "EnemyBasic") {
+				EnemyBasic* e = new EnemyBasic(j * _fgrid, i * _fgrid);
+				g._entity_handler._entities.emplace_back(e);
+			}
+			else if (type == "EnemyShooter") {
+				EnemyShooter* e = new EnemyShooter(j * _fgrid, i * _fgrid);
+				g._entity_handler._entities.emplace_back(e);
+			}
+			else if (type == "Npc") {
+				Npc* e = new Npc(j * _fgrid, i * _fgrid);
+				g._entity_handler._entities.emplace_back(e);
+			}
+			else if (type == "Player") {
+				g._entity_handler._p.set_x(j * _fgrid);
+				g._entity_handler._p.set_y(i * _fgrid);
+			}
+		}
+	}
+
+	// Close the file
+	f.close();
 }
 
 void Camera::draw_edit(Game& g)

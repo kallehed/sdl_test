@@ -117,6 +117,7 @@ namespace CAM_BTN {
 		SAVE,
 		LOAD,
 		VIEW,
+		SET_POS,
 
 		TOTAL
 	};
