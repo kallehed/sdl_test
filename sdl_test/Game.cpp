@@ -60,6 +60,7 @@ Game::Game()
 			"images/Wizard.png",
 			"images/GreenSlime.png",
 			"images/GreenSlime2.png",
+			"images/RedBear.png",
 			"images/RedHuman.png",
 			"images/RedHumanWalk1.png",
 			"images/RedHumanWalk2.png",
@@ -68,6 +69,7 @@ Game::Game()
 			"images/RedHumanBackwardsWalk2.png",
 			"images/Coin.png",
 			"images/Container.png",
+			"images/DialogueBox.png",
 
 			"images/Bush.png",
 			"images/Bush2.png",
@@ -91,6 +93,12 @@ Game::Game()
 
 	_tile_handler.TileHandler_construct(*this);
 	_cam.construct(*this);
+
+	// Press E texture
+	SDL_Surface* surface = TTF_RenderText_Solid(_font, "Press E", {0,0,0,255});
+	_press_e_texture = SDL_CreateTextureFromSurface(_renderer, surface);
+	_press_e_w_and_h = { surface->w, surface->h };
+	SDL_FreeSurface(surface);
 	
 	// at 1 or 2, makes text very blurry.
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
@@ -114,6 +122,7 @@ void Game::close_game()
 	for (int i = 0; i < TEX::TOTAL; ++i) {
 		SDL_DestroyTexture(_textures[i]);
 	}
+	SDL_DestroyTexture(_press_e_texture);
 
 	SDL_DestroyRenderer(_renderer);
 	_renderer = NULL;
@@ -145,24 +154,16 @@ void Game::game_loop()
 				running = false;
 			}
 			else if (e.type == SDL_KEYDOWN) {
-				if (e.key.keysym.sym < _keys_frame.size()) {
-					_keys_frame[e.key.keysym.sym] = true;
+				if (e.key.keysym.sym < _KEY_BOOLS) {
+					if (_keys_down[e.key.keysym.sym] == false) {
+						_keys_frame[e.key.keysym.sym] = true;
+					}
+					_keys_down[e.key.keysym.sym] = true;
 				}
-				switch (e.key.keysym.sym) {
-				case SDLK_k: // change edit mode bool
-					_edit_mode = !_edit_mode;
-					break;
-				case SDLK_ESCAPE:
-					running = false;
-					break;
-				case SDLK_o:
-					_scale = std::max(1, _scale-1);
-					changedScale();
-					break;
-				case SDLK_p:
-					_scale = std::min(3, _scale + 1);
-					changedScale();
-					break;
+			}
+			else if (e.type == SDL_KEYUP) {
+				if (e.key.keysym.sym < _KEY_BOOLS) {
+					_keys_down[e.key.keysym.sym] = false;
 				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN) {
@@ -193,6 +194,18 @@ void Game::game_loop()
 			{
 				_mouse_scroll = e.wheel.y;
 			}
+		}
+
+		// IMPORTANT EVENTS, FROM CLICKING
+		if (_keys_frame[SDLK_ESCAPE]) { running = false; }
+		if (_keys_frame[SDLK_k]) { _edit_mode = !_edit_mode; }
+		if (_keys_frame[SDLK_o]) {
+			_scale = std::max(1, _scale - 1);
+			changedScale();
+		}
+		if (_keys_frame[SDLK_p]) {
+			_scale = std::min(3, _scale + 1);
+			changedScale();
 		}
 
 		game_logic();
@@ -248,9 +261,6 @@ void Game::game_draw()
 	if constexpr (EDIT) { // exclusive edit-things-to-draw
 		_cam.draw_edit_text(*this); // grid
 	}
-	/*SDL_Rect srcrect = {0, 0 , 300, 300};
-	SDL_RenderCopy(gRenderer, gTextures[image_to_display], &srcrect, &dstrect);
-	*/
 
 	SDL_RenderPresent(_renderer);
 }

@@ -5,7 +5,7 @@ class Bomb : public MovingRect
 public:
 	int _lives = 2;
 	
-	float _detonation_time = 2500.f;
+	float _detonation_time = 2000.f;
 	float _detonation_timer = _detonation_time;
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;

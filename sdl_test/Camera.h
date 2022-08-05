@@ -44,6 +44,7 @@ public:
 
 	void draw_edit(Game& g);
 	void draw_text(Game& g, const char* text, const SDL_Color& color, int x, int y, int scale);
+	void draw_text_background(Game& g, const char* text, const SDL_Color& color, const SDL_Color& color2, int x, int y, int scale);
 	void draw_edit_text(Game& g);
 	void draw_grid(Game& g);
 

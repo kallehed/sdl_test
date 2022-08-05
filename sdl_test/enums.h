@@ -51,6 +51,7 @@ namespace TEX {
 		Wizard,
 		GreenSlime1,
 		GreenSlime2,
+		RedBear,
 		RedHuman,
 		RedHumanWalk1,
 		RedHumanWalk2,
@@ -59,6 +60,7 @@ namespace TEX {
 		RedHumanBackwardsWalk2,
 		Coin,
 		Container,
+		DialogueBox,
 
 		Bush, // Beginning of tile images is at TEX::Bush, except, NOT
 		Bush2,

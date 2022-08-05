@@ -351,7 +351,10 @@ void Camera::draw_edit(Game& g)
 
 void Camera::draw_text(Game& g, const char* text, const SDL_Color& color, int x, int y, int scale)
 {
-	SDL_Surface* surface = TTF_RenderText_Solid(g._font, text, color);
+	if (text[0] == '\0') {
+		return; // don't do anything if it's empty
+	}
+	SDL_Surface* surface = TTF_RenderText_Solid_Wrapped(g._font, text, color, 0);
 
 	// now you can convert it into a texture
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(g._renderer, surface);
@@ -359,7 +362,21 @@ void Camera::draw_text(Game& g, const char* text, const SDL_Color& color, int x,
 	SDL_Rect Message_rect = { x,y, surface->w*scale, surface->h*scale };
 
 	SDL_FreeSurface(surface);
-	SDL_SetRenderDrawColor(g._renderer, 255, 255, 255, 255);
+	SDL_RenderCopy(g._renderer, texture, NULL, &Message_rect);
+
+	SDL_DestroyTexture(texture);
+}
+void Camera::draw_text_background(Game& g, const char* text, const SDL_Color& color, const SDL_Color& color2, int x, int y, int scale)
+{
+	SDL_Surface* surface = TTF_RenderText_Solid(g._font, text, color);
+
+	// now you can convert it into a texture
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(g._renderer, surface);
+
+	SDL_Rect Message_rect = { x,y, surface->w * scale, surface->h * scale };
+
+	SDL_FreeSurface(surface);
+	SDL_SetRenderDrawColor(g._renderer, color2.r, color2.b, color2.g, color2.a);
 	SDL_RenderFillRect(g._renderer, &Message_rect);
 	SDL_RenderCopy(g._renderer, texture, NULL, &Message_rect);
 
@@ -397,13 +414,13 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		}
 		SDL_Color c = { 0,0,0 };
-		draw_text(g, text, c, 0, 0, 3);
+		draw_text_background(g, text, c, {255,255,255,255}, 0, 0, 3);
 		
 	}
 	else if (_edit_mode == EDIT_MODE::TEX)
 	{
 		SDL_Color c = { 0,0,0 };
-		draw_text(g, "TEX:", c, 0, 0, 3);
+		draw_text_background(g, "TEX:", c, {255,255,255,255}, 0, 0, 3);
 		
 		// draw texture of tile
 		SDL_Rect rect = { 100, 0, g._cam._grid, g._cam._grid };
@@ -426,7 +443,7 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		}
 		SDL_Color c = { 0,0,0 };
-		draw_text(g, text, c, 0, 0, 3);
+		draw_text_background(g, text, c, {255,255,255,255}, 0, 0, 3);
 	}
 
 	// other edit draw stuff

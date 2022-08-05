@@ -14,8 +14,8 @@
 
 class Game {
 public:
-	const int _HEIGHT = 600;
-	const int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
+	static constexpr int _HEIGHT = 600;
+	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
 	int _scale = 1;
 
 	long long _ticks = 0;
@@ -26,6 +26,8 @@ public:
 
 	//textures
 	SDL_Texture* _textures[TEX::TOTAL];
+	SDL_Texture* _press_e_texture;
+	std::array<int, 2> _press_e_w_and_h;
 
 	float _dt = 0; // time for previous frame to run in MS
 	const float _MAX_DT = 1000.f / 50.f; // 50 is the lowest framerate allowed. Also maximum _dt
@@ -38,8 +40,12 @@ public:
 	std::array<int, 2> _mouse_pos_on_latest_press = {0, 0};
 	int32_t _mouse_scroll = 0;
 
+	static constexpr int _KEY_BOOLS = 256;
+	// keys CURRENTLY pressed
+	std::array<bool, _KEY_BOOLS> _keys_down;
+
 	// keys pressed THIS frame, access with [SDLK_x]
-	std::array<bool, 256> _keys_frame;
+	std::array<bool, _KEY_BOOLS> _keys_frame;
 
 	Camera _cam;
 
