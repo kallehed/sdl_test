@@ -25008,6 +25008,14 @@ Npc
 END
 ENTITY
 i
+0
+j
+18
+type
+Portal
+END
+ENTITY
+i
 42
 j
 23

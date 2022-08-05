@@ -13,6 +13,8 @@ public:
 
 	void TileHandler_construct(Game& g);
 
+	void reset_all(Game& g);
+
 	void draw_textures(Game& g, int alpha);
 
 	void draw_shapes(Game& g);

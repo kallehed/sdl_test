@@ -4,6 +4,7 @@
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
 #include "Npc.h"
+#include "Portal.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -182,7 +183,13 @@ void Camera::edit_logic(Game& g)
 					}
 					case NPC:
 					{
-						g._entity_handler._entities.push_back(new Npc(r_x, r_y));
+						g._entity_handler._draw_entities.push_back(new Npc(r_x, r_y));
+						break;
+					}
+					case PORTAL:
+					{
+						g._entity_handler._draw_entities.push_back(new Portal(r_x, r_y));
+						break;
 					}
 					}
 				}
@@ -204,9 +211,24 @@ void Camera::edit_logic(Game& g)
 						break;
 					}
 				}
+
 				// no entities removed
 				if (!entity_removed) {
-					g._tile_handler.remove_tile(g, m_x, m_y);
+					bool entity_removed2 = false;
+					for (int i = ((int)g._entity_handler._draw_entities.size()) - 1; i > -1; --i) {
+						auto& e = g._entity_handler._draw_entities[i];
+						if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
+							e->get_x(), e->get_y(), e->get_w(), e->get_h()))
+						{
+							delete e;
+							g._entity_handler._draw_entities.erase(g._entity_handler._draw_entities.begin() + i);
+							entity_removed2 = true;
+							break;
+						}
+					}
+					if (!entity_removed2) {
+						g._tile_handler.remove_tile(g, m_x, m_y);
+					}
 				}
 			}
 		}
@@ -233,7 +255,8 @@ void Camera::save_to_file(Game& g)
 	std::cout << "SAVE\n";
 
 	// Create and open a text file
-	std::ofstream f("saves/save.txt");
+	std::string text_file = "levels/level_" + std::to_string((int)g._level) + ".txt";
+	std::ofstream f(text_file);
 
 	// (TILE)s
 	for (int i = 0; i < g._tile_handler._len; ++i) {
@@ -247,9 +270,9 @@ void Camera::save_to_file(Game& g)
 		}
 	}
 
-	// (ENEMY)s
+	// (ENTITY)s
 	for (auto e : g._entity_handler._entities) {
-		if (dynamic_cast<Enemy*>(e) || dynamic_cast<Npc*>(e)) {
+		if (dynamic_cast<Enemy*>(e)) {
 			f << "ENTITY\n";
 			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
 			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
@@ -259,8 +282,21 @@ void Camera::save_to_file(Game& g)
 			else if (dynamic_cast<EnemyShooter*>(e)) {
 				f << "type\n" << "EnemyShooter\n";
 			}
-			else if (dynamic_cast<Npc*>(e)) {
+			f << "END\n";
+		}
+	}
+	// Draw Entities
+	for (auto e : g._entity_handler._draw_entities) {
+		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e)) {
+			f << "ENTITY\n";
+			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
+			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
+
+			if (dynamic_cast<Npc*>(e)) {
 				f << "type\n" << "Npc\n";
+			}
+			else if (dynamic_cast<Portal*>(e)) {
+				f << "type\n" << "Portal\n";
 			}
 			f << "END\n";
 		}
@@ -283,18 +319,28 @@ void Camera::load_from_file(Game& g)
 {
 	std::cout << "LOAD\n";
 
+	// reset all tiles
+	g._tile_handler.reset_all(g);
+
 	// delete all entities.
 	{
 		for (const auto& e : g._entity_handler._entities) {
 			delete e;
 		}
 		g._entity_handler._entities.clear();
+
+		for (const auto& e : g._entity_handler._draw_entities) {
+			delete e;
+		}
+		g._entity_handler._draw_entities.clear();
 	}
 
 	std::string t;
 
 	// Read from the text file
-	std::ifstream f("saves/save.txt");
+	std::string text_file = "levels/level_" + std::to_string((int)g._level) + ".txt";
+
+	std::ifstream f(text_file);
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
@@ -355,7 +401,11 @@ void Camera::load_from_file(Game& g)
 			}
 			else if (type == "Npc") {
 				Npc* e = new Npc(j * _fgrid, i * _fgrid);
-				g._entity_handler._entities.emplace_back(e);
+				g._entity_handler._draw_entities.emplace_back(e);
+			}
+			else if (type == "Portal") {
+				Portal* e = new Portal(j * _fgrid, i * _fgrid);
+				g._entity_handler._draw_entities.emplace_back(e);
 			}
 			else if (type == "Player") {
 				g._entity_handler._p.set_x(j * _fgrid);
@@ -464,7 +514,10 @@ void Camera::draw_edit_text(Game& g)
 			text = "Enemy: Shooter";
 			break;
 		case NPC:
-			text = "NPC";
+			text = "Npc";
+			break;
+		case PORTAL:
+			text = "Portal";
 			break;
 		}
 		SDL_Color c = { 0,0,0 };

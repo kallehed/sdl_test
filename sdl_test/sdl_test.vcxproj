@@ -143,6 +143,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,6 +171,7 @@
     <ClCompile Include="PickupableShot.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="TileHandler.cpp" />
@@ -191,6 +193,7 @@
     <ClInclude Include="MovingRect.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="PickupableShot.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Shot.h" />

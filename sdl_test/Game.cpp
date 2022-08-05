@@ -34,6 +34,7 @@ Game::Game()
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		_WIDTH, _HEIGHT,
 		SDL_WINDOW_SHOWN);
+	SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
 	
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
@@ -84,6 +85,8 @@ Game::Game()
 			"images/FlowerRed.png",
 			"images/FlowerBlue1.png",
 			"images/FlowerBlue2.png",
+
+			"images/Portal.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
@@ -91,6 +94,7 @@ Game::Game()
 		}
 	}
 
+	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	_tile_handler.TileHandler_construct(*this);
 	_cam.construct(*this);
 
@@ -101,8 +105,10 @@ Game::Game()
 	SDL_FreeSurface(surface);
 	
 	// at 1 or 2, makes text very blurry.
-	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
+
+	_cam.load_from_file(*this);
 }
 
 void Game::start_game()
@@ -213,6 +219,11 @@ void Game::game_loop()
 		if (_edit_mode) game_draw<true>();
 		else game_draw<false>();
 		
+		// change level possibly
+		if (_change_level) {
+			_cam.load_from_file(*this);
+			_change_level = false;
+		}
 
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;
 		if (_ticks % 60 == 0) {

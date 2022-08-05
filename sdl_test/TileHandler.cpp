@@ -8,6 +8,10 @@
 
 void TileHandler::TileHandler_construct(Game& g)
 {
+	reset_all(g);
+}
+
+void TileHandler::reset_all(Game& g) {
 	// Functionality of tiles
 	for (int i = 0; i < _len; ++i) {
 		for (int j = 0; j < _len; ++j) {

@@ -17,6 +17,7 @@ enum class MOVING_RECT_TYPES : char {
 	EXPLOSION,
 	FIRE_MAGIC,
 	NPC,
+	PORTAL,
 
 	TOTAL
 };
@@ -75,6 +76,8 @@ namespace TEX {
 		FlowerRed,
 		FlowerBlue1,
 		FlowerBlue2,
+
+		Portal,
 		
 		TOTAL
 	};
@@ -96,6 +99,7 @@ namespace ENTITIES {
 		ENEMY_BASIC,
 		ENEMY_SHOOTER,
 		NPC,
+		PORTAL,
 
 		TOTAL
 	};
@@ -130,5 +134,12 @@ namespace CAM_VIEW {
 		HALF,
 
 		TOTAL
+	};
+}
+
+namespace LEVEL {
+	enum LEVEL : char {
+		START,
+		LEVEL1,
 	};
 }
