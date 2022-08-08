@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <array>
+#include <string>
 
 #include "Camera.h"
 #include "TileHandler.h"
@@ -57,6 +58,7 @@ public:
 	// what level we are on
 	LEVEL::LEVEL _level = LEVEL::START;
 	bool _change_level = false;
+	std::string _destination_portal = "Error_Name";
 
 	SDL_Texture* loadTexture(const char* path);
 

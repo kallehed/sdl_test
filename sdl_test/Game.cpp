@@ -108,7 +108,7 @@ Game::Game()
 	
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
 
-	_cam.load_from_file(*this);
+	_cam.load_from_file(*this, _level);
 }
 
 void Game::start_game()
@@ -221,7 +221,7 @@ void Game::game_loop()
 		
 		// change level possibly
 		if (_change_level) {
-			_cam.load_from_file(*this);
+			_cam.load_from_file(*this, _level);
 			_change_level = false;
 		}
 

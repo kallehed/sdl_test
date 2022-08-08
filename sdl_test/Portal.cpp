@@ -6,7 +6,8 @@ MOVING_RECT_TYPES Portal::get_moving_rect_type() const
     return MOVING_RECT_TYPES::PORTAL;
 }
 
-Portal::Portal(float x, float y) : MovingRect(x, y, 64, 81, 1.f)
+Portal::Portal(float x, float y, int destination_level, std::string name, std::string destination_name)
+	: MovingRect(x, y, 64, 81, 1.f), _destination_level(destination_level), _name(name), _destination_name(destination_name)
 {
 }
 
@@ -21,7 +22,8 @@ bool Portal::logic(Game& g)
 		if (g._keys_frame[SDLK_e])
 		{
 			// teleport to other level
-			g._level = (LEVEL::LEVEL)(g._level + 1);
+			g._level = (LEVEL::LEVEL)(_destination_level);
+			g._destination_portal = _destination_name;
 			g._change_level = true;
 		}
 	}

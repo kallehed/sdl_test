@@ -28,6 +28,9 @@ public:
 	float _shake_timer = 0.f;
 	float _shake_intensity = 1.f;
 
+	float _max_x;
+	float _max_y;
+
 	void construct(Game& g);
 
 	void shake(Game& g, float time, float intensity);
@@ -45,7 +48,7 @@ public:
 
 	void save_to_file(Game& g);
 
-	void load_from_file(Game& g);
+	void load_from_file(Game& g, int level);
 
 	void draw_edit(Game& g);
 	void draw_text(Game& g, const char* text, const SDL_Color& color, int x, int y, int scale);

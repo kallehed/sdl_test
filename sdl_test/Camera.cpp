@@ -9,6 +9,9 @@
 
 void Camera::construct(Game& g)
 {
+	_max_x = TileHandler::_len * _fgrid - g._WIDTH;
+	_max_y = TileHandler::_len * _fgrid - g._HEIGHT;
+
 	using namespace CAM_BTN;
 	_btns[SAVE].construct(g, 0, 200, "SAVE");
 	_btns[LOAD].construct(g, 0, 250, "LOAD");
@@ -70,8 +73,10 @@ void Camera::play_logic(Game& g)
 
 	//}
 
-	//if (_x < 0) _x = 0;
-	//if (_y < 0) _y = 0;
+	if (_x < 0) _x = 0;
+	if (_y < 0) _y = 0;
+	if (_x > _max_x) _x = _max_x;
+	if (_y > _max_y) _y = _max_y;
 }
 
 template <typename T>
@@ -126,7 +131,7 @@ void Camera::edit_logic(Game& g)
 			else if (btn_states[CAM_BTN::LOAD] == BTN::CLICKED_ON)
 			{
 				// load button clicked! LOAD
-				load_from_file(g);
+				load_from_file(g, g._level);
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
 				_cam_view = (CAM_VIEW::CAM_VIEW)((_cam_view + 1) % CAM_VIEW::TOTAL);
@@ -188,7 +193,7 @@ void Camera::edit_logic(Game& g)
 					}
 					case PORTAL:
 					{
-						g._entity_handler._draw_entities.push_back(new Portal(r_x, r_y));
+						g._entity_handler._draw_entities.push_back(new Portal(r_x, r_y, g._level+1, "Error_Portal_Name", "Error_Destination_Name"));
 						break;
 					}
 					}
@@ -246,8 +251,8 @@ void Camera::save_to_file(Game& g)
 	* END
 	* 
 	* ENTITY
-	* attributes: i, j, type
-	* type : EnemyBasic, EnemyShooter, Npc, Player
+	* attributes: i, j, type, portal_destination, portal_name, portal_destination_name
+	* type : EnemyBasic, EnemyShooter, Npc, Player, Portal
 	* 
 	* 
 	*/
@@ -297,6 +302,10 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<Portal*>(e)) {
 				f << "type\n" << "Portal\n";
+				Portal* portal = dynamic_cast<Portal*>(e);
+				f << "portal_destination\n" << std::to_string(portal->_destination_level) << "\n";
+				f << "portal_name\n" << portal->_name << "\n";
+				f << "portal_destination_name\n" << portal->_destination_name << "\n";
 			}
 			f << "END\n";
 		}
@@ -315,7 +324,7 @@ void Camera::save_to_file(Game& g)
 	f.close();
 }
 
-void Camera::load_from_file(Game& g)
+void Camera::load_from_file(Game& g, int level)
 {
 	std::cout << "LOAD\n";
 
@@ -338,9 +347,14 @@ void Camera::load_from_file(Game& g)
 	std::string t;
 
 	// Read from the text file
-	std::string text_file = "levels/level_" + std::to_string((int)g._level) + ".txt";
+	std::string text_file = "levels/level_" + std::to_string(level) + ".txt";
 
 	std::ifstream f(text_file);
+
+	bool player_has_been_placed_by_portal = false;
+
+	int highest_tile_i = 20;
+	int highest_tile_j = 20;
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
@@ -355,10 +369,12 @@ void Camera::load_from_file(Game& g)
 				if (t == "i") {
 					std::getline(f, t);
 					i = std::stoi(t);
+					
 				}
 				else if (t == "j") {
 					std::getline(f, t);
 					j = std::stoi(t);
+					
 				}
 				else if (t == "tile") {
 					std::getline(f, t);
@@ -372,10 +388,25 @@ void Camera::load_from_file(Game& g)
 			_ASSERT(i >= 0 && j >= 0 && i < g._tile_handler._len && j < g._tile_handler._len);
 			g._tile_handler._tiles[i][j] = tile;
 			g._tile_handler._texs[i][j] = tex;
+
+			if (tile != TILE::VOID) {
+				if (i > highest_tile_i) {
+					highest_tile_i = i;
+				}
+				if (j > highest_tile_j) {
+					highest_tile_j = j;
+				}
+			}
 		}
 		else if (t == "ENTITY") {
 			int i = 0, j = 0;
 			std::string type = "EnemyBasic";
+
+			// PORTAL STUFF
+			int portal_destination = 0;
+			std::string portal_name = "Error_Name";
+			std::string portal_destination_name = "Error_Destination_name";
+
 			while (t != "END") {
 				std::getline(f, t);
 				if (t == "i") {
@@ -389,6 +420,18 @@ void Camera::load_from_file(Game& g)
 				else if (t == "type") {
 					std::getline(f, t);
 					type = t;
+				}
+				else if (t == "portal_destination") {
+					std::getline(f, t);
+					portal_destination = std::stoi(t);
+				}
+				else if (t == "portal_name") {
+					std::getline(f, t);
+					portal_name = t;
+				}
+				else if (t == "portal_destination_name") {
+					std::getline(f, t);
+					portal_destination_name = t;
 				}
 			}
 			if (type == "EnemyBasic") {
@@ -404,15 +447,26 @@ void Camera::load_from_file(Game& g)
 				g._entity_handler._draw_entities.emplace_back(e);
 			}
 			else if (type == "Portal") {
-				Portal* e = new Portal(j * _fgrid, i * _fgrid);
+				Portal* e = new Portal(j * _fgrid, i * _fgrid, portal_destination, portal_name, portal_destination_name);
 				g._entity_handler._draw_entities.emplace_back(e);
+
+				if (portal_name == g._destination_portal) {
+					g._entity_handler._p.set_x(j* _fgrid);
+					g._entity_handler._p.set_y(i* _fgrid);
+					player_has_been_placed_by_portal = true;
+				}
 			}
 			else if (type == "Player") {
-				g._entity_handler._p.set_x(j * _fgrid);
-				g._entity_handler._p.set_y(i * _fgrid);
+				if (player_has_been_placed_by_portal == false) {
+					g._entity_handler._p.set_x(j * _fgrid);
+					g._entity_handler._p.set_y(i * _fgrid);
+				}
 			}
 		}
 	}
+	 // TODO:: FIX SO ONLY TILES THAT ARE NOT VOID SHOULD AFFECT MAX X OR Y.
+	g._cam._max_x = (highest_tile_j + 1) * g._cam._fgrid - g._WIDTH;
+	g._cam._max_y = (highest_tile_i + 1) * g._cam._fgrid - g._HEIGHT;
 
 	// Close the file
 	f.close();
