@@ -204,7 +204,16 @@ void Game::game_loop()
 
 		// IMPORTANT EVENTS, FROM CLICKING
 		if (_keys_frame[SDLK_ESCAPE]) { running = false; }
-		if (_keys_frame[SDLK_k]) { _edit_mode = !_edit_mode; }
+		if (_keys_frame[SDLK_k]) {
+			if (_edit_mode == false) {
+				_edit_mode = true;
+				_cam.load_from_file(*this, _level);
+			}
+			else {
+				_edit_mode = false;
+				_cam.save_to_file(*this);
+			}
+		}
 		if (_keys_frame[SDLK_o]) {
 			_scale = std::max(1, _scale - 1);
 			changedScale();

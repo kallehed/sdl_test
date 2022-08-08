@@ -7,9 +7,14 @@ MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::ENEMY;
 }
 
-EnemyBasic::EnemyBasic(float x, float y) : Enemy(x, y,30.f,30.f, 20, 120.f, 150.f, 5000.f)
-{
+// TODO: Make Destructible tile only give hearts + ammo.
+// + There should only be one "Pickupable" class.
+// + Enemies should be able to give variable coin amounts
+// + Coins should be displayed by number instead of bar
+// 
 
+EnemyBasic::EnemyBasic(float x, float y) : Enemy(x, y, 40.f,40.f, 20, 150.f, 200.f, 5000.f)
+{
 }
 
 void EnemyBasic::draw(Game& g)
