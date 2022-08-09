@@ -9,7 +9,6 @@ MOVING_RECT_TYPES Pickupable::get_moving_rect_type() const
 Pickupable::Pickupable(PICKUPABLE_TYPE type, float x, float y, float x_vel, float y_vel)
 	: _type(type), MovingRect(0, 0, 30.f, 30.f, 0.003f)
 {
-
 	if (_type == PICKUPABLE_TYPE::COIN) {
 		_texture = TEX::Coin;
 	}
@@ -17,10 +16,10 @@ Pickupable::Pickupable(PICKUPABLE_TYPE type, float x, float y, float x_vel, floa
 		_texture = TEX::Container;
 	}
 	else if (_type == PICKUPABLE_TYPE::BOMB) {
-
+		_texture = TEX::Bomb;
 	}
 	else if (_type == PICKUPABLE_TYPE::HEART) {
-
+		_texture = TEX::Heart;
 	}
 
 	set_x(x - get_half_w());

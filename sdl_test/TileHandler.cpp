@@ -281,14 +281,14 @@ bool TileHandler::hurt_tile(Game& g, int i, int j)
 			{
 
 				float rand = General::randf01();
-				if (rand >= 0.5f) {
+				if (rand >= 0.4f) {
 					float x = ((float)j + 0.5f)* g._cam._fgrid;
 					float y = ((float)i + 0.5f) * g._cam._fgrid;
 					float x_vel = (General::randf01() - 0.5f) / 15.f;
 					float y_vel = (General::randf01() - 0.5f) / 15.f;
 					if (rand <= 0.8f) {
-						// drop coin
-						Pickupable* coin = new Pickupable(PICKUPABLE_TYPE::COIN,x,y, x_vel, y_vel);
+						// drop heart
+						Pickupable* coin = new Pickupable(PICKUPABLE_TYPE::HEART, x, y, x_vel, y_vel);
 						g._entity_handler._entities_to_add.push_back(coin);
 					}
 					else if (rand <= 0.9f) {
@@ -298,7 +298,8 @@ bool TileHandler::hurt_tile(Game& g, int i, int j)
 					}
 					else {
 						// drop pickupable bomb
-						
+						Pickupable* e = new Pickupable(PICKUPABLE_TYPE::BOMB, x, y, x_vel, y_vel);
+						g._entity_handler._entities_to_add.push_back(e);
 					}
 				}
 			}

@@ -269,6 +269,14 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 			// 1 to 3 possible gain
 			_shots += 1 + (rand() % 3);
 		}
+		else if (p->_type == PICKUPABLE_TYPE::HEART) {
+			// constant gain
+			_hp += 5;
+			_hp = std::min(_max_hp, _hp);
+		}
+		else if (p->_type == PICKUPABLE_TYPE::BOMB) {
+			_bombs += 2 + (rand() % 2);
+		}
 		break;
 	}
 	}

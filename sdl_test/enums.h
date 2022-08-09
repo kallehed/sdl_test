@@ -78,6 +78,7 @@ namespace TEX {
 		FlowerBlue2,
 
 		Portal,
+		Heart,
 		
 		TOTAL
 	};

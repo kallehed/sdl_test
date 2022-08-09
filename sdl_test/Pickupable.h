@@ -10,7 +10,7 @@ class Pickupable : public MovingRect
 public:
 	bool _picked_up = false;
 
-	TEX::TEX _texture;
+	TEX::TEX _texture = TEX::RedHumanBackwardsWalk1;
 
 	PICKUPABLE_TYPE _type;
 
