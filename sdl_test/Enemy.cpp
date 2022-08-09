@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "Game.h"
 #include "General.h"
-#include "Coin.h"
+#include "Pickupable.h"
 
 Enemy::Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time) : MovingRect(x, y, w, h, 0.01f),
 	_max_hp(max_hp), _hp(max_hp), _activation_radius_squared(activation_radius*activation_radius),
@@ -43,7 +43,7 @@ bool Enemy::logic(Game& g)
 	// kill self?
 	if (_hp < 1) {
 		// spawn coins?
-		g._entity_handler._entities_to_add.push_back(new Coin(get_mid_x(),get_mid_y(), get_x_vel()/20.f, get_y_vel()/20.f));
+		g._entity_handler._entities_to_add.push_back(new Pickupable(PICKUPABLE_TYPE::COIN,get_mid_x(),get_mid_y(), get_x_vel()/20.f, get_y_vel()/20.f));
 
 		delete this;
 		return true;

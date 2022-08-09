@@ -3,6 +3,7 @@
 #include "Bomb.h"
 #include "Shot.h"
 #include "FireMagic.h"
+#include "Pickupable.h"
 
 MOVING_RECT_TYPES Player::get_moving_rect_type() const
 {
@@ -258,15 +259,16 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		take_damage(g);
 		break;
 	}
-	case MOVING_RECT_TYPES::COIN:
+	case MOVING_RECT_TYPES::PICKUPABLE:
 	{
-		_coins += 1;
-		break;
-	}
-	case MOVING_RECT_TYPES::PICKUPABLE_SHOT:
-	{
-		// 1 to 3 possible gain
-		_shots += 1 + (rand() % 3); 
+		Pickupable* p = dynamic_cast<Pickupable*>(e);
+		if (p->_type == PICKUPABLE_TYPE::COIN) {
+			_coins += 1;
+		}
+		else if (p->_type == PICKUPABLE_TYPE::SHOT) {
+			// 1 to 3 possible gain
+			_shots += 1 + (rand() % 3);
+		}
 		break;
 	}
 	}

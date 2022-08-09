@@ -1,8 +1,7 @@
 #include "TileHandler.h"
 #include "Game.h"
-#include "Coin.h"
-#include "PickupableShot.h"
 #include "General.h"
+#include "Pickupable.h"
 
 #include <cassert>  
 
@@ -289,12 +288,12 @@ bool TileHandler::hurt_tile(Game& g, int i, int j)
 					float y_vel = (General::randf01() - 0.5f) / 15.f;
 					if (rand <= 0.8f) {
 						// drop coin
-						Coin* coin = new Coin(x,y, x_vel, y_vel);
+						Pickupable* coin = new Pickupable(PICKUPABLE_TYPE::COIN,x,y, x_vel, y_vel);
 						g._entity_handler._entities_to_add.push_back(coin);
 					}
 					else if (rand <= 0.9f) {
 						// drop pickupable shot
-						PickupableShot* shot = new PickupableShot(x, y, x_vel, y_vel);
+						Pickupable* shot = new Pickupable(PICKUPABLE_TYPE::SHOT, x, y, x_vel, y_vel);
 						g._entity_handler._entities_to_add.push_back(shot);
 					}
 					else {

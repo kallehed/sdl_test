@@ -12,7 +12,7 @@ enum class MOVING_RECT_TYPES : char {
 	ENEMY,
 	SHOT,
 	COIN,
-	PICKUPABLE_SHOT,
+	PICKUPABLE,
 	BOMB,
 	EXPLOSION,
 	FIRE_MAGIC,
@@ -82,6 +82,16 @@ namespace TEX {
 		TOTAL
 	};
 }
+
+// Pickupables
+enum class PICKUPABLE_TYPE {
+	COIN,
+	SHOT,
+	BOMB,
+	HEART,
+
+	TOTAL
+};
 
 // Camera stuff
 namespace EDIT_MODE {

@@ -157,7 +157,6 @@
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBasic.cpp" />
     <ClCompile Include="EnemyShooter.cpp" />
@@ -168,7 +167,7 @@
     <ClCompile Include="General.cpp" />
     <ClCompile Include="MovingRect.cpp" />
     <ClCompile Include="Npc.cpp" />
-    <ClCompile Include="PickupableShot.cpp" />
+    <ClCompile Include="Pickupable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -180,7 +179,6 @@
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Coin.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBasic.h" />
     <ClInclude Include="EnemyShooter.h" />
@@ -192,7 +190,7 @@
     <ClInclude Include="General.h" />
     <ClInclude Include="MovingRect.h" />
     <ClInclude Include="Npc.h" />
-    <ClInclude Include="PickupableShot.h" />
+    <ClInclude Include="Pickupable.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />

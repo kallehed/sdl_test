@@ -1,13 +1,22 @@
 #pragma once
+
 #include "MovingRect.h"
-class Coin : public MovingRect
+#include "enums.h"
+
+class Game;
+
+class Pickupable : public MovingRect
 {
 public:
-	int _lives = 1;
+	bool _picked_up = false;
+
+	TEX::TEX _texture;
+
+	PICKUPABLE_TYPE _type;
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
-	Coin(float x, float y, float x_vel, float y_vel);
+	Pickupable(PICKUPABLE_TYPE type, float x, float y, float x_vel, float y_vel);
 
 	bool logic(Game& g) override;
 
