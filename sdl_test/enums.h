@@ -94,6 +94,13 @@ enum class PICKUPABLE_TYPE {
 	TOTAL
 };
 
+enum class NPC_TYPE {
+	NPC1,
+	NPC2,
+
+	TOTAL
+};
+
 // Camera stuff
 namespace EDIT_MODE {
 	enum EDIT_MODE : char {

@@ -34,4 +34,6 @@ public:
 
 	float get_x_vel() const;
 	float get_y_vel() const;
+
+	virtual ~MovingRect();
 };

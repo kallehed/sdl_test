@@ -1,33 +1,33 @@
 #pragma once
 #include <string>
+#include <array>
 #include "MovingRect.h"
-
-class Game;
+#include "enums.h"
 
 class Npc : public MovingRect
 {
 public:
+	NPC_TYPE _npc_type;
 
-	bool _player_close = false;
+	// whether visible or not
+	bool _press_e_sign = false;
 
-	bool _talking_to = false;
+	bool _talking_to = false; // to player
+
+	char* _text; // ex "hello\nperson\0I like bread\0"
+	int _total_chars = 0; // in _text
 
 	float _speaking_timer = 0.f;
-	int _text_slide = 0;
-	bool _text_slide_done = false;
-
-	std::array<std::string, 6> _texts = {
-		"Hello traveller...\nYou are sure to be confused,\nbut do not worry!",
-		"I am, The Read Bear.\nThe great helper!",
-		"Firstly...\nAs you probably already know,\nyou can move with the arrows",
-		"Secondly, with the mouse, you\ncan 'left click' to attack!",
-		"and possibly also right click\nfor something else...",
-		"Thirdly... Nothing can describe\nwhat you are about to\nexperience...",
-	};
+	int _char_at = 0; // where to start displaying text
+	int _chars_in = 0; // at what character \0 is placed.
+	char _temp = 'Z'; // temporary
+	bool _end_of_page = false; // wether at end of page or not
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
-	Npc(float x, float y);
+	Npc(Game& g, NPC_TYPE type, float x, float y);
+
+	~Npc();
 
 	bool logic(Game& g) override;
 

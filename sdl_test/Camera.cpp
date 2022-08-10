@@ -188,7 +188,7 @@ void Camera::edit_logic(Game& g)
 					}
 					case NPC:
 					{
-						g._entity_handler._draw_entities.push_back(new Npc(r_x, r_y));
+						g._entity_handler._draw_entities.push_back(new Npc(g, NPC_TYPE::NPC1, r_x, r_y));
 						break;
 					}
 					case PORTAL:
@@ -299,6 +299,8 @@ void Camera::save_to_file(Game& g)
 
 			if (dynamic_cast<Npc*>(e)) {
 				f << "type\n" << "Npc\n";
+				Npc* npc = dynamic_cast<Npc*>(e);
+				f << "npc_type\n" << std::to_string((int)npc->_npc_type) << "\n";
 			}
 			else if (dynamic_cast<Portal*>(e)) {
 				f << "type\n" << "Portal\n";
@@ -356,25 +358,36 @@ void Camera::load_from_file(Game& g, int level)
 	int highest_tile_i = 20;
 	int highest_tile_j = 20;
 
+
+	// General variables for all categories
+	int i = 0, j = 0;
+	TILE::TILE tile = TILE::BLOCK;
+	TEX::TEX tex = TEX::FireMagic;
+
+	std::string type = "EnemyBasic";
+
+	// PORTAL STUFF
+	int portal_destination = 0;
+	std::string portal_name = "Error_Name";
+	std::string portal_destination_name = "Error_Destination_name";
+
+	// NPC STUFF
+	NPC_TYPE npc_type = NPC_TYPE::NPC1;
+
+
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
 		// Output the text from the file
 		if (t == "TILE") {
-			int i = 0, j = 0;
-			TILE::TILE tile = TILE::BLOCK;
-			TEX::TEX tex = TEX::FireMagic;
-
 			while (t != "END") {
 				std::getline(f, t);
 				if (t == "i") {
 					std::getline(f, t);
 					i = std::stoi(t);
-					
 				}
 				else if (t == "j") {
 					std::getline(f, t);
 					j = std::stoi(t);
-					
 				}
 				else if (t == "tile") {
 					std::getline(f, t);
@@ -399,14 +412,6 @@ void Camera::load_from_file(Game& g, int level)
 			}
 		}
 		else if (t == "ENTITY") {
-			int i = 0, j = 0;
-			std::string type = "EnemyBasic";
-
-			// PORTAL STUFF
-			int portal_destination = 0;
-			std::string portal_name = "Error_Name";
-			std::string portal_destination_name = "Error_Destination_name";
-
 			while (t != "END") {
 				std::getline(f, t);
 				if (t == "i") {
@@ -433,6 +438,10 @@ void Camera::load_from_file(Game& g, int level)
 					std::getline(f, t);
 					portal_destination_name = t;
 				}
+				else if (t == "npc_type") {
+					std::getline(f, t);
+					npc_type = (NPC_TYPE)std::stoi(t);
+				}
 			}
 			if (type == "EnemyBasic") {
 				EnemyBasic* e = new EnemyBasic(j * _fgrid, i * _fgrid);
@@ -443,7 +452,7 @@ void Camera::load_from_file(Game& g, int level)
 				g._entity_handler._entities.emplace_back(e);
 			}
 			else if (type == "Npc") {
-				Npc* e = new Npc(j * _fgrid, i * _fgrid);
+				Npc* e = new Npc(g, npc_type, j * _fgrid, i * _fgrid);
 				g._entity_handler._draw_entities.emplace_back(e);
 			}
 			else if (type == "Portal") {
@@ -464,7 +473,6 @@ void Camera::load_from_file(Game& g, int level)
 			}
 		}
 	}
-	 // TODO:: FIX SO ONLY TILES THAT ARE NOT VOID SHOULD AFFECT MAX X OR Y.
 	g._cam._max_x = (highest_tile_j + 1) * g._cam._fgrid - g._WIDTH;
 	g._cam._max_y = (highest_tile_i + 1) * g._cam._fgrid - g._HEIGHT;
 

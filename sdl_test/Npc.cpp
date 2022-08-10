@@ -7,10 +7,32 @@ MOVING_RECT_TYPES Npc::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::NPC;
 }
 
-Npc::Npc(float x, float y)
-	: MovingRect(x, y, 70, 80, 1.f)
+Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
+	: MovingRect(x, y, 70, 80, 1.f), _npc_type(type)
 {
-	
+	switch (_npc_type) {
+	case NPC_TYPE::NPC1:
+		_text = g._entity_handler._NPC_1_TEXT;
+		_total_chars = g._entity_handler._NPC_1_TOTAL_CHARS;
+		break;
+	case NPC_TYPE::NPC2:
+		_text = g._entity_handler._NPC_2_TEXT;
+		_total_chars = g._entity_handler._NPC_2_TOTAL_CHARS;
+		break;
+	default:
+		std::cout << "ERROR_NPC_TYPE";
+		std::cin.get();
+		break;
+	}
+	_temp = _text[0];
+	_text[0] = '\0';
+}
+
+Npc::~Npc()
+{
+	_text[_chars_in] = _temp;
+	std::cout << "DESTRUCTED!!";
+
 }
 
 bool Npc::logic(Game& g)
@@ -18,51 +40,69 @@ bool Npc::logic(Game& g)
 	// if player close, show "Press E"
 	Player& p = g._entity_handler._p;
 
-	if (_talking_to)
-	{
-		_speaking_timer += g._dt;
-		constexpr float threshold = 400.f;
-		if (threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y())) {
-			// don't show
-			_talking_to = false;
-		}
+	if (_talking_to) {
 
-		if (_text_slide_done)
+		constexpr float threshold = 400.f;
+		if (threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y()))
 		{
-			_player_close = true;
-			if (g._keys_frame[SDLK_e]) {
-				if (_text_slide + 1 == _texts.size())
-				{
-					_talking_to = false;
-					_speaking_timer = 0.f;
-					_text_slide_done = false;
+			_talking_to = false;
+		} 
+		else if (!_end_of_page)
+		{
+			_speaking_timer += g._dt;
+
+			int chars_should_be_in = (int)(_speaking_timer) / 70;
+
+			if (chars_should_be_in > _chars_in)
+			{
+				// go to next character
+				_text[_chars_in] = _temp;
+				++_chars_in;
+
+				if (_text[_chars_in] == '\0') {
+					// at end of page
+					_end_of_page = true;
 				}
-				else
-				{
-					++_text_slide;
-					_speaking_timer = 0.f;
-					_text_slide_done = false;
-					_player_close = false;
+
+				_temp = _text[_chars_in];
+				_text[_chars_in] = '\0';
+			}
+			else {
+				// fast forward
+				if (g._keys_frame[SDLK_e]) {
+					_speaking_timer += 200.f;
 				}
 			}
 		}
-		else
-		{
-			if (g._keys_frame[SDLK_e])
-			{
-				_speaking_timer += 200.f; // add 100 ms.
+		else {
+			// waiting for e press
+			_press_e_sign = true;
+			if (g._keys_frame[SDLK_e]) {
+				if (_chars_in + 1 >= _total_chars) {
+					// Done with all pages
+					_talking_to = false;
+				}
+				else {
+					// Next page !
+					++_chars_in;
+					_char_at = _chars_in;
+					_end_of_page = false;
+					_temp = _text[_char_at];
+					_text[_char_at] = '\0';
+					_press_e_sign = false;
+				}
 			}
 		}
 	}
 	else
 	{
 		constexpr float threshold = 150.f;
-		_player_close = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+		_press_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
 
-		if (_player_close) {
+		if (_press_e_sign) {
 			if (g._keys_frame[SDLK_e]) {
 				_talking_to = true;
-				_player_close = false;
+				_press_e_sign = false;
 			}
 		}
 	}
@@ -79,7 +119,7 @@ void Npc::draw(Game& g)
 		SDL_RenderCopy(g._renderer, g._textures[TEX::RedBear], NULL, &rect);
 
 		// "Press E" Text
-		if (_player_close) {
+		if (_press_e_sign) {
 			constexpr int scale = 3;
 			const SDL_Rect text_rect = { rect.x - 25 + (int)(10.f * sinf(((float)g._ticks) * 0.1f)), rect.y - 50, g._press_e_w_and_h[0] * scale, g._press_e_w_and_h[1] * scale };
 			SDL_SetRenderDrawColor(g._renderer, 255, 255, 255, 127);
@@ -97,13 +137,9 @@ void Npc::draw(Game& g)
 		const SDL_Rect box = { x, y, 32*scale, 15*scale };
 		SDL_RenderCopy(g._renderer, g._textures[TEX::DialogueBox], NULL, &box);
 
-		int characters = (int)(_speaking_timer / 90.f);
-		std::string sub_str = _texts[_text_slide].substr(0, characters);
-		if (characters >= _texts[_text_slide].length()) {
-			_text_slide_done = true;
-		}
-		int text_offset = 40;
-		g._cam.draw_text(g, sub_str.c_str(), {0,0,0,255}, x + text_offset, y + text_offset, 3);
+
+		constexpr int text_offset = 40;
+		g._cam.draw_text(g, _text + _char_at, {0,0,0,255}, x + text_offset, y + text_offset, 3);
 	}
 }
 

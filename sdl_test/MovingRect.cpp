@@ -1,4 +1,5 @@
 #include "MovingRect.h"
+#include "MovingRect.h"
 #include "Game.h"
 #include "General.h"
 
@@ -231,4 +232,8 @@ float MovingRect::get_x_vel() const
 float MovingRect::get_y_vel() const
 {
 	return _y_vel;
+}
+
+MovingRect::~MovingRect()
+{
 }

@@ -1,6 +1,7 @@
 #include "EntityHandler.h"
 #include "Game.h"
 #include "EnemyShooter.h"
+#include "Npc.h"
 
 EntityHandler::EntityHandler()  : _quadtree(0, 0, 4096, 4096) {}
 
@@ -47,11 +48,16 @@ void EntityHandler::draw(Game& g)
 	for (auto& e : _entities) e->draw(g);
 	for (auto& e : _draw_entities) e->draw(g);
 	_p.draw(g);
-	_quadtree.head_draw(g);	
+	_quadtree.head_draw(g);
 }
 
 void EntityHandler::place_enemy(Game& g, int x, int y)
 {
 	for (int _ = 1; _--;)
 		_entities.push_back(new EnemyShooter((float)x + g._cam._x + _, (float)y + g._cam._y));
+}
+
+void EntityHandler::place_npc(Game& g, NPC_TYPE type, float x, float y)
+{
+	_draw_entities.push_back(new Npc(g, type, x, y));
 }
