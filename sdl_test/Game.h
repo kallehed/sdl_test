@@ -28,7 +28,7 @@ public:
 	//textures
 	SDL_Texture* _textures[TEX::TOTAL];
 	SDL_Texture* _press_e_texture;
-	std::array<int, 2> _press_e_w_and_h;
+	std::array<int, 2> _press_e_w_and_h; // width and height of "press e" texture
 
 	float _dt = 0; // time for previous frame to run in MS
 	const float _MAX_DT = 1000.f / 50.f; // 50 is the lowest framerate allowed. Also maximum _dt

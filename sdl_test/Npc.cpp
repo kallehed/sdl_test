@@ -51,7 +51,7 @@ bool Npc::logic(Game& g)
 		{
 			_speaking_timer += g._dt;
 
-			int chars_should_be_in = (int)(_speaking_timer) / 70;
+			int chars_should_be_in = (int)(_speaking_timer) / 90;
 
 			if (chars_should_be_in > _chars_in)
 			{
@@ -114,7 +114,10 @@ void Npc::draw(Game& g)
 {
 	// Sprite and "Press E" box
 	{
-		const SDL_Rect rect = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
+		bool condition = (!_press_e_sign && _talking_to) && ((((int)_speaking_timer) / 400) % 2 == 0);
+		int x_offset = (condition) ?  5 : 0;
+
+		const SDL_Rect rect = { g._cam.convert_x((int)_x) + x_offset, g._cam.convert_y((int)_y),(int)_w,(int)_h };
 
 		SDL_RenderCopy(g._renderer, g._textures[TEX::RedBear], NULL, &rect);
 

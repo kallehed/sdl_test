@@ -18,6 +18,7 @@ enum class MOVING_RECT_TYPES : char {
 	FIRE_MAGIC,
 	NPC,
 	PORTAL,
+	BONFIRE,
 
 	TOTAL
 };
@@ -79,6 +80,7 @@ namespace TEX {
 
 		Portal,
 		Heart,
+		Bonfire,
 		
 		TOTAL
 	};
@@ -118,6 +120,7 @@ namespace ENTITIES {
 		ENEMY_SHOOTER,
 		NPC,
 		PORTAL,
+		BONFIRE,
 
 		TOTAL
 	};
@@ -136,8 +139,8 @@ namespace BTN {
 
 namespace CAM_BTN {
 	enum CAM_BTN : char {
-		SAVE,
-		LOAD,
+		NEXT,
+		PREV,
 		VIEW,
 		SET_POS,
 

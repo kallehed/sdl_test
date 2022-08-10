@@ -5,6 +5,7 @@
 #include "EnemyShooter.h"
 #include "Npc.h"
 #include "Portal.h"
+#include "Bonfire.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -13,8 +14,8 @@ void Camera::construct(Game& g)
 	_max_y = TileHandler::_len * _fgrid - g._HEIGHT;
 
 	using namespace CAM_BTN;
-	_btns[SAVE].construct(g, 0, 200, "SAVE");
-	_btns[LOAD].construct(g, 0, 250, "LOAD");
+	_btns[NEXT].construct(g, 0, 200, "NEXT");
+	_btns[PREV].construct(g, 0, 250, "PREV");
 	_btns[VIEW].construct(g, 0, 300, "VIEW");
 	_btns[SET_POS].construct(g, 0, 350, "SET POS");
 }
@@ -23,7 +24,6 @@ void Camera::shake(Game& g, float time, float intensity)
 {
 	_shake_timer = time;
 	_shake_intensity = intensity;
-	
 }
 
 int Camera::convert_x(int x) const {
@@ -123,14 +123,19 @@ void Camera::edit_logic(Game& g)
 
 		if (any_hovered_on) {
 			// do btn stuff
-			if (btn_states[CAM_BTN::SAVE] == BTN::CLICKED_ON)
+			if (btn_states[CAM_BTN::NEXT] == BTN::CLICKED_ON)
 			{
 				// save button clicked! SAVE
 				save_to_file(g);
+				g._level =  (LEVEL::LEVEL)(1 + g._level);
+				load_from_file(g, g._level);
+				
 			}
-			else if (btn_states[CAM_BTN::LOAD] == BTN::CLICKED_ON)
+			else if (btn_states[CAM_BTN::PREV] == BTN::CLICKED_ON)
 			{
 				// load button clicked! LOAD
+				save_to_file(g);
+				g._level = (LEVEL::LEVEL)(g._level - 1);
 				load_from_file(g, g._level);
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
@@ -194,6 +199,11 @@ void Camera::edit_logic(Game& g)
 					case PORTAL:
 					{
 						g._entity_handler._draw_entities.push_back(new Portal(r_x, r_y, g._level+1, "Error_Portal_Name", "Error_Destination_Name"));
+						break;
+					}
+					case BONFIRE:
+					{
+						g._entity_handler._draw_entities.push_back(new Bonfire(r_x, r_y));
 						break;
 					}
 					}
@@ -292,7 +302,7 @@ void Camera::save_to_file(Game& g)
 	}
 	// Draw Entities
 	for (auto e : g._entity_handler._draw_entities) {
-		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e)) {
+		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e) || dynamic_cast<Bonfire*>(e)) {
 			f << "ENTITY\n";
 			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
 			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
@@ -308,6 +318,9 @@ void Camera::save_to_file(Game& g)
 				f << "portal_destination\n" << std::to_string(portal->_destination_level) << "\n";
 				f << "portal_name\n" << portal->_name << "\n";
 				f << "portal_destination_name\n" << portal->_destination_name << "\n";
+			}
+			else if (dynamic_cast<Bonfire*>(e)) {
+				f << "type\n" << "Bonfire\n";
 			}
 			f << "END\n";
 		}
@@ -465,6 +478,10 @@ void Camera::load_from_file(Game& g, int level)
 					player_has_been_placed_by_portal = true;
 				}
 			}
+			else if (type == "Bonfire") {
+				Bonfire* e = new Bonfire(j * _fgrid, i * _fgrid);
+				g._entity_handler._draw_entities.emplace_back(e);
+			}
 			else if (type == "Player") {
 				if (player_has_been_placed_by_portal == false) {
 					g._entity_handler._p.set_x(j * _fgrid);
@@ -580,6 +597,9 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		case PORTAL:
 			text = "Portal";
+			break;
+		case BONFIRE:
+			text = "Bonfire";
 			break;
 		}
 		SDL_Color c = { 0,0,0 };
