@@ -81,6 +81,7 @@ namespace TEX {
 		Portal,
 		Heart,
 		Bonfire,
+		Chest,
 		
 		TOTAL
 	};

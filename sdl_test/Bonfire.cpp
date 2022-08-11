@@ -40,7 +40,6 @@ bool Bonfire::logic(Game& g)
 					_fire_animation = true;
 					_player_close = false;
 				}
-
 			}
 		}
 	}

@@ -89,6 +89,7 @@ Game::Game()
 			"images/Portal.png",
 			"images/Heart.jpg",
 			"images/Bonfire.png",
+			"images/Chest.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
