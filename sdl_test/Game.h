@@ -6,6 +6,7 @@
 #include <iostream>
 #include <array>
 #include <string>
+#include <bitset>
 
 #include "Camera.h"
 #include "TileHandler.h"
@@ -59,6 +60,12 @@ public:
 	LEVEL::LEVEL _level = LEVEL::START;
 	bool _change_level = false;
 	std::string _destination_portal = "Error_Name";
+
+	// onetime_index stuff
+	static constexpr int _TOTAL_LEVELS = 10;
+	static constexpr int _INDEX_PER_LEVEL = 256;
+	// each level has 256 indexes for onetime_indexes
+	std::bitset<_INDEX_PER_LEVEL*_TOTAL_LEVELS> _onetime_indexes{ 0 };
 
 	SDL_Texture* loadTexture(const char* path);
 

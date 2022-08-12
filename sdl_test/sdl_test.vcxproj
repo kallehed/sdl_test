@@ -158,6 +158,7 @@
     <ClCompile Include="Bonfire.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBasic.cpp" />
     <ClCompile Include="EnemyShooter.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Bonfire.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Chest.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBasic.h" />
     <ClInclude Include="EnemyShooter.h" />

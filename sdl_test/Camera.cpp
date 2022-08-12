@@ -6,6 +6,7 @@
 #include "Npc.h"
 #include "Portal.h"
 #include "Bonfire.h"
+#include "Chest.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -206,6 +207,10 @@ void Camera::edit_logic(Game& g)
 						g._entity_handler._draw_entities.push_back(new Bonfire(r_x, r_y));
 						break;
 					}
+					case CHEST:
+					{
+						g._entity_handler._draw_entities.push_back(new Chest(0,r_x, r_y));
+					}
 					}
 				}
 
@@ -285,6 +290,9 @@ void Camera::save_to_file(Game& g)
 		}
 	}
 
+	// used for ex: chests, so they only appear once
+	int onetime_index = 0;
+
 	// (ENTITY)s
 	for (auto e : g._entity_handler._entities) {
 		if (dynamic_cast<Enemy*>(e)) {
@@ -302,7 +310,7 @@ void Camera::save_to_file(Game& g)
 	}
 	// Draw Entities
 	for (auto e : g._entity_handler._draw_entities) {
-		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e) || dynamic_cast<Bonfire*>(e)) {
+		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e) || dynamic_cast<Bonfire*>(e) || dynamic_cast<Chest*>(e)) {
 			f << "ENTITY\n";
 			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
 			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
@@ -321,6 +329,10 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<Bonfire*>(e)) {
 				f << "type\n" << "Bonfire\n";
+			}
+			else if (dynamic_cast<Chest*>(e)) {
+				f << "type\n" << "Chest\n";
+				f << "onetime_index\n" << std::to_string(onetime_index) << "\n";
 			}
 			f << "END\n";
 		}
@@ -386,6 +398,9 @@ void Camera::load_from_file(Game& g, int level)
 
 	// NPC STUFF
 	NPC_TYPE npc_type = NPC_TYPE::NPC1;
+
+	// CHEST STUFF
+	int onetime_index = 0;
 
 
 	// Use a while loop together with the getline() function to read the file line by line
@@ -455,6 +470,10 @@ void Camera::load_from_file(Game& g, int level)
 					std::getline(f, t);
 					npc_type = (NPC_TYPE)std::stoi(t);
 				}
+				else if (t == "onetime_index") {
+					std::getline(f, t);
+					onetime_index = std::stoi(t);
+				}
 			}
 			if (type == "EnemyBasic") {
 				EnemyBasic* e = new EnemyBasic(j * _fgrid, i * _fgrid);
@@ -482,6 +501,12 @@ void Camera::load_from_file(Game& g, int level)
 				Bonfire* e = new Bonfire(j * _fgrid, i * _fgrid);
 				g._entity_handler._draw_entities.emplace_back(e);
 			}
+			else if (type == "Chest") {
+				if (!g._onetime_indexes[g._INDEX_PER_LEVEL * level] + onetime_index) {
+					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid);
+					g._entity_handler._draw_entities.emplace_back(e);
+				}
+			}
 			else if (type == "Player") {
 				if (player_has_been_placed_by_portal == false) {
 					g._entity_handler._p.set_x(j * _fgrid);
@@ -490,6 +515,7 @@ void Camera::load_from_file(Game& g, int level)
 			}
 		}
 	}
+
 	g._cam._max_x = (highest_tile_j + 1) * g._cam._fgrid - g._WIDTH;
 	g._cam._max_y = (highest_tile_i + 1) * g._cam._fgrid - g._HEIGHT;
 
@@ -600,6 +626,9 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		case BONFIRE:
 			text = "Bonfire";
+			break;
+		case CHEST:
+			text = "Chest";
 			break;
 		}
 		SDL_Color c = { 0,0,0 };

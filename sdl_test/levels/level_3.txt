@@ -69134,7 +69134,7 @@ i
 j
 13
 tile
-0
+1
 tex
 23
 END
@@ -69144,7 +69144,7 @@ i
 j
 14
 tile
-0
+1
 tex
 23
 END
@@ -70144,7 +70144,7 @@ i
 j
 14
 tile
-0
+1
 tex
 23
 END
@@ -70154,7 +70154,7 @@ i
 j
 15
 tile
-0
+1
 tex
 23
 END
@@ -71144,7 +71144,7 @@ i
 j
 14
 tile
-0
+1
 tex
 23
 END
@@ -71154,7 +71154,7 @@ i
 j
 15
 tile
-0
+1
 tex
 23
 END
@@ -71164,9 +71164,9 @@ i
 j
 16
 tile
-0
+1
 tex
--1
+23
 END
 TILE
 i
@@ -72154,7 +72154,7 @@ i
 j
 15
 tile
-0
+1
 tex
 23
 END
@@ -72164,7 +72164,7 @@ i
 j
 16
 tile
-0
+1
 tex
 23
 END
@@ -73164,7 +73164,7 @@ i
 j
 16
 tile
-0
+1
 tex
 23
 END
@@ -74164,7 +74164,7 @@ i
 j
 16
 tile
-0
+1
 tex
 23
 END
@@ -75164,7 +75164,7 @@ i
 j
 16
 tile
-0
+1
 tex
 23
 END
@@ -76164,7 +76164,7 @@ i
 j
 16
 tile
-0
+1
 tex
 23
 END
@@ -77164,7 +77164,7 @@ i
 j
 16
 tile
-0
+1
 tex
 23
 END
@@ -77174,7 +77174,7 @@ i
 j
 17
 tile
-0
+1
 tex
 23
 END
@@ -78174,7 +78174,7 @@ i
 j
 17
 tile
-0
+1
 tex
 23
 END
@@ -79174,7 +79174,7 @@ i
 j
 17
 tile
-0
+1
 tex
 23
 END
@@ -100398,9 +100398,25 @@ portal1
 END
 ENTITY
 i
-98
+96
 j
-1
+5
+type
+Chest
+END
+ENTITY
+i
+51
+j
+6
+type
+Chest
+END
+ENTITY
+i
+51
+j
+9
 type
 Player
 END

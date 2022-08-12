@@ -210,6 +210,7 @@ void Game::game_loop()
 		if (_keys_frame[SDLK_k]) {
 			if (_edit_mode == false) {
 				_edit_mode = true;
+				_onetime_indexes.reset();
 				_cam.load_from_file(*this, _level);
 			}
 			else {

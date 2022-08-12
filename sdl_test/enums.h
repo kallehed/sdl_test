@@ -19,6 +19,7 @@ enum class MOVING_RECT_TYPES : char {
 	NPC,
 	PORTAL,
 	BONFIRE,
+	CHEST,
 
 	TOTAL
 };
@@ -114,7 +115,7 @@ namespace EDIT_MODE {
 		TOTAL
 	};
 }
-
+// camera entities
 namespace ENTITIES {
 	enum ENTITIES : char {
 		ENEMY_BASIC,
@@ -122,6 +123,7 @@ namespace ENTITIES {
 		NPC,
 		PORTAL,
 		BONFIRE,
+		CHEST,
 
 		TOTAL
 	};
