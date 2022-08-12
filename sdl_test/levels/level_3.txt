@@ -38346,7 +38346,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -40416,7 +40416,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -40436,7 +40436,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -42346,7 +42346,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -42396,7 +42396,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -43346,7 +43346,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -44356,7 +44356,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -44446,7 +44446,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -45336,7 +45336,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -45366,7 +45366,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -46056,7 +46056,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -46106,7 +46106,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -46126,7 +46126,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -46426,7 +46426,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -47026,7 +47026,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -47086,7 +47086,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -48136,7 +48136,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -48176,7 +48176,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -49376,7 +49376,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -51296,7 +51296,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -51326,7 +51326,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -52016,7 +52016,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -52166,7 +52166,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -52256,7 +52256,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -53116,7 +53116,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -53496,7 +53496,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -55126,7 +55126,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -55176,7 +55176,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -55356,7 +55356,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -56236,7 +56236,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -57026,7 +57026,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -57056,7 +57056,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -59106,7 +59106,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -59186,7 +59186,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -59346,7 +59346,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -60076,7 +60076,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -60326,7 +60326,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -60416,7 +60416,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -61166,7 +61166,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -61266,7 +61266,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -62026,7 +62026,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -62086,7 +62086,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -62266,7 +62266,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -62396,7 +62396,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -63346,7 +63346,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -64076,7 +64076,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -64226,7 +64226,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -65126,7 +65126,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -65186,7 +65186,7 @@ j
 tile
 0
 tex
--1
+34
 END
 TILE
 i
@@ -66026,7 +66026,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -66036,7 +66036,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -66076,7 +66076,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -66286,7 +66286,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -66546,7 +66546,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -66556,7 +66556,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -66566,7 +66566,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -66576,7 +66576,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -67546,7 +67546,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -67556,7 +67556,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -67566,7 +67566,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -67576,7 +67576,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -67586,7 +67586,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -67596,7 +67596,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -67606,7 +67606,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -68026,7 +68026,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -68166,7 +68166,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -68286,7 +68286,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -68566,7 +68566,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -68576,7 +68576,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -68586,7 +68586,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -68596,7 +68596,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -68606,7 +68606,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -68616,7 +68616,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -69286,7 +69286,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -69296,7 +69296,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -69586,7 +69586,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -69596,7 +69596,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -69606,7 +69606,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -69616,7 +69616,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -69626,7 +69626,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -70286,7 +70286,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -70296,7 +70296,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -70326,7 +70326,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -70606,7 +70606,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -70616,7 +70616,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -70626,7 +70626,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -70636,7 +70636,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -71036,7 +71036,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -71286,7 +71286,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -71296,7 +71296,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -71526,7 +71526,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -71626,7 +71626,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -71636,7 +71636,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -72126,7 +72126,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -72196,7 +72196,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -72286,7 +72286,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -72526,7 +72526,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -72626,7 +72626,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -72636,7 +72636,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -73256,7 +73256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -73266,7 +73266,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -73276,7 +73276,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -73286,7 +73286,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -73626,7 +73626,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -73636,7 +73636,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -74026,7 +74026,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -74256,7 +74256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -74376,7 +74376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -74386,7 +74386,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -74396,7 +74396,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -74406,7 +74406,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -74626,7 +74626,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -75256,7 +75256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -75366,7 +75366,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -75376,7 +75376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -75386,7 +75386,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -75396,7 +75396,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -75466,7 +75466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -75476,7 +75476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -75546,7 +75546,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -76036,7 +76036,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -76206,7 +76206,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -76256,7 +76256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -76366,7 +76366,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76376,7 +76376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76386,7 +76386,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76396,7 +76396,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76466,7 +76466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76476,7 +76476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76486,7 +76486,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -76496,7 +76496,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77056,7 +77056,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -77256,7 +77256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -77366,7 +77366,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77376,7 +77376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77386,7 +77386,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77466,7 +77466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77476,7 +77476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77486,7 +77486,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77496,7 +77496,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -77506,7 +77506,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78016,7 +78016,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -78166,7 +78166,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -78256,7 +78256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -78266,7 +78266,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -78366,7 +78366,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78376,7 +78376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78476,7 +78476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78486,7 +78486,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78496,7 +78496,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78506,7 +78506,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -78516,7 +78516,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -79206,7 +79206,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -79256,7 +79256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -79266,7 +79266,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -79286,7 +79286,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -79496,7 +79496,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -79506,7 +79506,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -79516,7 +79516,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -80266,7 +80266,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -80426,7 +80426,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -80506,7 +80506,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -80516,7 +80516,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -81116,7 +81116,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -81246,7 +81246,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -81256,7 +81256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -81266,7 +81266,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -82056,7 +82056,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -82116,7 +82116,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -82136,7 +82136,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -82196,7 +82196,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -82246,7 +82246,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -82526,7 +82526,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -82556,7 +82556,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -83106,7 +83106,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -83246,7 +83246,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -83546,7 +83546,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -83556,7 +83556,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -83566,7 +83566,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -84096,7 +84096,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -84206,7 +84206,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -84246,7 +84246,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -84466,7 +84466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -84476,7 +84476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -84486,7 +84486,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -84496,7 +84496,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -84556,7 +84556,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85016,7 +85016,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -85156,7 +85156,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -85246,7 +85246,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -85396,7 +85396,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85406,7 +85406,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85416,7 +85416,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85426,7 +85426,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85446,7 +85446,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85456,7 +85456,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85466,7 +85466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85476,7 +85476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -85486,7 +85486,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86166,7 +86166,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -86246,7 +86246,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -86256,7 +86256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -86266,7 +86266,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -86376,7 +86376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86386,7 +86386,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86406,7 +86406,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86416,7 +86416,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86426,7 +86426,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86436,7 +86436,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86446,7 +86446,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86456,7 +86456,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86466,7 +86466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -86476,7 +86476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87016,7 +87016,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -87056,7 +87056,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -87076,7 +87076,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -87126,7 +87126,7 @@ j
 tile
 1
 tex
-20
+22
 END
 TILE
 i
@@ -87256,7 +87256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -87376,7 +87376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87396,7 +87396,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -87416,7 +87416,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87426,7 +87426,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87436,7 +87436,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87446,7 +87446,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87456,7 +87456,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87466,7 +87466,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -87476,7 +87476,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88016,7 +88016,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -88206,7 +88206,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -88256,7 +88256,7 @@ j
 tile
 0
 tex
--1
+19
 END
 TILE
 i
@@ -88356,7 +88356,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88366,7 +88366,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88376,7 +88376,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88426,7 +88426,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88436,7 +88436,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88446,7 +88446,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -88456,7 +88456,7 @@ j
 tile
 0
 tex
--1
+26
 END
 TILE
 i
@@ -89076,7 +89076,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -89096,7 +89096,7 @@ j
 tile
 1
 tex
-20
+22
 END
 TILE
 i
@@ -89116,7 +89116,7 @@ j
 tile
 1
 tex
-20
+22
 END
 TILE
 i
@@ -89156,7 +89156,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -89176,7 +89176,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -91006,7 +91006,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -91056,7 +91056,7 @@ j
 tile
 1
 tex
-20
+22
 END
 TILE
 i
@@ -91186,7 +91186,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -91256,7 +91256,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -92026,7 +92026,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -92116,7 +92116,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -92136,7 +92136,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -92416,7 +92416,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -92426,7 +92426,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -92436,7 +92436,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -92446,7 +92446,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -92456,7 +92456,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -92466,7 +92466,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -92516,7 +92516,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -92526,7 +92526,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -93106,7 +93106,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -93296,7 +93296,7 @@ j
 tile
 0
 tex
--1
+31
 END
 TILE
 i
@@ -93406,7 +93406,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -93416,7 +93416,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -93426,7 +93426,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -93436,7 +93436,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -93446,7 +93446,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -93456,7 +93456,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -94006,7 +94006,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -94416,7 +94416,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -94426,7 +94426,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -94436,7 +94436,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -94446,7 +94446,7 @@ j
 tile
 1
 tex
-20
+0
 END
 TILE
 i
@@ -94696,7 +94696,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -94706,7 +94706,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -94716,7 +94716,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -95056,7 +95056,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -95066,7 +95066,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -95086,7 +95086,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -95416,7 +95416,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -95426,7 +95426,7 @@ j
 tile
 1
 tex
-20
+1
 END
 TILE
 i
@@ -95516,7 +95516,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -95526,7 +95526,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -95676,7 +95676,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -95686,7 +95686,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -95696,7 +95696,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -95706,7 +95706,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -95716,7 +95716,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -96046,7 +96046,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -96216,7 +96216,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -96506,7 +96506,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -96516,7 +96516,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -96526,7 +96526,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -96536,7 +96536,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -96656,7 +96656,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -96666,7 +96666,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -96676,7 +96676,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -96686,7 +96686,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -96696,7 +96696,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -96706,7 +96706,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -96716,7 +96716,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -96726,7 +96726,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -97296,7 +97296,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -97496,7 +97496,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -97506,7 +97506,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -97516,7 +97516,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -97526,7 +97526,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -97536,7 +97536,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -97546,7 +97546,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -97656,7 +97656,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -97666,7 +97666,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -97676,7 +97676,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -97686,7 +97686,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -97696,7 +97696,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -97706,7 +97706,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -97716,7 +97716,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -97726,7 +97726,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -98486,7 +98486,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98496,7 +98496,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98506,7 +98506,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98516,7 +98516,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98526,7 +98526,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98536,7 +98536,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98546,7 +98546,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98556,7 +98556,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -98646,7 +98646,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -98656,7 +98656,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -98666,7 +98666,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98676,7 +98676,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98686,7 +98686,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98696,7 +98696,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98706,7 +98706,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98716,7 +98716,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98726,7 +98726,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -98736,7 +98736,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99476,7 +99476,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99486,7 +99486,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99496,7 +99496,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99506,7 +99506,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99516,7 +99516,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99526,7 +99526,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99536,7 +99536,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99546,7 +99546,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99556,7 +99556,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99566,7 +99566,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -99636,7 +99636,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99646,7 +99646,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99656,7 +99656,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99666,7 +99666,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -99676,7 +99676,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -99686,7 +99686,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -99696,7 +99696,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99706,7 +99706,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99716,7 +99716,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -99726,7 +99726,7 @@ j
 tile
 0
 tex
--1
+1
 END
 TILE
 i
@@ -99736,7 +99736,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -99746,7 +99746,7 @@ j
 tile
 0
 tex
--1
+0
 END
 TILE
 i
@@ -100403,6 +100403,8 @@ j
 6
 type
 Chest
+chest_amount
+10
 END
 ENTITY
 i
@@ -100411,6 +100413,8 @@ j
 6
 type
 Chest
+chest_amount
+5
 END
 ENTITY
 i
@@ -100419,6 +100423,8 @@ j
 55
 type
 Chest
+chest_amount
+15
 END
 ENTITY
 i
@@ -100427,6 +100433,8 @@ j
 39
 type
 Chest
+chest_amount
+13
 END
 ENTITY
 i
@@ -100435,6 +100443,8 @@ j
 43
 type
 Chest
+chest_amount
+14
 END
 ENTITY
 i
@@ -100443,6 +100453,8 @@ j
 55
 type
 Chest
+chest_amount
+15
 END
 ENTITY
 i
@@ -100451,12 +100463,14 @@ j
 42
 type
 Chest
+chest_amount
+15
 END
 ENTITY
 i
-98
+96
 j
-1
+4
 type
 Player
 END

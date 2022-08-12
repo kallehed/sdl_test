@@ -328,7 +328,9 @@ void Camera::save_to_file(Game& g)
 				f << "type\n" << "Bonfire\n";
 			}
 			else if (dynamic_cast<Chest*>(e)) {
+				Chest* chest = dynamic_cast<Chest*>(e);
 				f << "type\n" << "Chest\n";
+				f << "chest_amount\n" << std::to_string(chest->_chest_amount) << "\n";
 			}
 			f << "END\n";
 		}
@@ -397,6 +399,7 @@ void Camera::load_from_file(Game& g, int level)
 
 	// CHEST STUFF
 	int onetime_index = 0;
+	int chest_amount = 0;
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
@@ -465,6 +468,10 @@ void Camera::load_from_file(Game& g, int level)
 					std::getline(f, t);
 					npc_type = (NPC_TYPE)std::stoi(t);
 				}
+				else if (t == "chest_amount") {
+					std::getline(f, t);
+					chest_amount = std::stoi(t);
+				}
 			}
 			if (type == "EnemyBasic") {
 				EnemyBasic* e = new EnemyBasic(j * _fgrid, i * _fgrid);
@@ -496,6 +503,7 @@ void Camera::load_from_file(Game& g, int level)
 				_ASSERT(onetime_index < g._INDEX_PER_LEVEL);
 				if (!g._onetime_indexes[g._INDEX_PER_LEVEL * level + onetime_index]) {
 					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid);
+					e->_chest_amount = chest_amount;
 					g._entity_handler._draw_entities.emplace_back(e);
 				}
 				++onetime_index;
@@ -696,7 +704,7 @@ void Camera::draw_hud(Game& g)
 		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, a);
 		SDL_Rect draw_rect = { hud_x,hud_y,25,25 };
 		SDL_RenderCopy(g._renderer, g._textures[TEX::Coin], NULL,  &draw_rect);
-		draw_text(g, std::to_string(p._coins).c_str(), { 230,230,0,(Uint8)a }, hud_x + draw_rect.w, hud_y - 7, 2);
+		draw_text(g, std::to_string(p._coins).c_str(), { 0,0,0,(Uint8)a }, hud_x + draw_rect.w, hud_y - 7, 2);
 		//SDL_Rect draw_rect = { hud_x, hud_y, (int)(10.f * ((float)p._coins / 1)), 20 };
 		//SDL_RenderFillRect(g._renderer, &draw_rect);
 	}

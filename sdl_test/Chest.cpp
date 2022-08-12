@@ -24,7 +24,7 @@ bool Chest::logic(Game& g)
 			if (g._keys_frame[SDLK_e])
 			{
 				// GIVE PLAYER MONEYYYYYYYYY
-				g._entity_handler._p._coins += 10;
+				g._entity_handler._p._coins += _chest_amount;
 
 				g._onetime_indexes[g._level * g._INDEX_PER_LEVEL + _onetime_index] = true;
 
@@ -72,9 +72,9 @@ void Chest::draw(Game& g)
 			const SDL_Rect box = { x, y, 32 * scale, 15 * scale };
 			SDL_RenderCopy(g._renderer, g._textures[TEX::DialogueBox], NULL, &box);
 
-
 			constexpr int text_offset = 40;
-			g._cam.draw_text(g, "Chest contained 10 coins!\nLucky you", {0,0,0,255}, x + text_offset, y + text_offset, 3);
+			std::string text = "Chest contained " + std::to_string(_chest_amount) + " coins!\nLucky you.";
+			g._cam.draw_text(g, text.c_str(), {0,0,0,255}, x + text_offset, y + text_offset, 3);
 		}
 	}
 }

@@ -6,6 +6,8 @@ class Chest : public MovingRect
 public:
 	int _onetime_index;
 
+	int _chest_amount = 0;
+
 	bool _show_e_sign = false; // "Press e"
 
 	// true when player opens chest

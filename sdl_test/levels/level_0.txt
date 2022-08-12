@@ -1186,7 +1186,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -2176,7 +2176,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -2196,7 +2196,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
@@ -3186,7 +3186,7 @@ j
 tile
 0
 tex
--1
+30
 END
 TILE
 i
