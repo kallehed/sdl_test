@@ -290,9 +290,6 @@ void Camera::save_to_file(Game& g)
 		}
 	}
 
-	// used for ex: chests, so they only appear once
-	int onetime_index = 0;
-
 	// (ENTITY)s
 	for (auto e : g._entity_handler._entities) {
 		if (dynamic_cast<Enemy*>(e)) {
@@ -332,7 +329,6 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<Chest*>(e)) {
 				f << "type\n" << "Chest\n";
-				f << "onetime_index\n" << std::to_string(onetime_index) << "\n";
 			}
 			f << "END\n";
 		}
@@ -402,7 +398,6 @@ void Camera::load_from_file(Game& g, int level)
 	// CHEST STUFF
 	int onetime_index = 0;
 
-
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
 		// Output the text from the file
@@ -470,10 +465,6 @@ void Camera::load_from_file(Game& g, int level)
 					std::getline(f, t);
 					npc_type = (NPC_TYPE)std::stoi(t);
 				}
-				else if (t == "onetime_index") {
-					std::getline(f, t);
-					onetime_index = std::stoi(t);
-				}
 			}
 			if (type == "EnemyBasic") {
 				EnemyBasic* e = new EnemyBasic(j * _fgrid, i * _fgrid);
@@ -502,10 +493,12 @@ void Camera::load_from_file(Game& g, int level)
 				g._entity_handler._draw_entities.emplace_back(e);
 			}
 			else if (type == "Chest") {
-				if (!g._onetime_indexes[g._INDEX_PER_LEVEL * level] + onetime_index) {
+				_ASSERT(onetime_index < g._INDEX_PER_LEVEL);
+				if (!g._onetime_indexes[g._INDEX_PER_LEVEL * level + onetime_index]) {
 					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid);
 					g._entity_handler._draw_entities.emplace_back(e);
 				}
+				++onetime_index;
 			}
 			else if (type == "Player") {
 				if (player_has_been_placed_by_portal == false) {
@@ -701,9 +694,11 @@ void Camera::draw_hud(Game& g)
 
 	{ // coins of player
 		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, a);
-
-		SDL_Rect draw_rect = { hud_x, hud_y, (int)(10.f * ((float)p._coins / 1)), 20 };
-		SDL_RenderFillRect(g._renderer, &draw_rect);
+		SDL_Rect draw_rect = { hud_x,hud_y,25,25 };
+		SDL_RenderCopy(g._renderer, g._textures[TEX::Coin], NULL,  &draw_rect);
+		draw_text(g, std::to_string(p._coins).c_str(), { 230,230,0,(Uint8)a }, hud_x + draw_rect.w, hud_y - 7, 2);
+		//SDL_Rect draw_rect = { hud_x, hud_y, (int)(10.f * ((float)p._coins / 1)), 20 };
+		//SDL_RenderFillRect(g._renderer, &draw_rect);
 	}
 	hud_y += hud_y_increase;
 	

@@ -100024,16 +100024,6 @@ portal0
 END
 ENTITY
 i
-5
-j
-18
-type
-Chest
-onetime_index
-0
-END
-ENTITY
-i
 1
 j
 18

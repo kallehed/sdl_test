@@ -208,6 +208,7 @@ std::vector<std::array<int, 2>> General::generate_walk_path(Game& g, float x2, f
 	}
 }
 
+// TODO: MAKE THIS A SEPERATE FILE FOR ASTARNODE
 void AStarNode::set_variables(int G, int H)
 {
 	_G = G;
