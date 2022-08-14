@@ -7,12 +7,33 @@
 #include <array>
 #include <string>
 #include <bitset>
+#include <unordered_set>
+#include <algorithm>
 
 #include "Camera.h"
 #include "TileHandler.h"
 #include "EntityHandler.h"
 
 // DONT HAVE ENUMS/OTHER CLASSES THAN GAME/STRUCTS IN THIS FILE!!!!
+
+// Hash for std::array<int, 2>
+struct HashArray2Int {
+public:
+	size_t operator()(std::array<int, 2> ar) const {
+		int val = ar[0] * ar[1];
+		return std::hash<int>()(val);
+	}
+};
+// Custom comparator that compares the array objects
+struct EqualArray2Int {
+public:
+	bool operator()(std::array<int, 2> ar1, std::array<int, 2> ar2) const {
+		if (ar1 == ar2)
+			return true;
+		else
+			return false;
+	}
+};
 
 class Game {
 public:
@@ -62,10 +83,9 @@ public:
 	std::string _destination_portal = "Error_Name";
 
 	// onetime_index stuff
-	static constexpr int _TOTAL_LEVELS = 10;
-	static constexpr int _INDEX_PER_LEVEL = 256;
-	// each level has 256 indexes for onetime_indexes
-	std::bitset<_INDEX_PER_LEVEL*_TOTAL_LEVELS> _onetime_indexes{ 0 };
+	// So the first number represents the level
+	// The second number represents index in which something appears
+	std::unordered_set<std::array<int, 2>, HashArray2Int, EqualArray2Int> _onetimes;
 
 	SDL_Texture* loadTexture(const char* path);
 

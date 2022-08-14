@@ -500,8 +500,7 @@ void Camera::load_from_file(Game& g, int level)
 				g._entity_handler._draw_entities.emplace_back(e);
 			}
 			else if (type == "Chest") {
-				_ASSERT(onetime_index < g._INDEX_PER_LEVEL);
-				if (!g._onetime_indexes[g._INDEX_PER_LEVEL * level + onetime_index]) {
+				if (g._onetimes.find({level, onetime_index}) == g._onetimes.end()) {
 					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid);
 					e->_chest_amount = chest_amount;
 					g._entity_handler._draw_entities.emplace_back(e);
