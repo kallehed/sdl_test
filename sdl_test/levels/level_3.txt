@@ -88354,7 +88354,7 @@ i
 j
 35
 tile
-0
+2
 tex
 21
 END
@@ -89344,7 +89344,7 @@ i
 j
 34
 tile
-0
+2
 tex
 21
 END
@@ -100468,9 +100468,9 @@ chest_amount
 END
 ENTITY
 i
-95
+40
 j
-50
+42
 type
 Player
 END

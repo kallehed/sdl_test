@@ -52,7 +52,7 @@ Game::Game()
 	{
 		const char* paths[TEX::TOTAL] = {
 			"images/FireMagic.png",
-			"images/BombExplosion.jpg",
+			"images/BombExplosion.png",
 			"images/Bomb.png",
 			"images/BombRed.png",
 			"images/Bullet.png",
@@ -87,7 +87,7 @@ Game::Game()
 			"images/FlowerBlue2.png",
 
 			"images/Portal.png",
-			"images/Heart.jpg",
+			"images/Heart.png",
 			"images/Bonfire.png",
 			"images/Chest.png",
 			
