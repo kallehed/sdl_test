@@ -3,7 +3,7 @@
 #include "EnemyShooter.h"
 #include "Npc.h"
 
-EntityHandler::EntityHandler()  : _quadtree(0, 0, 4096, 4096) {}
+EntityHandler::EntityHandler()  : _quadtree(0, 0, 5632, 5632) {}
 
 inline void EntityHandler::do_logic(Game& g, std::vector<MovingRect*>& vec)
 {

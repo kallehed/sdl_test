@@ -24,6 +24,8 @@ void EnemyBasic::draw(Game& g)
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 	//SDL_RenderFillRect(g._renderer, &rect);
 
+	draw_circle(g._renderer, rect.x + _w / 2, rect.y + _h * 0.9f, 20, { 0,0,0,67 });
+
 	// 0 is nothing, 1 is flip horizontally
 	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 

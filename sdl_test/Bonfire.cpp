@@ -64,10 +64,32 @@ void Bonfire::draw(Game& g)
 			SDL_RenderCopy(g._renderer, g._press_e_texture, NULL, &text_rect);
 		}
 
-		if (_fire_animation) {
-			const SDL_Rect a_rect = { 0, 0, g._WIDTH, g._HEIGHT };
-			SDL_SetRenderDrawColor(g._renderer, 255, 50, 50, (Uint8)(255.f * (_animation_timer / _animation_time)));
-			SDL_RenderFillRect(g._renderer, &a_rect);
+		// draw weird color gradient thing that possibly looks cool sometimes
+		if (_fire_animation)
+		{ 
+			uint8_t alpha = (Uint8)(255.f * (_animation_timer / _animation_time));
+
+			constexpr float vertices[4*2] =
+			{ 0,0,
+			g._WIDTH, 0,
+			0, g._HEIGHT,
+			g._WIDTH, g._HEIGHT };
+
+			uint8_t c_val = g._ticks % 256;
+			uint8_t c_val2 = (g._ticks*2 + 126) % 256;
+			uint8_t c_val3 = (g._ticks * 3) % 256;
+			SDL_Color c1 = { c_val,c_val3%100,0,alpha };
+			SDL_Color c2 = { c_val3,0,0,alpha };
+			SDL_Color c3 = { c_val2,c_val%100,0,alpha };
+			SDL_Color colors[4] = { c1,c2, c2,c3 };
+
+			constexpr uint8_t indices[6] =
+			{ 0, 1, 2,
+			1, 2, 3 };
+
+			SDL_RenderGeometryRaw(g._renderer, NULL,
+				vertices, 2*sizeof(float), colors, sizeof(SDL_Color), NULL, 0, 4,
+				indices, 6, sizeof(uint8_t));
 		}
 	}
 }

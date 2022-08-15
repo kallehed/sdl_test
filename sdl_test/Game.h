@@ -16,6 +16,9 @@
 
 // DONT HAVE ENUMS/OTHER CLASSES THAN GAME/STRUCTS IN THIS FILE!!!!
 
+// Draw circle
+void draw_circle(SDL_Renderer*, float x, float y, float radius, SDL_Color);
+
 // Hash for std::array<int, 2>
 struct HashArray2Int {
 public:

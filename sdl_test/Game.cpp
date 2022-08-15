@@ -1,5 +1,49 @@
 #include "Game.h"
 
+void draw_circle(SDL_Renderer* renderer, float x, float y, float radius, SDL_Color c)
+{
+	constexpr int points = 63; // points on circle radius
+	constexpr int total_vertices = points + 1;
+	constexpr int total_indices = points * 3;
+	
+	SDL_Vertex verts[total_vertices];
+	// first is middle
+	verts[0].position = { x, y };
+	verts[0].color = c;
+
+	// rest of vertices, circle around
+	{
+		float deg = 0.f;
+		constexpr float deg_increase = (2.f * (float)M_PI) / (float)points;
+		for (int i = 1; i < total_vertices; ++i) {
+			verts[i].position = { x + cosf(deg) * radius, y + sinf(deg) * radius };
+			verts[i].color = c;
+			deg += deg_increase;
+		}
+	}
+
+	int indices[total_indices];
+	// last first
+	indices[0] = points;
+	indices[1] = 0;
+	indices[2] = 1;
+
+	// rest of indices
+	{
+		int vert_index = 1;
+		for (int i = 3; i < total_indices; i += 3) {
+			indices[i] = vert_index;
+			indices[i + 1] = 0;
+			indices[i + 2] = vert_index + 1;
+			++vert_index;
+		}
+	}
+
+	SDL_RenderGeometry(renderer, NULL, verts, total_vertices, indices, total_indices);
+
+}
+
+
 SDL_Texture* Game::loadTexture(const char* path)
 {
 	SDL_Texture* newTexture = IMG_LoadTexture(_renderer, path);

@@ -167,12 +167,17 @@ bool Player::logic(Game& g)
 
 void Player::draw(Game& g)
 {
-	SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);
-
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	//SDL_RenderDrawRect(g._renderer, &rect);
-	//SDL_RenderCopy(g._renderer, g._textures[TEX::RedHuman], NULL, &rect);
 
+	// draw shadow
+	{
+		/*SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
+		SDL_Rect r = { rect.x, rect.y + _h / 2, rect.w, rect.h };
+		SDL_RenderFillRect(g._renderer, &r);
+		*/
+		draw_circle(g._renderer, rect.x + _w/2, rect.y + _h*0.9f, 20, {0,0,0,67});
+
+	}
 	SDL_RendererFlip flip = _right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 	// first choice texture
 	SDL_Texture* tex = _forward ? g._textures[TEX::RedHuman] : g._textures[TEX::RedHumanBackwards];

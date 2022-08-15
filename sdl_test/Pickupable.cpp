@@ -45,6 +45,7 @@ bool Pickupable::logic(Game& g)
 void Pickupable::draw(Game& g)
 {
 	SDL_Rect rect = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
+	draw_circle(g._renderer, rect.x + _w / 2, rect.y + _h * 0.9f, 15, { 0,0,0,67 });
 	SDL_RenderCopy(g._renderer, g._textures[_texture], NULL, &rect);
 }
 

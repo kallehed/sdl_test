@@ -3416,7 +3416,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -4406,7 +4406,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -4416,7 +4416,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -4426,7 +4426,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -5396,7 +5396,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -5406,7 +5406,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -5416,7 +5416,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -5426,7 +5426,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -5436,7 +5436,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -6386,7 +6386,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -6406,7 +6406,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -6416,7 +6416,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -7396,7 +7396,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -7406,7 +7406,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -7416,7 +7416,7 @@ j
 tile
 0
 tex
--1
+27
 END
 TILE
 i
@@ -100078,9 +100078,9 @@ portal0
 END
 ENTITY
 i
-4
+29
 j
-41
+38
 type
 Player
 END

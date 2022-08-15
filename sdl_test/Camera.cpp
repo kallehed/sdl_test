@@ -76,8 +76,12 @@ void Camera::play_logic(Game& g)
 
 	if (_x < 0) _x = 0;
 	if (_y < 0) _y = 0;
-	if (_x > _max_x) _x = _max_x;
-	if (_y > _max_y) _y = _max_y;
+
+	// player should ALWAYS be on screen, allows pushing of screen if possible.
+	float max_x = std::max(_max_x, p._x + p._w - g._WIDTH);
+	float max_y = std::max(_max_y, p._y + p._h - g._HEIGHT);
+	if (_x > max_x) _x = max_x;
+	if (_y > max_y) _y = max_y;
 }
 
 template <typename T>

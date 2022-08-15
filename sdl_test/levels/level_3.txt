@@ -100384,6 +100384,14 @@ EnemyShooter
 END
 ENTITY
 i
+50
+j
+6
+type
+EnemyBasic
+END
+ENTITY
+i
 98
 j
 1
@@ -100468,9 +100476,9 @@ chest_amount
 END
 ENTITY
 i
-40
+91
 j
-42
+32
 type
 Player
 END
