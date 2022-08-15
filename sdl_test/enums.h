@@ -83,6 +83,7 @@ namespace TEX {
 		Heart,
 		Bonfire,
 		Chest,
+		Gnome,
 		
 		TOTAL
 	};

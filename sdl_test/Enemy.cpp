@@ -43,8 +43,10 @@ bool Enemy::logic(Game& g)
 	// kill self?
 	if (_hp < 1) {
 		// spawn coins?
-		g._entity_handler._entities_to_add.push_back(new Pickupable(PICKUPABLE_TYPE::COIN,get_mid_x(),get_mid_y(), get_x_vel()/20.f, get_y_vel()/20.f));
-
+		int coins = 1 + rand() % 2;
+		for (int _ = 0; _ < coins; ++_) {
+			g._entity_handler._entities_to_add.push_back(new Pickupable(PICKUPABLE_TYPE::COIN, get_mid_x() + _, get_mid_y() + _, get_x_vel() / 20.f, get_y_vel() / 20.f));
+		}
 		delete this;
 		return true;
 	}

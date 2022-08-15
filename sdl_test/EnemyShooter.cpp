@@ -1,7 +1,7 @@
 #include "EnemyShooter.h"
 #include "Game.h"
 #include "Shot.h"
-
+#include "Explosion.h"
 
 MOVING_RECT_TYPES EnemyShooter::get_moving_rect_type() const
 {
@@ -60,8 +60,8 @@ void EnemyShooter::idle_logic(Game& g)
 	}
 }
 
-void EnemyShooter::take_damage() {
-	_hp -= 5;
+void EnemyShooter::take_damage(int damage) {
+	_hp -= 5 * damage;
 	_hurt_timer = 150.f;
 	// possibly get scared
 	/*int randint = rand() % 100;
@@ -190,7 +190,7 @@ void EnemyShooter::intersection(Game& g, float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		this->take_damage();
+		this->take_damage(((Explosion*)e)->_damage);
 		this->make_active();
 		break;
 	}

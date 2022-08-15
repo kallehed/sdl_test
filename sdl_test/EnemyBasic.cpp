@@ -1,6 +1,7 @@
 #include "EnemyBasic.h"
 #include "Game.h"
 #include <math.h>
+#include "Explosion.h"
 
 MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 {
@@ -33,6 +34,17 @@ void EnemyBasic::draw(Game& g)
 		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 100, 100, 100);
 		_hurt_timer -= g._dt;
 	}
+	else if (_active_increased_speed) { // make it read
+		//SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 255, 200, 200);
+		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 255, 255, 255);
+		SDL_SetRenderDrawBlendMode(g._renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(g._renderer, &rect);
+		SDL_SetTextureAlphaMod(g._textures[TEX::BlueSlime], 126);
+		SDL_RenderCopyEx(g._renderer, g._textures[TEX::BlueSlime], NULL, &rect, NULL, NULL, flip);
+		SDL_SetTextureAlphaMod(g._textures[TEX::BlueSlime], 255);
+		return;
+	}
 	else {
 		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 255, 255, 255);
 	}
@@ -64,9 +76,9 @@ void EnemyBasic::idle_logic(Game& g)
 	}
 }
 
-void EnemyBasic::take_damage()
+void EnemyBasic::take_damage(int damage)
 {
-	_hp -= 5;
+	_hp -= 5 * damage;
 	_hurt_timer = 150.f;
 
 	// possibly get scared
@@ -171,7 +183,7 @@ void EnemyBasic::intersection(Game& g, float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		this->take_damage();
+		this->take_damage(((Explosion*)(e))->_damage);
 		this->make_active();
 		break;
 	}

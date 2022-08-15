@@ -9,6 +9,8 @@ public:
 	
 	bool _exploded = false;
 
+	int _damage = 2;
+
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
 	Explosion(float x, float y);

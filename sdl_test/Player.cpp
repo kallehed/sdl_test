@@ -4,6 +4,7 @@
 #include "Shot.h"
 #include "FireMagic.h"
 #include "Pickupable.h"
+#include "Explosion.h"
 
 MOVING_RECT_TYPES Player::get_moving_rect_type() const
 {
@@ -215,10 +216,10 @@ void Player::draw(Game& g)
 	SDL_RenderCopyEx(g._renderer, tex, NULL, &rect, NULL, NULL, flip);
 }
 
-void Player::take_damage(Game& g)
+void Player::take_damage(Game& g, int damage)
 {
 	if (_invi_timer <= 0.f) {
-		_hp -= 5;
+		_hp -= 5 * damage;
 		_invi_timer = _invi_time;
 
 		g._cam.shake(g, 250.f, 20.f);
@@ -261,7 +262,7 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		take_damage(g);
+		take_damage(g, static_cast<Explosion*>(e)->_damage);
 		break;
 	}
 	case MOVING_RECT_TYPES::PICKUPABLE:

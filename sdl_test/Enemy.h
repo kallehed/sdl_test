@@ -35,7 +35,7 @@ public:
 
 	virtual void active_logic(Game& g) = 0;
 
-	virtual void take_damage() = 0;
+	virtual void take_damage(int damage = 1) = 0;
 protected:
 	void new_walk_path(Game& g);
 };

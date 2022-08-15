@@ -134,6 +134,7 @@ Game::Game()
 			"images/Heart.png",
 			"images/Bonfire.png",
 			"images/Chest.png",
+			"images/Gnome.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {

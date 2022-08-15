@@ -49,7 +49,7 @@ public:
 
 	void draw(Game& g) override;
 
-	void take_damage(Game& g);
+	void take_damage(Game& g, int damage = 1);
 
 	void intersection(Game& g, float nx, float ny, MovingRect* e) override;
 };
