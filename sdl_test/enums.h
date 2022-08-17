@@ -22,6 +22,7 @@ enum class MOVING_RECT_TYPES : char {
 	CHEST,
 	PARTICLE,
 	BUYABLE,
+	DOOR,
 
 	TOTAL
 };
@@ -86,6 +87,7 @@ namespace TEX {
 		Bonfire,
 		Chest,
 		Gnome,
+		GuyBlonde,
 		
 		TOTAL
 	};

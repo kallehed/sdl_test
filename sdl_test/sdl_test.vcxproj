@@ -160,6 +160,7 @@
     <ClCompile Include="Buyable.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBasic.cpp" />
     <ClCompile Include="EnemyShooter.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Buyable.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chest.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBasic.h" />
     <ClInclude Include="EnemyShooter.h" />

@@ -22,10 +22,10 @@ protected:
 	template <bool COLLIDE>
 	void move_and_collide(Game& g);
 
-	void change_x_vel(float change);
-	void change_y_vel(float change);
 	void go_towards(float x, float y, float speed);
 public:
+	void change_x_vel(float change);
+	void change_y_vel(float change);
 	
 	virtual void intersection(Game& g, float nx, float ny, MovingRect* e) = 0;
 	virtual MOVING_RECT_TYPES get_moving_rect_type() const = 0;

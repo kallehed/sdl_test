@@ -8,6 +8,7 @@
 #include "Bonfire.h"
 #include "Chest.h"
 #include "Buyable.h"
+#include "Door.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -318,7 +319,7 @@ void Camera::save_to_file(Game& g)
 	}
 	// Draw Entities
 	for (auto e : g._entity_handler._draw_entities) {
-		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e) || dynamic_cast<Bonfire*>(e) || dynamic_cast<Chest*>(e) || dynamic_cast<Buyable*>(e)) {
+		if (dynamic_cast<Npc*>(e) || dynamic_cast<Portal*>(e) || dynamic_cast<Bonfire*>(e) || dynamic_cast<Chest*>(e) || dynamic_cast<Buyable*>(e) || dynamic_cast<Door*>(e)) {
 			f << "ENTITY\n";
 			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
 			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
@@ -348,7 +349,10 @@ void Camera::save_to_file(Game& g)
 				f << "type\n" << "Buyable\n";
 				f << "buyable_cost\n" << std::to_string(buyable->_cost) << "\n";
 				f << "buyable_type\n" << std::to_string((int)buyable->_type) << "\n";
-
+			}
+			else if (dynamic_cast<Door*>(e)) {
+				Door* door = (Door*)e;
+				f << "type\n" << "Door\n";
 			}
 			f << "END\n";
 		}
@@ -542,6 +546,13 @@ void Camera::load_from_file(Game& g, int level)
 			else if (type == "Buyable") {
 				if (g._onetimes.find({ level, onetime_index }) == g._onetimes.end()) {
 					Buyable* e = new Buyable(onetime_index, buyable_cost, buyable_type, j * _fgrid, i * _fgrid);
+					g._entity_handler._draw_entities.emplace_back(e);
+				}
+				++onetime_index;
+			}
+			else if (type == "Door") {
+				if (g._onetimes.find({ level, onetime_index }) == g._onetimes.end()) {
+					Door* e = new Door(j * _fgrid, i * _fgrid, onetime_index);
 					g._entity_handler._draw_entities.emplace_back(e);
 				}
 				++onetime_index;
