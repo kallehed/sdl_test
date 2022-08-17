@@ -103,7 +103,7 @@ Game::Game()
 			"images/MagicOrb.png",
 			"images/BlueSlime.png",
 			"images/Wizard.png",
-			"images/GreenSlime.png",
+			"images/GreenSlime1.png",
 			"images/GreenSlime2.png",
 			"images/RedBear.png",
 			"images/RedHuman.png",

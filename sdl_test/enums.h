@@ -20,6 +20,8 @@ enum class MOVING_RECT_TYPES : char {
 	PORTAL,
 	BONFIRE,
 	CHEST,
+	PARTICLE,
+	BUYABLE,
 
 	TOTAL
 };
@@ -102,6 +104,22 @@ enum class PICKUPABLE_TYPE {
 enum class NPC_TYPE {
 	NPC1,
 	NPC2,
+	GNOME,
+	GREEN_BOMB_GUY,
+
+	TOTAL
+};
+
+enum class BUYABLE_TYPE {
+	// fire upgrades
+	FASTER_FIRE_RECHARGE,
+	LARGER_FIRE_LIMIT,
+	INCREASED_FIRE_DAMAGE,
+	LARGER_FIRE_AREA,
+
+	// bomb upgrades
+	LARGER_BOMB_AREA,
+	INCREASED_BOMB_DAMAGE,
 
 	TOTAL
 };
@@ -125,6 +143,7 @@ namespace ENTITIES {
 		PORTAL,
 		BONFIRE,
 		CHEST,
+		BUYABLE,
 
 		TOTAL
 	};

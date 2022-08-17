@@ -2,6 +2,7 @@
 #include "Game.h"
 #include <math.h>
 #include "Explosion.h"
+#include "FireMagic.h"
 
 MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 {
@@ -78,7 +79,7 @@ void EnemyBasic::idle_logic(Game& g)
 
 void EnemyBasic::take_damage(int damage)
 {
-	_hp -= 5 * damage;
+	_hp -= damage;
 	_hurt_timer = 150.f;
 
 	// possibly get scared
@@ -152,53 +153,3 @@ void EnemyBasic::active_logic(Game& g)
 	}
 }
 
-void EnemyBasic::intersection(Game& g, float nx, float ny, MovingRect* e)
-{
-	switch (e->get_moving_rect_type()) {
-	case MOVING_RECT_TYPES::SHOT:
-	{
-		float bounce_acc = 0.05f;
-
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-
-		take_damage();
-
-		make_active(); // become active (aggressive)
-
-		break;
-	}
-	case MOVING_RECT_TYPES::ENEMY:
-	{
-		float bounce_acc = 0.005f;
-
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-		break;
-	}
-	case MOVING_RECT_TYPES::EXPLOSION:
-	{
-		float bounce_acc = 0.1f;
-
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-
-		this->take_damage(((Explosion*)(e))->_damage);
-		this->make_active();
-		break;
-	}
-	case MOVING_RECT_TYPES::FIRE_MAGIC:
-	{
-		float bounce_acc = 0.05f;
-
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-
-		take_damage();
-		make_active();
-
-		break;
-	}
-	}
-	
-}

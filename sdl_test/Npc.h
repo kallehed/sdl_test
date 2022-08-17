@@ -14,6 +14,8 @@ public:
 
 	bool _talking_to = false; // to player
 
+	TEX::TEX _tex = TEX::RedHumanBackwards; // Npc texture
+
 	char* _text; // ex "hello\nperson\0I like bread\0"
 	int _total_chars = 0; // in _text
 
@@ -21,12 +23,12 @@ public:
 	int _char_at = 0; // where to start displaying text
 	int _chars_in = 0; // at what character \0 is placed.
 	char _temp = 'Z'; // temporary
-	bool _end_of_page = false; // wether at end of page or not
+	bool _end_of_page = false; // whether at end of page or not
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
 	Npc(Game& g, NPC_TYPE type, float x, float y);
-
+	
 	~Npc();
 
 	bool logic(Game& g) override;

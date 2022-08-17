@@ -17,10 +17,12 @@ inline void EntityHandler::do_logic(Game& g, std::vector<MovingRect*>& vec)
 
 void EntityHandler::logic(Game& g)
 {
-	_p.logic(g);
+	this->do_logic(g, _particles);
+
+	_p.logic(g); // player could add particles
 
 	// _draw_entities first, cuz _entitites could add to _draw_entitites
-	
+
 	this->do_logic(g, _draw_entities);
 
 	this->do_logic(g, _entities);
@@ -45,6 +47,7 @@ void EntityHandler::logic(Game& g)
 
 void EntityHandler::draw(Game& g)
 {
+	for (auto& e : _particles) e->draw(g);
 	for (auto& e : _entities) e->draw(g);
 	for (auto& e : _draw_entities) e->draw(g);
 	_p.draw(g);

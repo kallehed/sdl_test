@@ -7,7 +7,10 @@ MOVING_RECT_TYPES Bomb::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::BOMB;
 }
 
-Bomb::Bomb(float x, float y, float x_vel, float y_vel) : MovingRect(0, 0, 30.f, 30.f, 0.003f)
+Bomb::Bomb(float x, float y, float x_vel, float y_vel, int damage, float area_factor)
+	: MovingRect(0, 0, 30.f, 30.f, 0.003f),
+	_damage(damage),
+	_area_factor(area_factor)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
@@ -24,7 +27,7 @@ bool Bomb::logic(Game& g)
 	_detonation_timer -= g._dt;
 	if (_detonation_timer <= 0.f || _lives < 1)
 	{
-		g._entity_handler._entities_to_add.push_back(new Explosion(get_mid_x(), get_mid_y()));
+		g._entity_handler._entities_to_add.push_back(new Explosion(get_mid_x(), get_mid_y(), _damage, _area_factor));
 		delete this;
 		return true;
 	}

@@ -5,6 +5,7 @@
 #include "FireMagic.h"
 #include "Pickupable.h"
 #include "Explosion.h"
+#include "Particle.h"
 
 MOVING_RECT_TYPES Player::get_moving_rect_type() const
 {
@@ -46,6 +47,13 @@ bool Player::logic(Game& g)
 		}
 	}
 
+	// particles
+	{
+		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20+rand()%11) == 0) {
+			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel(), -get_y_vel(), {255, 0, 0, 175}));
+		}
+	}
+
 	// fire magic logic
 	{
 		_fire_magic_current += _fire_magic_increase * g._dt;
@@ -84,7 +92,7 @@ bool Player::logic(Game& g)
 						float e_x = get_mid_x() + nx * displacement;
 						float e_y = get_mid_y()+ ny * displacement;
 
-						FireMagic* e = new FireMagic(this, e_x, e_y);
+						FireMagic* e = new FireMagic(this, e_x, e_y, _fire_magic_damage, _fire_magic_area_factor);
 						g._entity_handler._entities_to_add.push_back(e);
 					}
 				}
@@ -138,7 +146,7 @@ bool Player::logic(Game& g)
 					float x_vel = nx * bomb_speed;
 					float y_vel = ny * bomb_speed;
 
-					g._entity_handler._entities_to_add.push_back(new Bomb(get_mid_x(), get_mid_y(), x_vel, y_vel));
+					g._entity_handler._entities_to_add.push_back(new Bomb(get_mid_x(), get_mid_y(), x_vel, y_vel, _bomb_damage, _bomb_area_factor));
 
 					// reset
 					_charging_bomb_throw = false;

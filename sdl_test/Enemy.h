@@ -35,7 +35,9 @@ public:
 
 	virtual void active_logic(Game& g) = 0;
 
-	virtual void take_damage(int damage = 1) = 0;
+	virtual void take_damage(int damage = 5) = 0;
 protected:
 	void new_walk_path(Game& g);
+public:
+	void intersection(Game& g, float nx, float ny, MovingRect* e) override final;
 };

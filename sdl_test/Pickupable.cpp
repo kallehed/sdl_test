@@ -67,7 +67,7 @@ void Pickupable::intersection(Game& g, float nx, float ny, MovingRect* e)
 	}
 	case MOVING_RECT_TYPES::PICKUPABLE:
 	{
-		float bounce_acc = 0.05f;
+		float bounce_acc = 0.02f;
 
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);

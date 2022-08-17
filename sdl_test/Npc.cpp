@@ -8,16 +8,32 @@ MOVING_RECT_TYPES Npc::get_moving_rect_type() const
 }
 
 Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
-	: MovingRect(x, y, 70, 80, 1.f), _npc_type(type)
+	: MovingRect(x, y, 64, 74, 1.f), _npc_type(type)
 {
 	switch (_npc_type) {
 	case NPC_TYPE::NPC1:
 		_text = g._entity_handler._NPC_1_TEXT;
 		_total_chars = g._entity_handler._NPC_1_TOTAL_CHARS;
+		_tex = TEX::RedBear;
 		break;
 	case NPC_TYPE::NPC2:
 		_text = g._entity_handler._NPC_2_TEXT;
 		_total_chars = g._entity_handler._NPC_2_TOTAL_CHARS;
+		_tex = TEX::RedBear;
+		break;
+	case NPC_TYPE::GNOME:
+		_text = g._entity_handler._NPC_GNOME_TEXT;
+		_total_chars = g._entity_handler._NPC_GNOME_TOTAL_CHARS;
+		_tex = TEX::Gnome;
+		set_w(32.f * 1.5f);
+		set_h(70.f * 1.5f);
+		break;
+	case NPC_TYPE::GREEN_BOMB_GUY:
+		_text = g._entity_handler._NPC_GREEN_BOMB_GUY;
+		_total_chars = g._entity_handler._NPC_GREEN_BOMB_GUY_TOTAL_CHARS;
+		_tex = TEX::GreenSlime1;
+		set_w(32.f * 1.75f);
+		set_h(39.f * 1.75f);
 		break;
 	default:
 		std::cout << "ERROR_NPC_TYPE";
@@ -32,7 +48,6 @@ Npc::~Npc()
 {
 	_text[_chars_in] = _temp;
 	std::cout << "DESTRUCTED!!";
-
 }
 
 bool Npc::logic(Game& g)
@@ -121,7 +136,7 @@ void Npc::draw(Game& g)
 
 		draw_circle(g._renderer, rect.x + _w / 2, rect.y + _h * 0.9f, 25, { 0,0,0,67 });
 
-		SDL_RenderCopy(g._renderer, g._textures[TEX::RedBear], NULL, &rect);
+		SDL_RenderCopy(g._renderer, g._textures[_tex], NULL, &rect);
 
 		// "Press E" Text
 		if (_press_e_sign) {

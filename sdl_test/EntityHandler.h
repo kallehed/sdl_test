@@ -10,6 +10,7 @@ public:
 	Player _p;
 	std::vector<MovingRect*> _entities;
 	std::vector<MovingRect*> _draw_entities;
+	std::vector<MovingRect*> _particles;
 	std::vector<MovingRect*> _entities_to_add;
 	Quadtree<MovingRect, 4, 5> _quadtree;
 
@@ -31,6 +32,19 @@ public:
 		"Here you have a bonfire, which\nwill heal all your worries\naway!\0"
 		"Go ahead and use it...";
 	int _NPC_2_TOTAL_CHARS = 245;
+
+	char _NPC_GNOME_TEXT[107] =
+		"Welcome to the Gnome Fire\nShop!\0"
+		"Full of upgrades waiting\nto be absorbed by some\ngreat adventurer!\0"
+		"Enjoy...";
+	int _NPC_GNOME_TOTAL_CHARS = 107;
+
+	char _NPC_GREEN_BOMB_GUY[75] =
+		"HI PERSON,\0"
+		"THIS IS THE BOMB SHOP,\0"
+		"WHERE YOU CAN BUY BOMB\nUPGRADES\0"
+		"BUY THEM";
+	int _NPC_GREEN_BOMB_GUY_TOTAL_CHARS = 75;
 
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);

@@ -6,7 +6,9 @@ MOVING_RECT_TYPES Explosion::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::EXPLOSION;
 }
 
-Explosion::Explosion(float x, float y) : MovingRect(0, 0, 300.f, 300.f, 0.0f)
+Explosion::Explosion(float x, float y, int damage, float area_factor)
+	: MovingRect(0, 0, area_factor*300.f, area_factor*300.f, 0.0f),
+	_damage(damage)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
@@ -40,13 +42,6 @@ bool Explosion::logic(Game& g)
 
 void Explosion::draw(Game& g)
 {
-	/*int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
-
-	SDL_SetRenderDrawColor(g._renderer, 255, 50, 50, alpha_val);
-
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	SDL_RenderFillRect(g._renderer, &rect);
-	*/
 
 	int alpha_val = (int)(255.f * (1.f - (_explosion_timer / _explosion_time)));
 	const SDL_Rect dst = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };

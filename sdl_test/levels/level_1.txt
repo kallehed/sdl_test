@@ -11024,7 +11024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 20
 END
@@ -100060,9 +100060,9 @@ portal0
 END
 ENTITY
 i
-31
+51
 j
-50
+32
 type
 Player
 END

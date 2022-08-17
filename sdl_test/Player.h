@@ -6,7 +6,7 @@ class Player : public MovingRect {
 public:
 	int _max_hp = 50;
 	int _hp = _max_hp;
-	int _coins = 0;
+	int _coins = 1000;
 
 	//invincibility frames stuff
 	float _invi_time = 500.f;
@@ -24,6 +24,8 @@ public:
 	float _fire_magic_current = _fire_magic_max;
 	float _fire_magic_cost = 225.f;
 	float _fire_magic_increase = 0.175f;
+	int _fire_magic_damage = 5;
+	float _fire_magic_area_factor = 1.f;
 
 	float _left_timer = 0.f;
 	float _shoot_time = 400.f; // "reload" time
@@ -34,6 +36,8 @@ public:
 
 	// bomb stuff
 	int _bombs = 5;
+	float _bomb_area_factor = 1.f;
+	int _bomb_damage = 10;
 
 	//bomb throw charge gauge
 	float _bomb_throw_charge = 0.f;

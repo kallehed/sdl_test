@@ -27,7 +27,5 @@ public:
 	void idle_logic(Game& g);
 	void take_damage(int damage = 1) override;
 	void active_logic(Game& g);
-
-	void intersection(Game& g,float nx, float ny, MovingRect* e) override;
 };
 

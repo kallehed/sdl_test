@@ -6,8 +6,10 @@ MOVING_RECT_TYPES FireMagic::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::FIRE_MAGIC;
 }
 
-FireMagic::FireMagic(MovingRect* owner, float x, float y)
-	: MovingRect(0, 0, 50.f, 50.f, 0.0f), _owner(owner)
+FireMagic::FireMagic(MovingRect* owner, float x, float y, int damage, float area_factor)
+	: MovingRect(0, 0, 50.f*area_factor, 50.f*area_factor, 0.0f),
+	_owner(owner),
+	_damage(damage)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
@@ -62,12 +64,7 @@ void FireMagic::draw(Game& g)
 {
 	int alpha_val = (int)(300.f * (1.f - (_explosion_timer / _explosion_time)));
 	const SDL_Rect dst = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
-	/*
-	SDL_SetRenderDrawColor(g._renderer, 255, 50, 50, alpha_val);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
-	SDL_RenderFillRect(g._renderer, &rect);
-	*/
 	SDL_SetTextureAlphaMod(g._textures[TEX::FireMagic], (unsigned char)alpha_val);
 	SDL_RenderCopy(g._renderer, g._textures[TEX::FireMagic], NULL, &dst);
 }
