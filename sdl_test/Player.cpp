@@ -17,6 +17,33 @@ Player::Player() : MovingRect(0.f, 0.f, 40.f, 60.f, 0.009f) {
 
 bool Player::logic(Game& g)
 {
+	if (_hp <= 0 || !_alive) {
+		if (_alive) {
+			// moment of death code
+			_alive = false;
+			_death_timer = 2250.f;
+			// particles?
+			{
+				int total_particles = 150;
+				float x = get_mid_x();
+				float y = get_mid_y();
+
+				for (int i = 0; i < total_particles; ++i) {
+					float x_vel = (General::randf01() - 0.5f)*8.f;
+					float y_vel = (General::randf01() - 0.5f)*8.f;
+					Particle* e = new Particle(x, y, x_vel, y_vel, { 255,0,0,255 });
+					g._entity_handler._particles.emplace_back(e);
+				}
+			}
+		}
+		if (_death_timer <= 0.f) {
+			// respanw!
+			_respawn = true;
+		}
+		_death_timer -= g._dt;
+		return false;
+	}
+
 	// change velocities according to keys pressed
 	static constexpr float acc = 0.0023f;
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -47,7 +74,7 @@ bool Player::logic(Game& g)
 		}
 	}
 
-	// particles
+	// particles when walking
 	{
 		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20+rand()%11) == 0) {
 			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel()/4.f, -get_y_vel()/4.f, {255, 0, 0, 175}));
@@ -62,7 +89,6 @@ bool Player::logic(Game& g)
 
 	// use weapons(both left and right)
 	{
-		
 		int m_x, m_y;
 		Uint32 buttons = g.getMouseState(&m_x, &m_y);
 
@@ -176,6 +202,8 @@ bool Player::logic(Game& g)
 
 void Player::draw(Game& g)
 {
+	if (!_alive) { return; }
+
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 
 	// draw shadow

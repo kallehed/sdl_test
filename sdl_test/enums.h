@@ -183,10 +183,3 @@ namespace CAM_VIEW {
 		TOTAL
 	};
 }
-
-namespace LEVEL {
-	enum LEVEL : char {
-		START,
-		LEVEL1,
-	};
-}

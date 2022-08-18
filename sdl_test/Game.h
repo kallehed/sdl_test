@@ -42,7 +42,7 @@ class Game {
 public:
 	static constexpr int _HEIGHT = 600;
 	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
-	int _scale = 1;
+	int _scale = 2;
 
 	long long _ticks = 0;
 
@@ -81,7 +81,8 @@ public:
 	EntityHandler _entity_handler;
 
 	// what level we are on
-	LEVEL::LEVEL _level = LEVEL::START;
+	int _level = 0;
+	int _level_to_change_to = 1;
 	bool _change_level = false;
 	std::string _destination_portal = "Error_Name";
 
@@ -92,7 +93,7 @@ public:
 
 	SDL_Texture* loadTexture(const char* path);
 
-	void changedScale();
+	void changeScale(int change);
 	Uint32 getMouseState(int* x, int* y);
 
 	Game();

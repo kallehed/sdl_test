@@ -22,7 +22,7 @@ bool Portal::logic(Game& g)
 		if (g._keys_frame[SDLK_e])
 		{
 			// teleport to other level
-			g._level = (LEVEL::LEVEL)(_destination_level);
+			g._level_to_change_to = _destination_level;
 			g._destination_portal = _destination_name;
 			g._change_level = true;
 		}

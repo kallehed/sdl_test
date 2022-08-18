@@ -134,16 +134,14 @@ void Camera::edit_logic(Game& g)
 			{
 				// save button clicked! SAVE
 				save_to_file(g);
-				g._level =  (LEVEL::LEVEL)(1 + g._level);
-				load_from_file(g, g._level);
+				load_from_file(g, g._level + 1);
 				
 			}
 			else if (btn_states[CAM_BTN::PREV] == BTN::CLICKED_ON)
 			{
 				// load button clicked! LOAD
 				save_to_file(g);
-				g._level = (LEVEL::LEVEL)(g._level - 1);
-				load_from_file(g, g._level);
+				load_from_file(g, g._level - 1);
 			}
 			else if (btn_states[CAM_BTN::VIEW] == BTN::CLICKED_ON) {
 				_cam_view = (CAM_VIEW::CAM_VIEW)((_cam_view + 1) % CAM_VIEW::TOTAL);
@@ -383,6 +381,8 @@ void Camera::save_to_file(Game& g)
 void Camera::load_from_file(Game& g, int level)
 {
 	std::cout << "LOAD\n";
+
+	g._level = level;
 
 	// reset all tiles
 	g._tile_handler.reset_all(g);

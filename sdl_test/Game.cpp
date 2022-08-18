@@ -56,17 +56,21 @@ SDL_Texture* Game::loadTexture(const char* path)
 	return newTexture;
 }
 
-void Game::changedScale()
+void Game::changeScale(int change)
 {
-	SDL_SetWindowSize(_window, _WIDTH * _scale, _HEIGHT * _scale);
-	SDL_RenderSetScale(_renderer, (float)_scale, (float)_scale);
+	_scale = std::min(6, std::max(_scale + change, 1));
+
+	float r_scale = _scale * 0.5f;
+	SDL_SetWindowSize(_window, (int)(_WIDTH * r_scale), (_HEIGHT * r_scale));
+	SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
 }
 
 Uint32 Game::getMouseState(int* x, int* y)
 {
+	float r_scale = _scale * 0.5f;
 	Uint32 buttons = SDL_GetMouseState(x, y);
-	(*x) /= _scale; // correctly place mouse position when window is bigger
-	(*y) /= _scale;
+	(*x) = (int)((*x)/r_scale); // correctly place mouse position when window is bigger
+	(*y) = (int)((*y)/r_scale);
 
 	return buttons;
 }
@@ -262,12 +266,10 @@ void Game::game_loop()
 			}
 		}
 		if (_keys_frame[SDLK_o]) {
-			_scale = std::max(1, _scale - 1);
-			changedScale();
+			changeScale(-1);
 		}
 		if (_keys_frame[SDLK_p]) {
-			_scale = std::min(3, _scale + 1);
-			changedScale();
+			changeScale(1);
 		}
 
 		game_logic();
@@ -277,8 +279,42 @@ void Game::game_loop()
 		
 		// change level possibly
 		if (_change_level) {
-			_cam.load_from_file(*this, _level);
+			_cam.load_from_file(*this, _level_to_change_to);
 			_change_level = false;
+		}
+		// possibly enter state of "YOU DIED"
+		if (_entity_handler._p._respawn) 
+		{
+			for (int _ = 0; _ < 125; ++_) {
+				SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+				SDL_RenderClear(_renderer);
+				int text_x = _WIDTH / 4;
+				int text_y = _HEIGHT / 4;
+				if (_ > 25) {
+					_cam.draw_text(*this, "You died.", { 0,0,0,255 }, text_x, text_y, 5);
+					if (_ > 60) {
+						_cam.draw_text(*this, "Sad.", { 0,0,0,255 }, text_x+100, text_y+100, 4);
+
+						if (_ > 90) {
+							_cam.draw_text(*this, "OH and also you lose half of your money now :(", { 0,0,0,255 }, text_x-260, text_y + 200, 3);
+						}
+					}
+				} 
+
+				SDL_RenderPresent(_renderer);
+			}
+			// actually respawn
+			_cam.load_from_file(*this, _entity_handler._p._respawn_level);
+			_entity_handler._p.set_x(_entity_handler._p._respawn_x);
+			_entity_handler._p.set_y(_entity_handler._p._respawn_y);
+
+			
+			_entity_handler._p._respawn = false;
+			_entity_handler._p._alive = true;
+			_entity_handler._p._hp = _entity_handler._p._max_hp;
+			_entity_handler._p._coins /= 2;
+
+			_change_level = false; // JUST IN CASE
 		}
 
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;

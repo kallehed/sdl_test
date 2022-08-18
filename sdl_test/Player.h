@@ -8,6 +8,15 @@ public:
 	int _hp = _max_hp;
 	int _coins = 1000;
 
+	// alive stuff
+	bool _alive = true;
+	bool _respawn = false; // flag for higher-ups to respond to
+	float _death_timer = 0.f;
+
+	int _respawn_level = 0;
+	float _respawn_x = 1265.f;
+	float _respawn_y = 2310.f;
+
 	//invincibility frames stuff
 	float _invi_time = 500.f;
 	float _invi_timer = 0.f;

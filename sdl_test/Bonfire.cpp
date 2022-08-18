@@ -24,6 +24,10 @@ bool Bonfire::logic(Game& g)
 
 			// HEAL PLAYER
 			p._hp = p._max_hp; 
+			// SET RESPAWN POINT
+			p._respawn_x = _x;
+			p._respawn_y = _y;
+			p._respawn_level = g._level;
 		}
 	}
 	else {
