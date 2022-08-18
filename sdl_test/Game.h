@@ -71,7 +71,7 @@ public:
 	// keys CURRENTLY pressed
 	std::array<bool, _KEY_BOOLS> _keys_down;
 
-	// keys pressed THIS frame, access with [SDLK_x]
+	// keys pressed THIS frame, access with [SDL_SCANCODE_X]
 	std::array<bool, _KEY_BOOLS> _keys_frame;
 
 	Camera _cam;

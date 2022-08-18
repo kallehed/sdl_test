@@ -89,6 +89,7 @@ namespace TEX {
 		Gnome,
 		GuyBlonde,
 		FullGreen,
+		SlimeSad,
 		
 		TOTAL
 	};
@@ -104,11 +105,13 @@ enum class PICKUPABLE_TYPE {
 	TOTAL
 };
 
-enum class NPC_TYPE {
+enum class NPC_TYPE { // NPCX is the red bear now
 	NPC1,
 	NPC2,
 	GNOME,
 	GREEN_BOMB_GUY,
+	NPC3,
+	SUS_SELLER,
 
 	TOTAL
 };
@@ -123,6 +126,9 @@ enum class BUYABLE_TYPE {
 	// bomb upgrades
 	LARGER_BOMB_AREA,
 	INCREASED_BOMB_DAMAGE,
+
+	// Running
+	ABILITY_TO_RUN,
 
 	TOTAL
 };

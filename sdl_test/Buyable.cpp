@@ -32,6 +32,9 @@ Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float 
 	case INCREASED_BOMB_DAMAGE:
 		_descriptive_text = "Increased Bomb\nDamage (PRAISED)";
 		break;
+	case ABILITY_TO_RUN:
+		_descriptive_text = "This upgrade literally gives you the ability to run or something I didnt check but I think so????\n(HIGHLY VALUED)";
+		break;
 	}
 }
 
@@ -44,7 +47,7 @@ bool Buyable::logic(Game& g)
 		_show_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
 
 		if (_show_e_sign) {
-			if (g._keys_frame[SDLK_e])
+			if (g._keys_frame[SDL_SCANCODE_E])
 			{
 				// Possibly buy what is BUYABLE
 				if (p._coins >= _cost) {
@@ -75,6 +78,9 @@ bool Buyable::logic(Game& g)
 						case INCREASED_BOMB_DAMAGE:
 							p._bomb_damage += 5;
 							break;
+						case ABILITY_TO_RUN:
+							p._ability_to_run = true;
+							break;
 						}
 					}
 				}
@@ -94,13 +100,13 @@ bool Buyable::logic(Game& g)
 
 		// only delete self if SUCCESFUL TRADE
 		if (_transaction_succeded) {
-			if (far_away || g._keys_frame[SDLK_e]) {
+			if (far_away || g._keys_frame[SDL_SCANCODE_E]) {
 				delete this;
 				return true;
 			}
 		}
 		else if (_transaction_failed) {
-			if (far_away || g._keys_frame[SDLK_e]) {
+			if (far_away || g._keys_frame[SDL_SCANCODE_E]) {
 				_transaction_failed = false;
 			}
 		}
@@ -150,7 +156,7 @@ void Buyable::draw(Game& g)
 			SDL_RenderCopy(g._renderer, g._textures[TEX::DialogueBox], NULL, &box);
 
 			constexpr int text_offset = 40;
-			g._cam.draw_text(g, "Succesfully bought!", { 0,0,0,255 }, x + text_offset, y + text_offset, 3);
+			g._cam.draw_text(g, "Succesfully bought!\n:)", { 0,0,0,255 }, x + text_offset, y + text_offset, 3);
 		}
 		else if (_transaction_failed) {
 			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 255);

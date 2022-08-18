@@ -17,6 +17,7 @@ Player::Player() : MovingRect(0.f, 0.f, 40.f, 60.f, 0.009f) {
 
 bool Player::logic(Game& g)
 {
+	// death stuff
 	if (_hp <= 0 || !_alive) {
 		if (_alive) {
 			// moment of death code
@@ -44,24 +45,53 @@ bool Player::logic(Game& g)
 		return false;
 	}
 
-	// change velocities according to keys pressed
-	static constexpr float acc = 0.0023f;
-	const Uint8* keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
-		change_x_vel(acc);
-		_right = true;
-	}
-	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A]) {
-		change_x_vel(-acc);
-		_right = false;
-	}
-	if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S]) {
-		change_y_vel(acc);
-		_forward = true;
-	}
-	if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W]) {
-		change_y_vel(-acc);
-		_forward = false;
+	// moving based on arrows/WASD
+	{
+		float acc = 0.0023f;
+
+		
+
+		if (_ability_to_run) {
+			if (!_using_run) {
+				if (_run_current > 0.f && g._keys_frame[SDL_SCANCODE_LSHIFT]) {
+					// active running
+					_using_run = true;
+				}
+				else {
+					_run_current += g._dt * _run_recharge;
+					_run_current = std::min(_run_current, _run_max);
+				}
+			}
+			else {
+				// run is active!
+				if (g._keys_down[SDL_SCANCODE_LSHIFT] && _run_current > 0.f) {
+					acc *= _run_speed_boost;
+					_run_current -= g._dt * _run_cost;
+				}
+				else {
+					// STOP RUNNING!!!
+					_using_run = false;
+				}
+			}
+		}
+		// change velocities according to keys pressed
+		auto& keys = g._keys_down;
+		if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
+			change_x_vel(acc);
+			_right = true;
+		}
+		if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A]) {
+			change_x_vel(-acc);
+			_right = false;
+		}
+		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S]) {
+			change_y_vel(acc);
+			_forward = true;
+		}
+		if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W]) {
+			change_y_vel(-acc);
+			_forward = false;
+		}
 	}
 
 	// let MovingRect handle the rest

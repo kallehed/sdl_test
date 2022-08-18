@@ -36,7 +36,7 @@ bool Bonfire::logic(Game& g)
 		_player_close = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
 
 		if (_player_close) {
-			if (g._keys_frame[SDLK_e])
+			if (g._keys_frame[SDL_SCANCODE_E])
 			{
 				// bonfire player
 				if (!_fire_animation) {

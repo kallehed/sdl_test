@@ -25,6 +25,11 @@ public:
 	char _temp = 'Z'; // temporary
 	bool _end_of_page = false; // whether at end of page or not
 
+	// Which red bear should spawn
+	static int _red_bear_stage;
+
+	bool _invisible = false;
+
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
 	Npc(Game& g, NPC_TYPE type, float x, float y);

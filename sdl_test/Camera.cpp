@@ -114,7 +114,7 @@ void Camera::edit_logic(Game& g)
 	// placing/removing things by clicking + buttons
 	{
 		// change _edit_mode
-		if (g._keys_frame[SDLK_l]) {
+		if (g._keys_frame[SDL_SCANCODE_L]) {
 			_edit_mode = (EDIT_MODE::EDIT_MODE)(General::mod(_edit_mode + 1, EDIT_MODE::TOTAL ));
 		}
 
@@ -766,6 +766,24 @@ void Camera::draw_hud(Game& g)
 	}
 	hud_y += hud_y_increase;
 
+
+	if (p._ability_to_run)
+	{
+		// red health bar
+		SDL_SetRenderDrawColor(g._renderer, 0,255, 0, a);
+
+		SDL_Rect draw_rect = { hud_x, hud_y, (int)(100.f * ((float)p._run_current / p._run_max)), 20 };
+		SDL_RenderFillRect(g._renderer, &draw_rect);
+
+		// black boundary
+		draw_rect.w = 100;
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
+		SDL_RenderDrawRect(g._renderer, &draw_rect);
+
+
+		hud_y += hud_y_increase;
+	}
+
 	{ // coins of player
 		SDL_SetRenderDrawColor(g._renderer, 230, 230, 0, a);
 		SDL_Rect draw_rect = { hud_x,hud_y,25,25 };
@@ -824,7 +842,7 @@ void Camera::draw_hud(Game& g)
 	}
 	hud_y += hud_y_increase;
 	
-	{ // boms player has
+	{ // bombs player has
 		SDL_SetRenderDrawColor(g._renderer, 100, 0, 0, a);
 
 		SDL_Rect draw_rect = { hud_x, hud_y, 5 * p._bombs, 20 };

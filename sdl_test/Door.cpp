@@ -24,16 +24,17 @@ bool Door::logic(Game& g)
 		if (General::rect_intersection(*((MovingRect*)this), *((MovingRect*)(&p)))) {
 			float nx, ny;
 			General::normalize_vector_two_points(nx, ny, _x, _y, p._x, p._y);
-			float bounce = 0.01f;
+			float bounce = 0.05f;
 			p.change_x_vel(nx * bounce);
 			p.change_y_vel(ny * bounce);
 		}
 		
 		float player_leftness = get_mid_x() - p.get_mid_x();
-		_show_e_sign = 0 < player_leftness && player_leftness < 150.f;
+		float y_dif = std::abs(get_mid_y() - p.get_mid_y());
+		_show_e_sign = 0 < player_leftness && player_leftness < 150.f && y_dif < 150.f;
 
 		if (_show_e_sign) {
-			if (g._keys_frame[SDLK_e])
+			if (g._keys_frame[SDL_SCANCODE_E])
 			{
 				g._onetimes.insert({ g._level, _onetime_index });
 				_opened = true;

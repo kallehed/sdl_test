@@ -100146,7 +100146,7 @@ Door
 END
 ENTITY
 i
-30
+31
 j
 22
 type

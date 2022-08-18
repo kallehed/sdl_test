@@ -21,7 +21,7 @@ bool Chest::logic(Game& g)
 		_show_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
 
 		if (_show_e_sign) {
-			if (g._keys_frame[SDLK_e])
+			if (g._keys_frame[SDL_SCANCODE_E])
 			{
 				// GIVE PLAYER MONEYYYYYYYYY
 				g._entity_handler._p._coins += _chest_amount;
@@ -39,7 +39,7 @@ bool Chest::logic(Game& g)
 		constexpr float threshold = 150.f;
 		bool far_away = threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
 
-		if (far_away || g._keys_frame[SDLK_e]) {
+		if (far_away || g._keys_frame[SDL_SCANCODE_E]) {
 			delete this;
 			return true;
 		}

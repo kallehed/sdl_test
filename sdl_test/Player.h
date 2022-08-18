@@ -54,6 +54,16 @@ public:
 	signed char _bomb_charge_direction = 1; // 1 = +, -1 = -
 	bool _charging_bomb_throw = false;
 
+	// The ability to run: stuff
+	bool _ability_to_run = false;
+	float _run_max = 750.f;
+	float _run_current = _run_max;
+	float _run_recharge = 0.5f;
+	float _run_cost = 0.75f;
+	float _run_speed_boost = 1.6f;
+	bool _using_run = false;
+
+
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
 	Player();

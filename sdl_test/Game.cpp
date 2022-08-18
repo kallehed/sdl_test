@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Npc.h"
 
 void draw_circle(SDL_Renderer* renderer, float x, float y, float radius, SDL_Color c)
 {
@@ -141,6 +142,7 @@ Game::Game()
 			"images/Gnome.png",
 			"images/GuyBlonde.png",
 			"images/FullGreen.png",
+			"images/SlimeSad.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
@@ -210,16 +212,16 @@ void Game::game_loop()
 				running = false;
 			}
 			else if (e.type == SDL_KEYDOWN) {
-				if (e.key.keysym.sym < _KEY_BOOLS) {
-					if (_keys_down[e.key.keysym.sym] == false) {
-						_keys_frame[e.key.keysym.sym] = true;
+				if (e.key.keysym.scancode < _KEY_BOOLS) {
+					if (_keys_down[e.key.keysym.scancode] == false) {
+						_keys_frame[e.key.keysym.scancode] = true;
 					}
-					_keys_down[e.key.keysym.sym] = true;
+					_keys_down[e.key.keysym.scancode] = true;
 				}
 			}
 			else if (e.type == SDL_KEYUP) {
-				if (e.key.keysym.sym < _KEY_BOOLS) {
-					_keys_down[e.key.keysym.sym] = false;
+				if (e.key.keysym.scancode < _KEY_BOOLS) {
+					_keys_down[e.key.keysym.scancode] = false;
 				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN) {
@@ -253,11 +255,12 @@ void Game::game_loop()
 		}
 
 		// IMPORTANT EVENTS, FROM CLICKING
-		if (_keys_frame[SDLK_ESCAPE]) { running = false; }
-		if (_keys_frame[SDLK_k]) {
+		if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
+		if (_keys_frame[SDL_SCANCODE_K]) {
 			if (_edit_mode == false) {
 				_edit_mode = true;
 				_onetimes.clear();
+				Npc::_red_bear_stage = 0;
 				_cam.load_from_file(*this, _level);
 			}
 			else {
@@ -265,10 +268,10 @@ void Game::game_loop()
 				_cam.save_to_file(*this);
 			}
 		}
-		if (_keys_frame[SDLK_o]) {
+		if (_keys_frame[SDL_SCANCODE_O]) {
 			changeScale(-1);
 		}
-		if (_keys_frame[SDLK_p]) {
+		if (_keys_frame[SDL_SCANCODE_P]) {
 			changeScale(1);
 		}
 

@@ -7,20 +7,49 @@ MOVING_RECT_TYPES Npc::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::NPC;
 }
 
+int Npc::_red_bear_stage = 0;
+
 Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 	: MovingRect(x, y, 64, 74, 1.f), _npc_type(type)
 {
 	switch (_npc_type) {
 	case NPC_TYPE::NPC1:
+		
 		_text = g._entity_handler._NPC_1_TEXT;
 		_total_chars = g._entity_handler._NPC_1_TOTAL_CHARS;
 		_tex = TEX::RedBear;
+
+		if (_red_bear_stage > 0) {
+			_invisible = true;
+		}
 		break;
 	case NPC_TYPE::NPC2:
+		
 		_text = g._entity_handler._NPC_2_TEXT;
 		_total_chars = g._entity_handler._NPC_2_TOTAL_CHARS;
 		_tex = TEX::RedBear;
+
+		if (_red_bear_stage > 1) {
+			_invisible = true;
+		}
+		else {
+			_red_bear_stage = 1;
+		}
+		
 		break;
+	case NPC_TYPE::NPC3:
+		_text = g._entity_handler._NPC_3_TEXT;
+		_total_chars = g._entity_handler._NPC_3_TOTAL_CHARS;
+		_tex = TEX::RedBear;
+
+		if (_red_bear_stage > 2) {
+			_invisible = true;
+		}
+		else {
+			_red_bear_stage = 2;
+		}
+		break;
+
 	case NPC_TYPE::GNOME:
 		_text = g._entity_handler._NPC_GNOME_TEXT;
 		_total_chars = g._entity_handler._NPC_GNOME_TOTAL_CHARS;
@@ -34,6 +63,13 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		_tex = TEX::GreenSlime1;
 		set_w(32.f * 1.75f);
 		set_h(39.f * 1.75f);
+		break;
+	case NPC_TYPE::SUS_SELLER:
+		_text = g._entity_handler._NPC_SUS_SELLER_TEXT;
+		_total_chars = g._entity_handler._NPC_SUS_SELLER_TEXT_TOTAL_CHARS;
+		_tex = TEX::SlimeSad;
+		set_w(45.f * 2.f);
+		set_h(64.f * 2.f);
 		break;
 	default:
 		std::cout << "ERROR_NPC_TYPE";
@@ -84,7 +120,7 @@ bool Npc::logic(Game& g)
 			}
 			else {
 				// fast forward
-				if (g._keys_frame[SDLK_e]) {
+				if (g._keys_frame[SDL_SCANCODE_E]) {
 					_speaking_timer += 200.f;
 				}
 			}
@@ -92,7 +128,7 @@ bool Npc::logic(Game& g)
 		else {
 			// waiting for e press
 			_press_e_sign = true;
-			if (g._keys_frame[SDLK_e]) {
+			if (g._keys_frame[SDL_SCANCODE_E]) {
 				if (_chars_in + 1 >= _total_chars) {
 					// Done with all pages
 					_talking_to = false;
@@ -115,7 +151,7 @@ bool Npc::logic(Game& g)
 		_press_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
 
 		if (_press_e_sign) {
-			if (g._keys_frame[SDLK_e]) {
+			if (g._keys_frame[SDL_SCANCODE_E]) {
 				_talking_to = true;
 				_press_e_sign = false;
 			}
@@ -127,6 +163,7 @@ bool Npc::logic(Game& g)
 
 void Npc::draw(Game& g)
 {
+	if (_invisible) return;
 	// Sprite and "Press E" box
 	{
 		bool condition = (!_press_e_sign && _talking_to) && ((((int)_speaking_timer) / 400) % 2 == 0);

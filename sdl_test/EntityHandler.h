@@ -46,6 +46,24 @@ public:
 		"BUY THEM";
 	int _NPC_GREEN_BOMB_GUY_TOTAL_CHARS = 75;
 
+	char _NPC_3_TEXT[138] = 
+		"Hi again\0"
+		"It seems you still live?\0"
+		"How ...     \nWonderful.\0"
+		"Anyway...\0"
+		"I heard you can deflect\nmagical orbs with fire...\0"
+		"Just a         \ntip";
+	int _NPC_3_TOTAL_CHARS = 138;
+
+	char _NPC_SUS_SELLER_TEXT[218] =
+		"Hey...\0"
+		"kid...\0"
+		"you could have that upgrade\nbelow me for 1 spare change...\0"
+		"It's quite...    \nNecessary?..\0"
+		"Though,    \nyou won't approve of what\ni'm going to spend the coins\non...\0"
+		"(The upgrade can be used with\n'SHIFT')..";
+	int _NPC_SUS_SELLER_TEXT_TOTAL_CHARS = 218;
+
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);
 public:
