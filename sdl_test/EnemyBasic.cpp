@@ -3,6 +3,7 @@
 #include <math.h>
 #include "Explosion.h"
 #include "FireMagic.h"
+#include "Particle.h"
 
 MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 {
@@ -77,7 +78,7 @@ void EnemyBasic::idle_logic(Game& g)
 	}
 }
 
-void EnemyBasic::take_damage(int damage)
+void EnemyBasic::take_damage(Game& g, int damage)
 {
 	_hp -= damage;
 	_hurt_timer = 150.f;

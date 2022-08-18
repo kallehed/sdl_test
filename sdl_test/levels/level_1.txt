@@ -100060,9 +100060,12 @@ portal0
 END
 ENTITY
 i
-1
+21
 j
-5
+52
 type
 Player
+END
+BACKGROUND_TILE
+25
 END

@@ -60,7 +60,7 @@ void EnemyShooter::idle_logic(Game& g)
 	}
 }
 
-void EnemyShooter::take_damage(int damage) {
+void EnemyShooter::take_damage(Game& g, int damage) {
 	_hp -= damage;
 	_hurt_timer = 150.f;
 	// possibly get scared

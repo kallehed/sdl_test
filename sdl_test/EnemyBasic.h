@@ -19,12 +19,12 @@ private:
 	bool _active_increased_speed = false;
 
 public:
-	MOVING_RECT_TYPES get_moving_rect_type() const override;
+	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
 	EnemyBasic(float x, float y);
 	void draw(Game& g) override;
 	void idle_logic(Game& g);
-	void take_damage(int damage = 5) override;
+	void take_damage(Game& g, int damage = 5) override final;
 	void active_logic(Game& g);
 };
 

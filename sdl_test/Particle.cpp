@@ -7,14 +7,19 @@ MOVING_RECT_TYPES Particle::get_moving_rect_type() const
 }
 
 Particle::Particle(float x, float y, float x_vel, float y_vel, SDL_Color color)
-	: MovingRect(0, 0, (float)(3 + rand()%6), (float)(3 + rand()%6), 0.003f),
-	_color(color)
+	: MovingRect(0, 0, (float)(3 + rand()%6), (float)(3 + rand()%6), 0.003f)
 {
 	set_x(x - get_half_w());
 	set_y(y - get_half_h());
 
-	//change_x_vel(x_vel / 80.f);
-	//change_y_vel(y_vel / 80.f);
+	change_x_vel(x_vel / 40.f);
+	change_y_vel(y_vel / 40.f);
+	_timer = 10000 + rand()%20000;
+
+	// change color
+	float t = (0.75f + 0.25f * General::randf01());
+
+	_color = { (Uint8)((float)color.r * t),(Uint8)((float)color.g * t),(Uint8)((float)color.b * t),(Uint8)((float)color.a * t) };
 }
 
 bool Particle::logic(Game& g)

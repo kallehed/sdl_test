@@ -281,6 +281,8 @@ void Camera::save_to_file(Game& g)
 	* attributes: i, j, type, portal_destination, portal_name, portal_destination_name
 	* type : EnemyBasic, EnemyShooter, Npc, Player, Portal
 	* 
+	* BACKGROUND_TILE
+	* followed by tex
 	* 
 	*/
 
@@ -364,6 +366,13 @@ void Camera::save_to_file(Game& g)
 		f << "i\n" << std::to_string(g._cam.convert_y_to_i(g._entity_handler._p._y)) << "\n";
 		f << "j\n" << std::to_string(g._cam.convert_x_to_j(g._entity_handler._p._x)) << "\n";
 		f << "type\n" << "Player\n";
+		f << "END\n";
+	}
+
+	// background tile
+	{
+		f << "BACKGROUND_TILE\n";
+		f << std::to_string(g._tile_handler._background_tile) << "\n";
 		f << "END\n";
 	}
 
@@ -464,6 +473,11 @@ void Camera::load_from_file(Game& g, int level)
 					highest_tile_j = j;
 				}
 			}
+		}
+		else if (t == "BACKGROUND_TILE") {
+			std::getline(f, t);
+			g._tile_handler._background_tile = (TEX::TEX)std::stoi(t);
+			std::getline(f, t); // move past end
 		}
 		else if (t == "ENTITY") {
 			while (t != "END") {

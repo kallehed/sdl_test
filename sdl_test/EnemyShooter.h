@@ -20,12 +20,12 @@ private:
 	static constexpr float _active_basic_speed = 0.0015f;
 
 public:
-	MOVING_RECT_TYPES get_moving_rect_type() const override;
+	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
 	EnemyShooter(float x, float y);
 	void draw(Game& g) override;
 	void idle_logic(Game& g);
-	void take_damage(int damage = 1) override;
+	void take_damage(Game& g, int damage = 1) override final;
 	void active_logic(Game& g);
 };
 

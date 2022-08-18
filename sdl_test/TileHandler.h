@@ -11,6 +11,8 @@ public:
 	std::array<std::array<TILE::TILE, _len>, _len> _tiles;
 	std::array<std::array<TEX::TEX, _len>, _len> _texs;
 
+	TEX::TEX _background_tile = TEX::SquareGreen;
+
 	void TileHandler_construct(Game& g);
 
 	void reset_all(Game& g);

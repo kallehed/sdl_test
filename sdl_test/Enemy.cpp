@@ -47,17 +47,21 @@ bool Enemy::logic(Game& g)
 	// particles
 	{
 		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20 + rand() % 11) == 0) {
-			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel(), -get_y_vel(), { 0, 200, 255, 175 }));
+			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), 0.f, 0.f, { 0, 200, 255, 175 }));
 		}
 	}
 
 	// kill self?
 	if (_hp < 1) {
 		// spawn coins?
-		int coins = 1 + rand() % 2;
-		for (int _ = 0; _ < coins; ++_) {
-			g._entity_handler._entities_to_add.push_back(new Pickupable(PICKUPABLE_TYPE::COIN, get_mid_x() + _, get_mid_y() + _, get_x_vel() / 20.f, get_y_vel() / 20.f));
+		{
+			int coins = 1 + rand() % 2;
+			for (int _ = 0; _ < coins; ++_) {
+				Pickupable* e = new Pickupable(PICKUPABLE_TYPE::COIN, get_mid_x() + _, get_mid_y() + _, get_x_vel() / 20.f, get_y_vel() / 20.f);
+				g._entity_handler._entities_to_add.push_back(e);
+			}
 		}
+
 		delete this;
 		return true;
 	}
@@ -82,7 +86,7 @@ void Enemy::go_towards_player(Game& g, float speed)
 }
 
 bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
-{
+{ 
 	float dx = get_mid_x() - g._entity_handler._p.get_mid_x();
 	float dy = get_mid_y() - g._entity_handler._p.get_mid_y();
 	return dx * dx + dy * dy <= radius_squared;
@@ -96,54 +100,70 @@ void Enemy::new_walk_path(Game& g) // clear
 
 void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 {
+	int damage = 0;
+	float bounce_acc = 0.f;
 	switch (e->get_moving_rect_type()) {
 	case MOVING_RECT_TYPES::SHOT:
 	{
 		if (((Shot*)e)->_owner == this) { // can't shoot self(not instantly anyway)
 			break;
 		}
-		float bounce_acc = 0.05f;
-
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-
-		take_damage();
-
-		make_active(); // become active (aggressive)
-
+		bounce_acc = 0.05f;
+		
+		damage = 5;
 		break;
 	}
 	case MOVING_RECT_TYPES::ENEMY:
 	{
-		float bounce_acc = 0.005f;
-
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
+		bounce_acc = 0.005f;
 		break;
 	}
 	case MOVING_RECT_TYPES::EXPLOSION:
 	{
-		float bounce_acc = 0.1f;
+		bounce_acc = 0.1f;
 
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-
-		this->take_damage(((Explosion*)(e))->_damage);
-		this->make_active();
+		damage =  ((Explosion*)e)->_damage;
 		break;
 	}
 	case MOVING_RECT_TYPES::FIRE_MAGIC:
 	{
-		float bounce_acc = 0.05f;
+		bounce_acc = 0.05f;
 
-		change_x_vel(bounce_acc * nx);
-		change_y_vel(bounce_acc * ny);
-
-		take_damage(((FireMagic*)(e))->_damage);
-		make_active();
-
+		damage =  ((FireMagic*)e)->_damage;
 		break;
 	}
 	}
 
+	if (bounce_acc != 0.f) {
+		change_x_vel(bounce_acc * nx);
+		change_y_vel(bounce_acc * ny);
+	}
+
+	if (damage > 0) {
+		take_damage(g, damage);
+
+		make_active(); // become active (aggressive)
+
+		// particles
+		{
+			if (_hp > 0) {
+				float x_vel = nx;
+				float y_vel = ny;
+				int total_particles = damage;
+				for (int i = 0; i < total_particles; ++i) {
+					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 175 });
+					g._entity_handler._particles.emplace_back(e);
+				}
+			}
+			else {
+				float x_vel = nx * 3.f;
+				float y_vel = ny * 3.f;
+				int total_particles = 50;
+				for (int i = 0; i < total_particles; ++i) {
+					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * (0.25f + 0.75f*General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 175 });
+					g._entity_handler._particles.emplace_back(e);
+				}
+			}
+		}
+	}
 }

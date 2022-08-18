@@ -5,8 +5,7 @@
 class Particle : public MovingRect
 {
 public:
-	float _time = 10000.f;
-	float _timer = _time;
+	float _timer;
 	SDL_Color _color;
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "General.h"
 #include "Pickupable.h"
+#include "Particle.h"
 
 #include <cassert>  
 
@@ -41,8 +42,8 @@ void TileHandler::draw_textures(Game& g, int alpha)
 			int r_x = g._cam.convert_x(g._cam._grid * j);
 			int r_y = g._cam.convert_y(g._cam._grid * i);
 			SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
-			SDL_SetTextureAlphaMod(g._textures[TEX::SquareGreen],alpha);
-			SDL_RenderCopy(g._renderer, g._textures[TEX::SquareGreen], NULL, &rect);
+			SDL_SetTextureAlphaMod(g._textures[_background_tile],alpha);
+			SDL_RenderCopy(g._renderer, g._textures[_background_tile], NULL, &rect);
 			
 			TILE::TILE tile = this->get_tile_type(i, j);
 			if (tex > TEX::VOID) {
@@ -251,6 +252,9 @@ void TileHandler::place_tex(Game& g, TEX::TEX tile, int x, int y)
 	{
 		_texs[i][j] = g._cam._edit_tex;
 	}
+	else {
+		_background_tile = tile;
+	}
 }
 
 bool TileHandler::remove_tile(Game& g, int x, int y) {
@@ -302,6 +306,21 @@ bool TileHandler::hurt_tile(Game& g, int i, int j)
 						g._entity_handler._entities_to_add.push_back(e);
 					}
 				}
+			}
+
+			// particles?
+			{
+				int total_particles = 14 + rand() % 14;
+				float x = ((float)j + 0.5f) * g._cam._fgrid;
+				float y = ((float)i + 0.5f) * g._cam._fgrid;
+				
+				for (int i = 0; i < total_particles; ++i) {
+					float x_vel = (General::randf01() - 0.5f);
+					float y_vel = (General::randf01() - 0.5f);
+					Particle* e = new Particle(x, y, x_vel, y_vel, { 0,230,0,230 });
+					g._entity_handler._particles.emplace_back(e);
+				}
+
 			}
 			return true;
 		}

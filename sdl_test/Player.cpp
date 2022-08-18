@@ -50,7 +50,7 @@ bool Player::logic(Game& g)
 	// particles
 	{
 		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20+rand()%11) == 0) {
-			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel(), -get_y_vel(), {255, 0, 0, 175}));
+			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel()/4.f, -get_y_vel()/4.f, {255, 0, 0, 175}));
 		}
 	}
 
