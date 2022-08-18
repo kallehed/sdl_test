@@ -100508,7 +100508,7 @@ portal0
 END
 ENTITY
 i
-20
+35
 j
 35
 type

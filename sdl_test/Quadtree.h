@@ -2,6 +2,7 @@
 
 #include <cinttypes>
 #include "General.h"
+#include <vector>
 #include <SDL.h>
 
 // Type which to store pointers to. PER NODE, pointers til node splits, MAX_DEPTH

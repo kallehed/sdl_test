@@ -14,7 +14,7 @@ Particle::Particle(float x, float y, float x_vel, float y_vel, SDL_Color color)
 
 	change_x_vel(x_vel / 40.f);
 	change_y_vel(y_vel / 40.f);
-	_timer = 10000 + rand()%20000;
+	_timer = 10000.f + rand()%20000;
 
 	// change color
 	float t = (0.75f + 0.25f * General::randf01());

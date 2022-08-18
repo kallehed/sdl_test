@@ -136,6 +136,7 @@ Game::Game()
 			"images/Chest.png",
 			"images/Gnome.png",
 			"images/GuyBlonde.png",
+			"images/FullGreen.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
@@ -170,10 +171,6 @@ void Game::close_game()
 	TTF_CloseFont(_font);
 	_font = NULL;
 
-	//for (int i = 0; i < TEXTURE_TOTAL; ++i) {
-	//	SDL_DestroyTexture(gTextures[i]);
-	//	gTextures[i] = NULL;
-	//}
 	for (int i = 0; i < TEX::TOTAL; ++i) {
 		SDL_DestroyTexture(_textures[i]);
 	}

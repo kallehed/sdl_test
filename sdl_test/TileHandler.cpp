@@ -240,9 +240,9 @@ void TileHandler::place_tile(Game& g, TILE::TILE tile, int x, int y)
 }
 
 // TAKES MOUSE POSITION RELATIVE TO SCREEN FOR SOME REASON
-void TileHandler::place_tex(Game& g, TEX::TEX tile, int x, int y)
+void TileHandler::place_tex(Game& g, TEX::TEX tex, int x, int y)
 {
-	assert(tile != TEX::TOTAL);
+	assert(tex != TEX::TOTAL);
 
 	int cam_x = (int)g._cam._x;
 	int cam_y = (int)g._cam._y;
@@ -250,10 +250,10 @@ void TileHandler::place_tex(Game& g, TEX::TEX tile, int x, int y)
 	int j = (x + cam_x - General::mod(x + cam_x, g._cam._grid)) / g._cam._grid;
 	if (tile_in_range(i, j))
 	{
-		_texs[i][j] = g._cam._edit_tex;
+		_texs[i][j] = tex;
 	}
 	else {
-		_background_tile = tile;
+		_background_tile = tex;
 	}
 }
 
@@ -398,11 +398,62 @@ bool TileHandler::is_path_clear(Game& g, float x1, float y1, float x2, float y2)
 		x += nx * step;
 		y += ny * step;
 
-		auto in_block_tile = General::get_blocking_tile_pos_in_area(g, x, y, tile_size, tile_size);
+		auto in_block_tile = get_blocking_tile_pos_in_area(g, x, y, tile_size, tile_size);
 		if (std::get<0>(in_block_tile)) {
 			return false;
 		}
 
 	}
 	return true;
+}
+
+// returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
+std::tuple<bool, std::array<int, 4>, char> TileHandler::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
+{
+	int j_start = g._cam.convert_x_to_j(x);
+	int j_end = g._cam.convert_x_to_j((x + w - 0.01f)) + 1;
+	int i_start = g._cam.convert_y_to_i(y);
+	int i_end = g._cam.convert_y_to_i((y + h - 0.01f)) + 1;
+
+	int r_w = g._cam._grid;
+	int r_h = g._cam._grid;
+	for (int i = i_start; i < i_end; ++i)
+	{
+		for (int j = j_start; j < j_end; ++j)
+		{
+			TILE::TILE tile = get_tile_type(i, j);
+			if (tile > TILE::VOID) {
+				if (tile < TILE::TRI_NE) {
+				GOTO_RETURN:
+					return { true, {j * r_w, i * r_h, i, j}, tile };
+				}
+				else if (tile == TILE::TRI_NE)
+				{
+					if (intersection_tile<TILE::TRI_NE>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+				else if (tile == TILE::TRI_SE) {
+					if (intersection_tile<TILE::TRI_SE>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+				else if (tile == TILE::TRI_NW) {
+					if (intersection_tile<TILE::TRI_NW>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+				else if (tile == TILE::TRI_SW) {
+					if (intersection_tile<TILE::TRI_SW>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					{
+						goto GOTO_RETURN;
+					}
+				}
+			}
+		}
+	}
+	return { false, {0,0,0,0}, TILE::VOID };
 }

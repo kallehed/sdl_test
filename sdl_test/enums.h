@@ -88,6 +88,7 @@ namespace TEX {
 		Chest,
 		Gnome,
 		GuyBlonde,
+		FullGreen,
 		
 		TOTAL
 	};

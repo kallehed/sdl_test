@@ -100146,9 +100146,9 @@ Door
 END
 ENTITY
 i
-31
+4
 j
-21
+41
 type
 Player
 END

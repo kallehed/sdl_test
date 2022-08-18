@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MovingRect.h"
+#include <SDL.h>
 
 class Particle : public MovingRect
 {
