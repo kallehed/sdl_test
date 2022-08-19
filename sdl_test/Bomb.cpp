@@ -25,9 +25,13 @@ bool Bomb::logic(Game& g)
 
 	// death == death
 	_detonation_timer -= g._dt;
-	if (_detonation_timer <= 0.f || _lives < 1)
+	if (_detonation_timer <= 0.f || _lives < 1) // detonate
 	{
 		g._entity_handler._entities_to_add.push_back(new Explosion(get_mid_x(), get_mid_y(), _damage, _area_factor));
+		
+		// shake screen
+		g._cam.shake(g, 1.20f, 50.f);
+
 		delete this;
 		return true;
 	}

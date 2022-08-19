@@ -17,6 +17,8 @@ public:
 	// which entity created this shot(maybe don't hurt them?)?
 	MovingRect* _owner;
 
+	int _damage = 5;
+
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
 	Shot(MovingRect* owner, float x, float y, float x_dir, float y_dir, float speed, TEX::TEX image = TEX::Bullet);

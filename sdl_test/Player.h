@@ -4,7 +4,7 @@
 
 class Player : public MovingRect {
 public:
-	int _max_hp = 50;
+	int _max_hp = 40;
 	int _hp = _max_hp;
 	int _coins = 1000;
 
@@ -13,7 +13,8 @@ public:
 	bool _respawn = false; // flag for higher-ups to respond to
 	float _death_timer = 0.f;
 
-	int _respawn_level = 0;
+	// respawn stuff
+	int _respawn_level = 0; 
 	float _respawn_x = 1265.f;
 	float _respawn_y = 2310.f;
 
@@ -25,6 +26,9 @@ public:
 	bool _forward = true; // facing forwawrd
 	bool _right = true; // facing right
 	float _walk_animation_timer = 0.f;
+
+	// flash black when hit
+	bool _took_damage_this_frame = false;
 
 	PLAYER_WEAPON _left_weapon = PLAYER_WEAPON::FIRE_MAGIC;
 
@@ -72,7 +76,7 @@ public:
 
 	void draw(Game& g) override;
 
-	void take_damage(Game& g, int damage = 1);
+	void take_damage(Game& g, int damage);
 
 	void intersection(Game& g, float nx, float ny, MovingRect* e) override;
 };

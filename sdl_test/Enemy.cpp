@@ -143,6 +143,9 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 	if (damage > 0) {
 		take_damage(g, damage);
 
+		// shake screen
+		g._cam.shake(g, 1.3f, 10.f);
+
 		make_active(); // become active (aggressive)
 
 		// particles

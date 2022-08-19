@@ -6,6 +6,7 @@
 #include "Pickupable.h"
 #include "Explosion.h"
 #include "Particle.h"
+#include "Enemy.h"
 
 MOVING_RECT_TYPES Player::get_moving_rect_type() const
 {
@@ -17,6 +18,8 @@ Player::Player() : MovingRect(0.f, 0.f, 40.f, 60.f, 0.009f) {
 
 bool Player::logic(Game& g)
 {
+	_took_damage_this_frame = false; // reset every frame
+
 	// death stuff
 	if (_hp <= 0 || !_alive) {
 		if (_alive) {
@@ -49,8 +52,6 @@ bool Player::logic(Game& g)
 	{
 		float acc = 0.0023f;
 
-		
-
 		if (_ability_to_run) {
 			if (!_using_run) {
 				if (_run_current > 0.f && g._keys_frame[SDL_SCANCODE_LSHIFT]) {
@@ -65,6 +66,7 @@ bool Player::logic(Game& g)
 			else {
 				// run is active!
 				if (g._keys_down[SDL_SCANCODE_LSHIFT] && _run_current > 0.f) {
+					// INCREASE SPEED !!!!!!!!!!!
 					acc *= _run_speed_boost;
 					_run_current -= g._dt * _run_cost;
 				}
@@ -238,14 +240,8 @@ void Player::draw(Game& g)
 	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
 
 	// draw shadow
-	{
-		/*SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 127);
-		SDL_Rect r = { rect.x, rect.y + _h / 2, rect.w, rect.h };
-		SDL_RenderFillRect(g._renderer, &r);
-		*/
-		draw_circle(g._renderer, rect.x + _w/2, rect.y + _h*0.9f, 20, {0,0,0,67});
+	draw_circle(g._renderer, rect.x + _w/2, rect.y + _h*0.9f, 20, {0,0,0,67});
 
-	}
 	SDL_RendererFlip flip = _right ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 	// first choice texture
 	SDL_Texture* tex = _forward ? g._textures[TEX::RedHuman] : g._textures[TEX::RedHumanBackwards];
@@ -281,16 +277,26 @@ void Player::draw(Game& g)
 	}
 
 	SDL_RenderCopyEx(g._renderer, tex, NULL, &rect, NULL, NULL, flip);
+
+	// draw black flash when hit
+	if (_took_damage_this_frame) {
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 126);
+		constexpr SDL_Rect full_screen_rect = { 0,0,g._WIDTH, g._HEIGHT };
+		SDL_RenderFillRect(g._renderer, &full_screen_rect);
+	}
 }
 
 void Player::take_damage(Game& g, int damage)
 {
 	if (_invi_timer <= 0.f) {
-		_hp -= 5 * damage;
+		_hp -= damage;
+		_hp = std::max(0, _hp);
 		_invi_timer = _invi_time;
 
-		g._cam.shake(g, 250.f, 20.f);
+		g._cam.shake(g, 1.5f, 100.f);
 		g._slow_motion_factor = 0.5f;
+
+		_took_damage_this_frame = true;
 	}
 }
 
@@ -305,7 +311,7 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		take_damage(g);
+		take_damage(g, ((Enemy*)e)->_damage);
 		break;
 	}
 	case MOVING_RECT_TYPES::SHOT:
@@ -319,7 +325,7 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 
-		take_damage(g);
+		take_damage(g, ((Shot*)e)->_damage);
 		break;
 	}
 	case MOVING_RECT_TYPES::EXPLOSION:
@@ -334,7 +340,7 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 	}
 	case MOVING_RECT_TYPES::PICKUPABLE:
 	{
-		Pickupable* p = dynamic_cast<Pickupable*>(e);
+		Pickupable* p = static_cast<Pickupable*>(e);
 		if (p->_type == PICKUPABLE_TYPE::COIN) {
 			_coins += 1;
 		}

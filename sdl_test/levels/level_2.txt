@@ -38446,7 +38446,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -38456,7 +38456,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -39306,7 +39306,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -39336,7 +39336,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -39466,7 +39466,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -40486,7 +40486,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -41496,7 +41496,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -42326,7 +42326,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -42386,7 +42386,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -42466,7 +42466,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -43286,7 +43286,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -43396,7 +43396,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -43476,7 +43476,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -44316,7 +44316,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -44386,7 +44386,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -44476,7 +44476,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -45316,7 +45316,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -45396,7 +45396,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -46306,7 +46306,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -46326,7 +46326,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -46486,7 +46486,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -47326,7 +47326,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -47476,7 +47476,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -47486,7 +47486,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -47496,7 +47496,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -47506,7 +47506,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -48326,7 +48326,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -48466,7 +48466,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -49326,7 +49326,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -49436,7 +49436,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -49446,7 +49446,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -49456,7 +49456,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -49496,7 +49496,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -50436,7 +50436,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -51296,7 +51296,7 @@ j
 tile
 0
 tex
--1
+39
 END
 TILE
 i
@@ -100146,9 +100146,9 @@ Door
 END
 ENTITY
 i
-4
+25
 j
-41
+54
 type
 Player
 END

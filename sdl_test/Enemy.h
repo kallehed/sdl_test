@@ -19,6 +19,8 @@ public:
 	int _max_hp;
 	int _hp;
 
+	int _damage = 5;
+
 	Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time);
 
 	bool logic(Game& g);

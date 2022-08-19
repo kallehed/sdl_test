@@ -80,7 +80,8 @@ Game::Game()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	_window = SDL_CreateWindow("SDLtest",
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		//SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		50,50, // Specific for dev
 		_WIDTH, _HEIGHT,
 		SDL_WINDOW_SHOWN);
 	SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
@@ -166,6 +167,8 @@ Game::Game()
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
 
 	_cam.load_from_file(*this, _level);
+
+	changeScale(2);
 }
 
 void Game::start_game()

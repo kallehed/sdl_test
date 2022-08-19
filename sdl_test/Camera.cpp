@@ -23,9 +23,9 @@ void Camera::construct(Game& g)
 	_btns[SET_POS].construct(g, 0, 350, "SET POS");
 }
 
-void Camera::shake(Game& g, float time, float intensity)
+void Camera::shake(Game& g, float divider, float intensity)
 {
-	_shake_timer = time;
+	_shake_divider = divider;
 	_shake_intensity = intensity;
 }
 
@@ -69,9 +69,9 @@ void Camera::play_logic(Game& g)
 	//if (_shake_timer > 0.f) {
 		//_shake_timer -= g._dt;
 
-	_x += General::randf01() * _shake_intensity;
-	_y += General::randf01() * _shake_intensity;
-	_shake_intensity /= 1.5f;
+	_x += (General::randf01()*2.f - 1.f) * _shake_intensity;
+	_y += (General::randf01()*2.f - 1.f) * _shake_intensity;
+	_shake_intensity /= _shake_divider;
 	_shake_intensity = std::max(0.f, _shake_intensity);
 
 	//}
@@ -96,8 +96,9 @@ void scroll_enum(Game& g, T& e, T total) {
 void Camera::edit_logic(Game& g)
 {
 	// movement
-	constexpr float speed = 0.65f;
-	const Uint8* keys = SDL_GetKeyboardState(NULL);
+	auto& keys = g._keys_down;
+	float speed = (!keys[SDL_SCANCODE_LSHIFT]) ? 0.65f : 2.3f;
+	
 	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
 		_x += speed * g._dt;
 	}
@@ -759,16 +760,22 @@ void Camera::draw_hud(Game& g)
 	int hud_y_increase = 25;
 	
 	{ // health
+
+		// black area
+		SDL_Rect black_rect = { hud_x, hud_y, 100, 20 };
+		
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
+		SDL_RenderFillRect(g._renderer, &black_rect);
+
 		// red health bar
 		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, a);
+		black_rect.w = (int)(black_rect.w * ((float)p._hp / p._max_hp));
+		SDL_RenderFillRect(g._renderer, &black_rect);
 
-		SDL_Rect draw_rect = { hud_x, hud_y, (int)(100.f * ((float)p._hp / p._max_hp)), 20 };
-		SDL_RenderFillRect(g._renderer, &draw_rect);
-
-		// black boundary
-		draw_rect.w = 100;
+		// black borders
 		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
-		SDL_RenderDrawRect(g._renderer, &draw_rect);
+		black_rect.w = 100;
+		SDL_RenderDrawRect(g._renderer, &black_rect);
 	}
 	hud_y += hud_y_increase;
 

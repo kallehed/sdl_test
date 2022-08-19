@@ -16,15 +16,14 @@ public:
 
 	// mutable data, delegated to one Npc at a time.
 	// They can change the data, but will restore it on destruction.
-	char _NPC_1_TEXT[355] =
-		"Hello traveller...   \nYou are sure to be confused,\nbut do not worry!\0"
-		"I am, The Read Bear.  \nThe great helper!\0"
+	char _NPC_1_TEXT[284] = 
+		"Oh\0Right\0Hi, do not threat,\nfor I will help you!\0"
 		"Firstly...   \nAs you probably already know,   \nyou can move with the arrows.\0"
-		"Secondly, with the mouse, you\ncan 'left click' to attack!\0"
-		"and possibly also right click\nfor something else...\0"
-		"Thirdly...      \nI have nothing more to say...\0"     
+		"Secondly, you can 'left click'\nto attack with fire!\0"
+		"Maybe also something with\nyour 'right click'...\0"
+		"Thirdly...      \nI have nothing more to say...\0"
 		"Good luck?";
-	int _NPC_1_TOTAL_CHARS = 355;
+	int _NPC_1_TOTAL_CHARS = 284;
 
 	char _NPC_2_TEXT[245] =
 		"Ah, you survived the path!    \nGreat, you are truly strong\nin many ways.\0"
