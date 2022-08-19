@@ -45,14 +45,14 @@ public:
 		"BUY THEM";
 	int _NPC_GREEN_BOMB_GUY_TOTAL_CHARS = 75;
 
-	char _NPC_3_TEXT[138] = 
+	char _NPC_3_TEXT[135] = 
 		"Hi again\0"
 		"It seems you still live?\0"
 		"How ...     \nWonderful.\0"
-		"Anyway...\0"
+		"Anyway\0"
 		"I heard you can deflect\nmagical orbs with fire...\0"
 		"Just a         \ntip";
-	int _NPC_3_TOTAL_CHARS = 138;
+	int _NPC_3_TOTAL_CHARS = 135;
 
 	char _NPC_SUS_SELLER_TEXT[211] =
 		"Hey...\0"

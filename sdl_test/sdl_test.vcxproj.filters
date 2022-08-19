@@ -96,6 +96,9 @@
     <ClCompile Include="SaveState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BossHead.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -180,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SaveState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHead.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,7 @@ enum class MOVING_RECT_TYPES : char {
 	PARTICLE,
 	BUYABLE,
 	DOOR,
+	BOSS,
 
 	TOTAL
 };
