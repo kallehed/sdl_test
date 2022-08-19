@@ -13,30 +13,12 @@
 #include "Camera.h"
 #include "TileHandler.h"
 #include "EntityHandler.h"
+#include "SaveState.h"
 
 // DONT HAVE ENUMS/OTHER CLASSES THAN GAME/STRUCTS IN THIS FILE!!!!
 
 // Draw circle
 void draw_circle(SDL_Renderer*, float x, float y, float radius, SDL_Color);
-
-// Hash for std::array<int, 2>
-struct HashArray2Int {
-public:
-	size_t operator()(std::array<int, 2> ar) const {
-		int val = ar[0] * ar[1];
-		return std::hash<int>()(val);
-	}
-};
-// Custom comparator that compares the array objects
-struct EqualArray2Int {
-public:
-	bool operator()(std::array<int, 2> ar1, std::array<int, 2> ar2) const {
-		if (ar1 == ar2)
-			return true;
-		else
-			return false;
-	}
-};
 
 class Game {
 public:
@@ -80,16 +62,13 @@ public:
 
 	EntityHandler _entity_handler;
 
+	SaveState _save;
+
 	// what level we are on
 	int _level = 0;
 	int _level_to_change_to = 1;
 	bool _change_level = false;
 	std::string _destination_portal = "Error_Name";
-
-	// onetime_index stuff
-	// So the first number represents the level
-	// The second number represents index in which something appears
-	std::unordered_set<std::array<int, 2>, HashArray2Int, EqualArray2Int> _onetimes;
 
 	SDL_Texture* loadTexture(const char* path);
 

@@ -259,8 +259,7 @@ void Game::game_loop()
 		if (_keys_frame[SDL_SCANCODE_K]) {
 			if (_edit_mode == false) {
 				_edit_mode = true;
-				_onetimes.clear();
-				Npc::_red_bear_stage = 0;
+				_save.reset();
 				_cam.load_from_file(*this, _level);
 			}
 			else {

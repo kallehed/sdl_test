@@ -25,7 +25,7 @@ bool Chest::logic(Game& g)
 			{
 				// GIVE PLAYER MONEYYYYYYYYY
 				g._entity_handler._p._coins += _chest_amount;
-				g._onetimes.insert({ g._level, _onetime_index });
+				g._save._onetimes.insert({ g._level, _onetime_index });
 				//g._onetime_indexes[g._level * g._INDEX_PER_LEVEL + _onetime_index] = true;
 
 				_showing_text = true;

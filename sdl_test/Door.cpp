@@ -36,7 +36,7 @@ bool Door::logic(Game& g)
 		if (_show_e_sign) {
 			if (g._keys_frame[SDL_SCANCODE_E])
 			{
-				g._onetimes.insert({ g._level, _onetime_index });
+				g._save._onetimes.insert({ g._level, _onetime_index });
 				_opened = true;
 				_opened_text = true;
 				_show_e_sign = false;

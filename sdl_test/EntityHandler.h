@@ -64,6 +64,10 @@ public:
 		"(The upgrade can be used with\n'SHIFT')..";
 	int _NPC_SUS_SELLER_TEXT_TOTAL_CHARS = 218;
 
+	char _NPC_SUS_SELLER_TEXT2[48] =
+		"yo...\0thanks for the coin...\0hehe...           ";
+	int _NPC_SUS_SELLER_TEXT2_TOTAL_CHARS = 48;
+
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);
 public:

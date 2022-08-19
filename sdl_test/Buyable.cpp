@@ -54,7 +54,7 @@ bool Buyable::logic(Game& g)
 					// BUY TRANSACTION CONFIRMED AND PENDING
 					p._coins -= _cost;
 					_transaction_succeded = true;
-					g._onetimes.insert({ g._level, _onetime_index });
+					g._save._onetimes.insert({ g._level, _onetime_index });
 
 					// Variable in respect to type
 					{

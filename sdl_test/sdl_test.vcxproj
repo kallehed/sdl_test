@@ -178,6 +178,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="SaveState.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="TileHandler.cpp" />
   </ItemGroup>
@@ -206,6 +207,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="SaveState.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="TileHandler.h" />
     <ClInclude Include="Player.h" />

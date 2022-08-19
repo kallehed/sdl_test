@@ -100074,9 +100074,9 @@ buyable_type
 END
 ENTITY
 i
-34
+45
 j
-37
+36
 type
 Player
 END

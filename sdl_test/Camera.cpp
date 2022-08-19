@@ -430,6 +430,7 @@ void Camera::load_from_file(Game& g, int level)
 
 	// ONETIME INDEX, used by Chest + Buyable
 	int onetime_index = 0;
+	auto& onetimes = g._save._onetimes;
 
 	// CHEST STUFF
 	int chest_amount = 0;
@@ -550,7 +551,7 @@ void Camera::load_from_file(Game& g, int level)
 				g._entity_handler._draw_entities.emplace_back(e);
 			}
 			else if (type == "Chest") {
-				if (g._onetimes.find({level, onetime_index}) == g._onetimes.end()) {
+				if (onetimes.find({level, onetime_index}) == onetimes.end()) {
 					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid);
 					e->_chest_amount = chest_amount;
 					g._entity_handler._draw_entities.emplace_back(e);
@@ -558,14 +559,14 @@ void Camera::load_from_file(Game& g, int level)
 				++onetime_index;
 			}
 			else if (type == "Buyable") {
-				if (g._onetimes.find({ level, onetime_index }) == g._onetimes.end()) {
+				if (onetimes.find({ level, onetime_index }) == onetimes.end()) {
 					Buyable* e = new Buyable(onetime_index, buyable_cost, buyable_type, j * _fgrid, i * _fgrid);
 					g._entity_handler._draw_entities.emplace_back(e);
 				}
 				++onetime_index;
 			}
 			else if (type == "Door") {
-				if (g._onetimes.find({ level, onetime_index }) == g._onetimes.end()) {
+				if (onetimes.find({ level, onetime_index }) == onetimes.end()) {
 					Door* e = new Door(j * _fgrid, i * _fgrid, onetime_index);
 					g._entity_handler._draw_entities.emplace_back(e);
 				}

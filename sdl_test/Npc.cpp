@@ -7,10 +7,8 @@ MOVING_RECT_TYPES Npc::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::NPC;
 }
 
-int Npc::_red_bear_stage = 0;
-
 Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
-	: MovingRect(x, y, 64, 74, 1.f), _npc_type(type)
+	: MovingRect(x, y, 64, 74, 0.f), _npc_type(type)
 {
 	switch (_npc_type) {
 	case NPC_TYPE::NPC1:
@@ -19,7 +17,7 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		_total_chars = g._entity_handler._NPC_1_TOTAL_CHARS;
 		_tex = TEX::RedBear;
 
-		if (_red_bear_stage > 0) {
+		if (g._save._red_bear_stage > 0) {
 			_invisible = true;
 		}
 		break;
@@ -29,11 +27,11 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		_total_chars = g._entity_handler._NPC_2_TOTAL_CHARS;
 		_tex = TEX::RedBear;
 
-		if (_red_bear_stage > 1) {
+		if (g._save._red_bear_stage > 1) {
 			_invisible = true;
 		}
 		else {
-			_red_bear_stage = 1;
+			g._save._red_bear_stage = 1;
 		}
 		
 		break;
@@ -42,11 +40,11 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		_total_chars = g._entity_handler._NPC_3_TOTAL_CHARS;
 		_tex = TEX::RedBear;
 
-		if (_red_bear_stage > 2) {
+		if (g._save._red_bear_stage > 2) {
 			_invisible = true;
 		}
 		else {
-			_red_bear_stage = 2;
+			g._save._red_bear_stage = 2;
 		}
 		break;
 
@@ -65,11 +63,22 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		set_h(39.f * 1.75f);
 		break;
 	case NPC_TYPE::SUS_SELLER:
-		_text = g._entity_handler._NPC_SUS_SELLER_TEXT;
-		_total_chars = g._entity_handler._NPC_SUS_SELLER_TEXT_TOTAL_CHARS;
+		if (!g._entity_handler._p._ability_to_run) { // Seller text
+			_text = g._entity_handler._NPC_SUS_SELLER_TEXT;
+			_total_chars = g._entity_handler._NPC_SUS_SELLER_TEXT_TOTAL_CHARS;
+		}
+		else { // already bought text
+			_text = g._entity_handler._NPC_SUS_SELLER_TEXT2;
+			_total_chars = g._entity_handler._NPC_SUS_SELLER_TEXT2_TOTAL_CHARS;
+		}
 		_tex = TEX::SlimeSad;
 		set_w(45.f * 2.f);
 		set_h(64.f * 2.f);
+
+		if (g._save._sus_seller_stage > 0) {
+			_invisible = true;
+		}
+
 		break;
 	default:
 		std::cout << "ERROR_NPC_TYPE";
@@ -88,6 +97,8 @@ Npc::~Npc()
 
 bool Npc::logic(Game& g)
 {
+	move_and_collide<false>(g);
+
 	// if player close, show "Press E"
 	Player& p = g._entity_handler._p;
 
@@ -132,6 +143,12 @@ bool Npc::logic(Game& g)
 				if (_chars_in + 1 >= _total_chars) {
 					// Done with all pages
 					_talking_to = false;
+
+					// SPECIAL FOR SAD_SLIME/SUS_SELLER when bought run
+					if (_npc_type == NPC_TYPE::SUS_SELLER && _text == g._entity_handler._NPC_SUS_SELLER_TEXT2) {
+						change_y_vel(2.f);
+						g._save._sus_seller_stage = 1;
+					}
 				}
 				else {
 					// Next page !
