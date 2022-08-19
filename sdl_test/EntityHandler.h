@@ -55,14 +55,14 @@ public:
 		"Just a         \ntip";
 	int _NPC_3_TOTAL_CHARS = 138;
 
-	char _NPC_SUS_SELLER_TEXT[218] =
+	char _NPC_SUS_SELLER_TEXT[211] =
 		"Hey...\0"
 		"kid...\0"
 		"you could have that upgrade\nbelow me for 1 spare change...\0"
 		"It's quite...    \nNecessary?..\0"
-		"Though,    \nyou won't approve of what\ni'm going to spend the coins\non...\0"
+		"Though,    \nyou won't approve of how\ni'm going to use the coin...\0"
 		"(The upgrade can be used with\n'SHIFT')..";
-	int _NPC_SUS_SELLER_TEXT_TOTAL_CHARS = 218;
+	int _NPC_SUS_SELLER_TEXT_TOTAL_CHARS = 211;
 
 	char _NPC_SUS_SELLER_TEXT2[48] =
 		"yo...\0thanks for the coin...\0hehe...           ";

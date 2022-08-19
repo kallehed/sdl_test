@@ -398,6 +398,11 @@ void Camera::load_from_file(Game& g, int level)
 			delete e;
 		}
 		g._entity_handler._draw_entities.clear();
+
+		for (const auto& e : g._entity_handler._particles) {
+			delete e;
+		}
+		g._entity_handler._particles.clear();
 	}
 
 	std::string t;

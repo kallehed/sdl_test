@@ -90,6 +90,7 @@ namespace TEX {
 		GuyBlonde,
 		FullGreen,
 		SlimeSad,
+		BushBerry,
 		
 		TOTAL
 	};

@@ -18,7 +18,7 @@ public:
 	float _respawn_y = 2310.f;
 
 	//invincibility frames stuff
-	float _invi_time = 500.f;
+	float _invi_time = 300.f;
 	float _invi_timer = 0.f;
 
 	// walk animation stuff

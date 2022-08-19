@@ -106,7 +106,8 @@ bool Player::logic(Game& g)
 
 	// particles when walking
 	{
-		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20+rand()%11) == 0) {
+		int probability = (!_using_run) ? 11 : 3;
+		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (probability + rand()%11) == 0) {
 			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel()/4.f, -get_y_vel()/4.f, {255, 0, 0, 175}));
 		}
 	}

@@ -14,12 +14,12 @@ Particle::Particle(float x, float y, float x_vel, float y_vel, SDL_Color color)
 
 	change_x_vel(x_vel / 40.f);
 	change_y_vel(y_vel / 40.f);
-	_timer = 10000.f + rand()%20000;
+	_timer = 10000.f + rand()%20000; // LOOONG, to be able to witness the spectacle afterwards
 
 	// change color
 	float t = (0.75f + 0.25f * General::randf01());
 
-	_color = { (Uint8)((float)color.r * t),(Uint8)((float)color.g * t),(Uint8)((float)color.b * t),(Uint8)((float)color.a * t) };
+	_color = { (Uint8)((float)color.r * t),(Uint8)((float)color.g * t),(Uint8)((float)color.b * t),255 }; // MAX OPAQUENESS FOR COOLNESS'S SAKE
 }
 
 bool Particle::logic(Game& g)

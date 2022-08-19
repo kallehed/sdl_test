@@ -48,7 +48,7 @@ bool Enemy::logic(Game& g)
 	// particles
 	{
 		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20 + rand() % 11) == 0) {
-			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), 0.f, 0.f, { 0, 200, 255, 175 }));
+			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), 0.f, 0.f, { 0, 200, 255, 255 }));
 		}
 	}
 
@@ -152,7 +152,7 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 				float y_vel = ny;
 				int total_particles = damage;
 				for (int i = 0; i < total_particles; ++i) {
-					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 175 });
+					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 255 });
 					g._entity_handler._particles.emplace_back(e);
 				}
 			}
@@ -161,7 +161,7 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 				float y_vel = ny * 3.f;
 				int total_particles = 50;
 				for (int i = 0; i < total_particles; ++i) {
-					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * (0.25f + 0.75f*General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 175 });
+					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * (0.25f + 0.75f*General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 255 });
 					g._entity_handler._particles.emplace_back(e);
 				}
 			}
