@@ -96,7 +96,7 @@
     <ClCompile Include="SaveState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BossHead.cpp">
+    <ClCompile Include="BossBody.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +185,7 @@
     <ClInclude Include="SaveState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BossHead.h">
+    <ClInclude Include="BossBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

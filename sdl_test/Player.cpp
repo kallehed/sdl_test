@@ -7,6 +7,7 @@
 #include "Explosion.h"
 #include "Particle.h"
 #include "Enemy.h"
+#include "BossBody.h"
 
 MOVING_RECT_TYPES Player::get_moving_rect_type() const
 {
@@ -312,6 +313,16 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		change_y_vel(bounce_acc * ny);
 
 		take_damage(g, ((Enemy*)e)->_damage);
+		break;
+	}
+	case MOVING_RECT_TYPES::BOSS:
+	{
+		float bounce_acc = 0.05f;
+
+		change_x_vel(bounce_acc * nx);
+		change_y_vel(bounce_acc * ny);
+
+		take_damage(g, ((BossBody*)e)->_damage);
 		break;
 	}
 	case MOVING_RECT_TYPES::SHOT:

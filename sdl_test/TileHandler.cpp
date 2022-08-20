@@ -276,10 +276,13 @@ bool TileHandler::hurt_tile(Game& g, int i, int j)
 	if (this->tile_in_range(i, j))
 	{
 		TILE::TILE& tile = _tiles[i][j];
-		if (tile == TILE::DESTRUCTABLE)
+		if (tile == TILE::DESTRUCTABLE) // HURT TILE
 		{
 			tile = TILE::VOID;
 			_texs[i][j] = TEX::VOID;
+
+			// shake screen
+			g._cam.shake(g, 1.5f, 5.f);
 
 			// possibly drop items?
 			{

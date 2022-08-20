@@ -1,6 +1,9 @@
 #pragma once
 
+#include <array>
+
 class Game;
+
 
 class General {
 public:
@@ -9,7 +12,21 @@ public:
 
 	static float randf01();
 
+	// takes two references, which are set to normalized vectors of two points, returns length
 	static float normalize_vector_two_points(float& nx, float& ny, float x1, float y1, float x2, float y2);
+
+	// returns nx, ny, length
+	static std::array<float, 3> normalize_vector_two_points_arr(float x1, float y1, float x2, float y2);
+
+	constexpr static float pi();
+
+	// 2 * pi
+	constexpr static float tau();
+
+	static float radians_to_degrees(float radians);
+
+	// make radian between 0 and tau (2 * pi)
+	static float normalize_radian(float radian);
 
 	static float decrease_absolute_value(float value, float decrease);
 

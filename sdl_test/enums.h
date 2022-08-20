@@ -92,7 +92,10 @@ namespace TEX {
 		FullGreen,
 		SlimeSad,
 		BushBerry,
-		
+		BossBody,
+		BossHead,
+		Needle,
+
 		TOTAL
 	};
 }
@@ -155,6 +158,7 @@ namespace ENTITIES {
 		BONFIRE,
 		CHEST,
 		BUYABLE,
+		BOSS_HEAD,
 
 		TOTAL
 	};

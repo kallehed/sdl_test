@@ -9,6 +9,7 @@
 #include "Chest.h"
 #include "Buyable.h"
 #include "Door.h"
+#include "BossBody.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -25,7 +26,7 @@ void Camera::construct(Game& g)
 
 void Camera::shake(Game& g, float divider, float intensity)
 {
-	_shake_divider = divider;
+	_shake_divider = divider; // completly replace possible previous shaking
 	_shake_intensity = intensity;
 }
 
@@ -222,6 +223,11 @@ void Camera::edit_logic(Game& g)
 						g._entity_handler._draw_entities.push_back(new Buyable(0,-420,BUYABLE_TYPE::FASTER_FIRE_RECHARGE, r_x, r_y));
 						break;
 					}
+					case BOSS_HEAD:
+					{
+						g._entity_handler._entities.push_back(new BossBody(r_x, r_y));
+						break;
+					}
 					}
 				}
 
@@ -305,7 +311,7 @@ void Camera::save_to_file(Game& g)
 
 	// (ENTITY)s
 	for (auto e : g._entity_handler._entities) {
-		if (dynamic_cast<Enemy*>(e)) {
+		if (dynamic_cast<Enemy*>(e) || dynamic_cast<BossBody*>(e)) {
 			f << "ENTITY\n";
 			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
 			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
@@ -314,6 +320,9 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<EnemyShooter*>(e)) {
 				f << "type\n" << "EnemyShooter\n";
+			}
+			else if (dynamic_cast<BossBody*>(e)) {
+				f << "type\n" << "BossBody\n";
 			}
 			f << "END\n";
 		}
@@ -327,12 +336,12 @@ void Camera::save_to_file(Game& g)
 
 			if (dynamic_cast<Npc*>(e)) {
 				f << "type\n" << "Npc\n";
-				Npc* npc = dynamic_cast<Npc*>(e);
+				Npc* npc = static_cast<Npc*>(e);
 				f << "npc_type\n" << std::to_string((int)npc->_npc_type) << "\n";
 			}
 			else if (dynamic_cast<Portal*>(e)) {
 				f << "type\n" << "Portal\n";
-				Portal* portal = dynamic_cast<Portal*>(e);
+				Portal* portal = static_cast<Portal*>(e);
 				f << "portal_destination\n" << std::to_string(portal->_destination_level) << "\n";
 				f << "portal_name\n" << portal->_name << "\n";
 				f << "portal_destination_name\n" << portal->_destination_name << "\n";
@@ -341,7 +350,7 @@ void Camera::save_to_file(Game& g)
 				f << "type\n" << "Bonfire\n";
 			}
 			else if (dynamic_cast<Chest*>(e)) {
-				Chest* chest = dynamic_cast<Chest*>(e);
+				Chest* chest = static_cast<Chest*>(e);
 				f << "type\n" << "Chest\n";
 				f << "chest_amount\n" << std::to_string(chest->_chest_amount) << "\n";
 			}
@@ -578,12 +587,17 @@ void Camera::load_from_file(Game& g, int level)
 				}
 				++onetime_index;
 			}
+			else if (type == "BossBody") {
+				BossBody* e = new BossBody(j * _fgrid, i * _fgrid);
+				g._entity_handler._entities.emplace_back(e);
+			}
 			else if (type == "Player") {
 				if (player_has_been_placed_by_portal == false) {
 					g._entity_handler._p.set_x(j * _fgrid);
 					g._entity_handler._p.set_y(i * _fgrid);
 				}
 			}
+			
 		}
 	}
 
@@ -703,6 +717,9 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		case BUYABLE:
 			text = "Buyable";
+			break;
+		case BOSS_HEAD:
+			text = "BossHead";
 			break;
 		}
 		SDL_Color c = { 0,0,0 };

@@ -145,6 +145,9 @@ Game::Game()
 			"images/FullGreen.png",
 			"images/SlimeSad.png",
 			"images/BushBerry.png",
+			"images/BossBody.png",
+			"images/BossHead.png",
+			"images/Needle.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {

@@ -157,7 +157,7 @@
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Bonfire.cpp" />
-    <ClCompile Include="BossHead.cpp" />
+    <ClCompile Include="BossBody.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Buyable.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -187,7 +187,7 @@
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Bonfire.h" />
-    <ClInclude Include="BossHead.h" />
+    <ClInclude Include="BossBody.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Buyable.h" />
     <ClInclude Include="Camera.h" />
