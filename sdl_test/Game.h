@@ -65,7 +65,7 @@ public:
 	SaveState _save;
 
 	// what level we are on
-	int _level = 7;
+	int _level = 8;
 	int _level_to_change_to = 1;
 	bool _change_level = false;
 	std::string _destination_portal = "Error_Name";

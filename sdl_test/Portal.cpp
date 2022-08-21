@@ -16,7 +16,7 @@ bool Portal::logic(Game& g)
 	Player& p = g._entity_handler._p;
 
 	constexpr float threshold = 150.f;
-	_player_close = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+	_player_close = threshold > abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y());
 
 	if (_player_close) {
 		if (g._keys_frame[SDL_SCANCODE_E])

@@ -30,8 +30,8 @@ bool Player::logic(Game& g)
 			// particles?
 			{
 				int total_particles = 150;
-				float x = get_mid_x();
-				float y = get_mid_y();
+				float x = mid_x();
+				float y = mid_y();
 
 				for (int i = 0; i < total_particles; ++i) {
 					float x_vel = (General::randf01() - 0.5f)*8.f;
@@ -110,8 +110,8 @@ bool Player::logic(Game& g)
 	// particles when walking
 	{
 		int probability = (!_using_run) ? 11 : 3;
-		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (probability + rand()%11) == 0) {
-			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), -get_x_vel()/4.f, -get_y_vel()/4.f, {255, 0, 0, 175}));
+		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && g._ticks % (probability + rand()%11) == 0) {
+			g._entity_handler._particles.emplace_back(new Particle(mid_x(), mid_y(), -x_vel()/4.f, -y_vel()/4.f, {255, 0, 0, 175}));
 		}
 	}
 
@@ -131,11 +131,16 @@ bool Player::logic(Game& g)
 			_left_timer += g._dt;
 
 			// switch left weapon
-			_left_weapon = (PLAYER_WEAPON)((int)_left_weapon + g._mouse_scroll);
-			_left_weapon = (PLAYER_WEAPON)General::mod((int)_left_weapon, (int)PLAYER_WEAPON::TOTAL);
+			_left_weapon = (L_WEAPON::_)General::mod(_left_weapon + g._mouse_scroll, L_WEAPON::TOTAL);
+
+			// scroll further until finding available weapon
+			while (_have_l_weapon[_left_weapon] == false)
+			{ 
+				_left_weapon = (L_WEAPON::_)General::mod(_left_weapon + 1, L_WEAPON::TOTAL);
+			}
 			
 			switch (_left_weapon) {
-			case PLAYER_WEAPON::FIRE_MAGIC:
+			case L_WEAPON::FIRE_MAGIC:
 			{
 				if (g._mouse_btn_pressed_this_frame[0]) // left
 				{
@@ -145,12 +150,12 @@ bool Player::logic(Game& g)
 						_fire_magic_current -= _fire_magic_cost;
 
 						float nx, ny;
-						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);
+						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(mid_x()), g._cam.convert_y(mid_y()), (float)m_x, (float)m_y);
 
 						float displacement = 40.f;
 
-						float e_x = get_mid_x() + nx * displacement;
-						float e_y = get_mid_y()+ ny * displacement;
+						float e_x = mid_x() + nx * displacement;
+						float e_y = mid_y()+ ny * displacement;
 
 						FireMagic* e = new FireMagic(this, e_x, e_y, _fire_magic_damage, _fire_magic_area_factor);
 						g._entity_handler._entities_to_add.push_back(e);
@@ -158,7 +163,7 @@ bool Player::logic(Game& g)
 				}
 				break;
 			}
-			case PLAYER_WEAPON::GUN:
+			case L_WEAPON::GUN:
 			{
 				// possibly shoot
 				
@@ -173,8 +178,8 @@ bool Player::logic(Game& g)
 						// shoot projectile "Shot"
 						float speed = 0.028f;
 						float nx, ny;
-						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);
-						g._entity_handler._entities_to_add.push_back(new Shot(this, get_mid_x(), get_mid_y(), nx, ny, speed));
+						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(mid_x()), g._cam.convert_y(mid_y()), (float)m_x, (float)m_y);
+						g._entity_handler._entities_to_add.push_back(new Shot(this, _shot_damage, mid_x(), mid_y(), nx, ny, speed));
 					}
 				}
 				break;
@@ -201,12 +206,12 @@ bool Player::logic(Game& g)
 				{
 					float bomb_speed = 1.5f * _bomb_throw_charge / _bomb_throw_max_charge;
 					float nx, ny;
-					General::normalize_vector_two_points(nx, ny, g._cam.convert_x(get_mid_x()), g._cam.convert_y(get_mid_y()), (float)m_x, (float)m_y);
+					General::normalize_vector_two_points(nx, ny, g._cam.convert_x(mid_x()), g._cam.convert_y(mid_y()), (float)m_x, (float)m_y);
 
 					float x_vel = nx * bomb_speed;
 					float y_vel = ny * bomb_speed;
 
-					g._entity_handler._entities_to_add.push_back(new Bomb(get_mid_x(), get_mid_y(), x_vel, y_vel, _bomb_damage, _bomb_area_factor));
+					g._entity_handler._entities_to_add.push_back(new Bomb(mid_x(), mid_y(), x_vel, y_vel, _bomb_damage, _bomb_area_factor));
 
 					// reset
 					_charging_bomb_throw = false;
@@ -238,7 +243,7 @@ void Player::draw(Game& g)
 {
 	if (!_alive) { return; }
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_Rect rect = { g._cam.convert_x((int)x()), g._cam.convert_y((int)y()),(int)w(),(int)h() };
 
 	// draw shadow
 	draw_circle(g._renderer, rect.x + _w/2, rect.y + _h*0.9f, 20, {0,0,0,67});
@@ -249,7 +254,7 @@ void Player::draw(Game& g)
 
 	// walk animation, if walking
 	constexpr float walk_bound = 0.02f;
-	if (std::abs(get_x_vel()) > walk_bound || std::abs(get_y_vel()) > walk_bound) {
+	if (std::abs(x_vel()) > walk_bound || std::abs(y_vel()) > walk_bound) {
 		// should walk
 
 		if ((((int)_walk_animation_timer) / 200) % 2 == 0) {
@@ -332,7 +337,7 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		}
 
 		float bounce_acc = 0.05f;
-
+		
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
 

@@ -191,12 +191,12 @@ void MovingRect::move_and_collide(Game& g) // moves x and y based on velocity + 
 	_x_vel = fmax(-max_abs_vel, fmin(_x_vel, max_abs_vel));
 	_y_vel = fmax(-max_abs_vel, fmin(_y_vel, max_abs_vel));
 
-	set_x(get_x() + _x_vel * g._dt);
+	set_x(x() + _x_vel * g._dt);
 	if constexpr (COLLIDE) {
 		x_collision(g);
 	}
 
-	set_y(get_y() + _y_vel * g._dt);
+	set_y(y() + _y_vel * g._dt);
 	if constexpr (COLLIDE) {
 		y_collision(g);
 	}
@@ -219,17 +219,17 @@ void MovingRect::change_y_vel(float change)
 void MovingRect::go_towards(float x, float y, float speed)
 {
 	float nx, ny;
-	General::normalize_vector_two_points(nx, ny, get_mid_x(), get_mid_y(), x, y);
+	General::normalize_vector_two_points(nx, ny, mid_x(), mid_y(), x, y);
 	change_x_vel(speed * nx);
 	change_y_vel(speed * ny);
 }
 
-float MovingRect::get_x_vel() const
+float MovingRect::x_vel() const
 {
 	return _x_vel;
 }
 
-float MovingRect::get_y_vel() const
+float MovingRect::y_vel() const
 {
 	return _y_vel;
 }

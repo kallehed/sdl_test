@@ -5,9 +5,11 @@
 class BossBody : public MovingRect
 {
 public:
+	static int _onetime_index;
+
 	static constexpr int _largest_more_to_add = 6;
 	//static constexpr int _max_hp = 70;
-	static constexpr int _max_hp = 1;
+	static constexpr int _max_hp = 20;
 
 	int _hp = _max_hp;
 	float _x_dir = 1.f;
@@ -29,7 +31,11 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
-	BossBody(float x, float y, int more_to_add = _largest_more_to_add, BossBody* next = nullptr);
+	// for head
+	BossBody(int onetime_index, float x, float y);
+
+	// for bodies
+	BossBody(float x, float y, int more_to_add, BossBody* next = nullptr);
 
 	bool logic(Game& g) override;
 

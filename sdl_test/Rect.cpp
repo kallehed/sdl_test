@@ -25,41 +25,41 @@ void Rect::set_h(float h)
 	_h = h;
 }
 
-float Rect::get_x() const
+float Rect::x() const
 {
 	return _x;
 }
 
-float Rect::get_y() const
+float Rect::y() const
 {
 	return _y;
 }
 
-float Rect::get_mid_x() const
+float Rect::mid_x() const
 {
 	return _x + _w/2.f;
 }
-float Rect::get_mid_y() const
+float Rect::mid_y() const
 {
 	return _y + _h/2.f;
 }
 
-float Rect::get_w() const
+float Rect::w() const
 {
 	return _w;
 }
 
-float Rect::get_h() const
+float Rect::h() const
 {
 	return _h;
 }
 
-float Rect::get_half_w() const
+float Rect::half_w() const
 {
 	return _w/2.f;
 }
 
-float Rect::get_half_h() const
+float Rect::half_h() const
 {
 	return _h/2.f;
 }

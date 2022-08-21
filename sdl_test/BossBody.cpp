@@ -12,7 +12,17 @@ MOVING_RECT_TYPES BossBody::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::BOSS;
 }
 
-BossBody::BossBody(float x, float y, int more_to_add, BossBody* next)
+int BossBody::_onetime_index = -1;
+
+BossBody::BossBody(int onetime_index, float x, float y) // head
+	: MovingRect(x, y, 50.f, 50.f, 0.01f),
+	_more_to_add(_largest_more_to_add),
+	_next(nullptr)
+{
+	_onetime_index = onetime_index;
+}
+
+BossBody::BossBody(float x, float y, int more_to_add, BossBody* next) // body
 	: MovingRect(x, y, 50.f, 50.f, 0.01f),
 	_more_to_add(more_to_add),
 	_next(next)
@@ -27,7 +37,7 @@ bool BossBody::logic(Game& g)
 	{
 		_hp = _max_hp;
 		 // Head, will start the boss when player is near
-		if (600.f > abs(p.get_mid_x() - get_mid_x()) + abs(p.get_mid_y() - get_mid_y()))
+		if (600.f > abs(p.mid_x() - mid_x()) + abs(p.mid_y() - mid_y()))
 		{
 			// start boss
 
@@ -68,7 +78,7 @@ bool BossBody::logic(Game& g)
 			{
 				int coins = 50;
 				for (int _ = 0; _ < coins; ++_) {
-					Pickupable* e = new Pickupable(PICKUPABLE_TYPE::COIN, get_mid_x() + _, get_mid_y() + _, get_x_vel() / 20.f, get_y_vel() / 20.f);
+					Pickupable* e = new Pickupable(PICKUPABLE_TYPE::COIN, mid_x() + _, mid_y() + _, x_vel() / 20.f, y_vel() / 20.f);
 					g._entity_handler._entities_to_add.push_back(e);
 				}
 			}
@@ -77,6 +87,11 @@ bool BossBody::logic(Game& g)
 			{
 				Buyable* e = new Buyable(-1, 0, BUYABLE_TYPE::ABILITY_TO_GUN, _x, _y);
 				g._entity_handler._draw_entities.emplace_back(e);
+			}
+
+			// stop from spawning again
+			{
+				g._save._onetimes.insert({ g._level, _onetime_index });
 			}
 		}
 		else
@@ -119,7 +134,7 @@ bool BossBody::logic(Game& g)
 			}
 			else {
 				// activate speedy mode
-				activate_speedy_mode(4000.f, 0);
+				activate_speedy_mode(4000.f + 100.f*(_max_hp - _hp), 0);
 			}
 		}
 	}
@@ -130,7 +145,7 @@ bool BossBody::logic(Game& g)
 
 	// turn towards target
 	{
-		float r = atan2(target->get_mid_y() - get_mid_y(), target->get_mid_x() - get_mid_x()); // SECOND HALF IS NEGATIVE FOR SOME REASON???
+		float r = atan2(target->mid_y() - mid_y(), target->mid_x() - mid_x()); // SECOND HALF IS NEGATIVE FOR SOME REASON???
 
 		if (r < 0.f) { r += General::tau(); } // BECAUSE OF THAT, THIS
 
@@ -151,7 +166,7 @@ bool BossBody::logic(Game& g)
 	_x_dir = cosf(_radians_turned);
 	_y_dir = sinf(_radians_turned);
 
-	float speed = !_speedy_mode  ? 0.0016f : 0.003f;
+	float speed = !_speedy_mode  ? 0.002f : 0.0034f;
 	change_x_vel(_x_dir * speed);
 	change_y_vel(_y_dir* speed);
 
@@ -255,7 +270,7 @@ void BossBody::intersection(Game& g, float nx, float ny, MovingRect* e)
 				float y_vel = ny;
 				int total_particles = damage;
 				for (int i = 0; i < total_particles; ++i) {
-					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 255 });
+					Particle* e = new Particle(mid_x(), mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 255 }, 20);
 					g._entity_handler._particles.emplace_back(e);
 				}
 			}
@@ -264,14 +279,13 @@ void BossBody::intersection(Game& g, float nx, float ny, MovingRect* e)
 				float y_vel = ny * 3.f;
 				int total_particles = 50;
 				for (int i = 0; i < total_particles; ++i) {
-					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * (0.25f + 0.75f * General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 255 });
+					Particle* e = new Particle(mid_x(), mid_y(), x_vel * (0.25f + 0.75f * General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 255 }, 50);
 					g._entity_handler._particles.emplace_back(e);
 				}
 			}
 		}
 	}
 }
-
 
 
 void BossBody::take_damage(Game& g, int damage)

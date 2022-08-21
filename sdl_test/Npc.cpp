@@ -80,6 +80,19 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		}
 
 		break;
+	case NPC_TYPE::GUN_GIRL:
+		if (g._entity_handler._p._have_l_weapon[L_WEAPON::GUN]) {
+			_text = g._entity_handler._NPC_GUN_GIRL_TEXT;
+			_total_chars = g._entity_handler._NPC_GUN_GIRL_TEXT_TOTAL_CHARS;
+		}
+		else {
+			_text = g._entity_handler._NPC_GUN_GIRL_TEXT2;
+			_total_chars = g._entity_handler._NPC_GUN_GIRL_TEXT2_TOTAL_CHARS;
+		}
+		_tex = TEX::GirlGreenDress;
+		set_w(16.f * 4.f);
+		set_h(32.f * 4.f);
+		break;
 	default:
 		std::cout << "ERROR_NPC_TYPE";
 		std::cin.get();
@@ -105,7 +118,7 @@ bool Npc::logic(Game& g)
 	if (_talking_to) {
 
 		constexpr float threshold = 400.f;
-		if (threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y()))
+		if (threshold < abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y()))
 		{
 			_talking_to = false;
 		} 
@@ -165,7 +178,7 @@ bool Npc::logic(Game& g)
 	else
 	{
 		constexpr float threshold = 150.f;
-		_press_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+		_press_e_sign = threshold > abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y());
 
 		if (_press_e_sign) {
 			if (g._keys_frame[SDL_SCANCODE_E]) {

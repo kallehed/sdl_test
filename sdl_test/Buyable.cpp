@@ -38,6 +38,16 @@ Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float 
 	case ABILITY_TO_GUN:
 		_descriptive_text = "Gun.\nScroll to equip";
 		break;
+	case FASTER_SHOTS:
+		_descriptive_text = "Faster bullets";
+		break;
+	case FASTER_RELOAD:
+		_descriptive_text = "Faster reload time";
+		break;
+	case INCREASED_DURABILITY:
+		_text_scale = 1;
+		_descriptive_text = "Increased durability\n(Bullets survive 1 more hit)";
+		break;
 	}
 }
 
@@ -47,7 +57,7 @@ bool Buyable::logic(Game& g)
 
 	if (!_transaction_succeded && !_transaction_failed) {
 		constexpr float threshold = 85.f;
-		_show_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+		_show_e_sign = threshold > abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y());
 
 		if (_show_e_sign) {
 			if (g._keys_frame[SDL_SCANCODE_E])
@@ -67,7 +77,7 @@ bool Buyable::logic(Game& g)
 						using enum BUYABLE_TYPE;
 						switch (_type) {
 						case FASTER_FIRE_RECHARGE:
-							p._fire_magic_increase *= 1.25f;
+							p._fire_magic_increase *= 1.35f;
 							break;
 						case LARGER_FIRE_LIMIT:
 							p._fire_magic_max *= 1.25;
@@ -87,8 +97,17 @@ bool Buyable::logic(Game& g)
 						case ABILITY_TO_RUN:
 							p._ability_to_run = true;
 							break;
-						case ABILITY_TO_GUN:
-							// gun gun gun
+						case ABILITY_TO_GUN: // gun gun gun
+							p._have_l_weapon[L_WEAPON::GUN] = true;
+							break;
+						case FASTER_SHOTS:
+							// TODO
+							break;
+						case FASTER_RELOAD:
+							p._shoot_time *= 0.75;
+							break;
+						case INCREASED_DURABILITY:
+							// TODO
 							break;
 						}
 					}
@@ -105,7 +124,7 @@ bool Buyable::logic(Game& g)
 	else {
 		// showing text
 		constexpr float threshold = 150.f;
-		bool far_away = threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+		bool far_away = threshold < abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y());
 
 		// only delete self if SUCCESFUL TRADE
 		if (_transaction_succeded) {
@@ -138,10 +157,11 @@ void Buyable::draw(Game& g)
 			const SDL_Rect box = { x, y, 32 * scale, 15 * scale };
 			SDL_RenderCopy(g._renderer, g._textures[TEX::DialogueBox], NULL, &box);
 
-			constexpr int text_offset = 10;
-			g._cam.draw_text(g, _descriptive_text, { 0,0,0,255 }, x + text_offset, y + text_offset, 2);
+			// description
+			constexpr int text_offset = 10; 
+			g._cam.draw_text(g, _descriptive_text, { 0,0,0,255 }, x + text_offset, y + text_offset, _text_scale);
 
-			// display cost
+			// cost of buyable
 			SDL_Rect draw_rect = { rect.x + 30,rect.y + 85,25,25 };
 			SDL_RenderCopy(g._renderer, g._textures[TEX::Coin], NULL, &draw_rect);
 			g._cam.draw_text(g, std::to_string(_cost).c_str(), { 0,0,0,255 }, draw_rect.x + draw_rect.w, draw_rect.y - 7, 2);

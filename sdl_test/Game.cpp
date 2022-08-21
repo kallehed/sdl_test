@@ -148,7 +148,8 @@ Game::Game()
 			"images/BossBody.png",
 			"images/BossHead.png",
 			"images/Needle.png",
-			"images/BossHeadBite.png"
+			"images/BossHeadBite.png",
+			"images/GirlGreenDress.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {

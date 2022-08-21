@@ -24,13 +24,13 @@ void EnemyBasic::draw(Game& g)
 {
 	SDL_SetRenderDrawColor(g._renderer, 0, 0, 255, 255);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_Rect rect = { g._cam.convert_x((int)x()), g._cam.convert_y((int)y()),(int)w(),(int)h() };
 	//SDL_RenderFillRect(g._renderer, &rect);
 
 	draw_circle(g._renderer, rect.x + _w / 2, rect.y + _h * 0.9f, 20, { 0,0,0,67 });
 
 	// 0 is nothing, 1 is flip horizontally
-	SDL_RendererFlip flip = (get_x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+	SDL_RendererFlip flip = (x_vel() > 0.f) ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
 	if (_hurt_timer > 0.f) {
 		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 100, 100, 100);
@@ -118,7 +118,7 @@ void EnemyBasic::active_logic(Game& g)
 		}
 	}
 	else
-	if (g._tile_handler.is_path_clear(g, get_x(), get_y(), g._entity_handler._p.get_x(), g._entity_handler._p.get_y()))
+	if (g._tile_handler.is_path_clear(g, x(), y(), g._entity_handler._p.x(), g._entity_handler._p.y()))
 	{
 		go_towards_player(g, _active_basic_speed);
 		_walk_path.clear(); // clear path
@@ -145,8 +145,8 @@ void EnemyBasic::active_logic(Game& g)
 			go_towards(dst_x, dst_y, _active_basic_speed);
 
 			// completely inside tile => go to next
-			if (get_x() > tile_x && get_y() > tile_y &&
-				get_x() + get_w() < tile_x + g._cam._grid && get_y() + get_h() < tile_y + g._cam._grid)
+			if (x() > tile_x && y() > tile_y &&
+				x() + w() < tile_x + g._cam._grid && y() + h() < tile_y + g._cam._grid)
 			{
 				_path_progress += 1;
 			}

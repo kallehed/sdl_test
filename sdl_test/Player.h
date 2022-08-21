@@ -23,14 +23,19 @@ public:
 	float _invi_timer = 0.f;
 
 	// walk animation stuff
-	bool _forward = true; // facing forwawrd
+	bool _forward = true; // facing forward
 	bool _right = true; // facing right
 	float _walk_animation_timer = 0.f;
 
 	// flash black when hit
 	bool _took_damage_this_frame = false;
 
-	PLAYER_WEAPON _left_weapon = PLAYER_WEAPON::FIRE_MAGIC;
+	L_WEAPON::_ _left_weapon = L_WEAPON::FIRE_MAGIC;
+
+	//std::array<bool, L_WEAPON::TOTAL> _have_l_weapon = {true, false}; // play
+	std::array<bool, L_WEAPON::TOTAL> _have_l_weapon = { true, true }; // dev
+
+	float _left_timer = 0.f; // left weapon timer
 
 	// Fire magic stuff
 	float _fire_magic_max = 800.f;
@@ -40,12 +45,11 @@ public:
 	int _fire_magic_damage = 5;
 	float _fire_magic_area_factor = 1.f;
 
-	float _left_timer = 0.f;
-	float _shoot_time = 400.f; // "reload" time
-
 	// gun stuff
-	//int _shots = 10;
+	//int _shots = 0;
 	int _shots = 50;
+	int _shot_damage = 5;
+	float _shoot_time = 600.f; // "reload" time
 
 	// bomb stuff
 	int _bombs = 5;
@@ -59,7 +63,8 @@ public:
 	bool _charging_bomb_throw = false;
 
 	// The ability to run: stuff
-	bool _ability_to_run = false;
+	//bool _ability_to_run = false; // play
+	bool _ability_to_run = true; // dev
 	float _run_max = 750.f;
 	float _run_current = _run_max;
 	float _run_recharge = 0.5f;

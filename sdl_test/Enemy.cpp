@@ -47,8 +47,8 @@ bool Enemy::logic(Game& g)
 
 	// particles
 	{
-		if (abs(get_x_vel()) + abs(get_y_vel()) >= 0.05f && g._ticks % (20 + rand() % 11) == 0) {
-			g._entity_handler._particles.emplace_back(new Particle(get_mid_x(), get_mid_y(), 0.f, 0.f, { 0, 200, 255, 255 }));
+		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && g._ticks % (20 + rand() % 11) == 0) {
+			g._entity_handler._particles.emplace_back(new Particle(mid_x(), mid_y(), 0.f, 0.f, { 0, 200, 255, 255 }));
 		}
 	}
 
@@ -58,7 +58,7 @@ bool Enemy::logic(Game& g)
 		{
 			int coins = 1 + rand() % 2;
 			for (int _ = 0; _ < coins; ++_) {
-				Pickupable* e = new Pickupable(PICKUPABLE_TYPE::COIN, get_mid_x() + _, get_mid_y() + _, get_x_vel() / 20.f, get_y_vel() / 20.f);
+				Pickupable* e = new Pickupable(PICKUPABLE_TYPE::COIN, mid_x() + _, mid_y() + _, x_vel() / 20.f, y_vel() / 20.f);
 				g._entity_handler._entities_to_add.push_back(e);
 			}
 		}
@@ -83,20 +83,20 @@ void Enemy::make_idle()
 void Enemy::go_towards_player(Game& g, float speed)
 {
 	//std::cout << "s";
-	this->go_towards(g._entity_handler._p.get_mid_x(), g._entity_handler._p.get_mid_y(), speed);
+	this->go_towards(g._entity_handler._p.mid_x(), g._entity_handler._p.mid_y(), speed);
 }
 
 bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
 { 
-	float dx = get_mid_x() - g._entity_handler._p.get_mid_x();
-	float dy = get_mid_y() - g._entity_handler._p.get_mid_y();
+	float dx = mid_x() - g._entity_handler._p.mid_x();
+	float dy = mid_y() - g._entity_handler._p.mid_y();
 	return dx * dx + dy * dy <= radius_squared;
 }
 
 void Enemy::new_walk_path(Game& g) // clear
 {
 	_path_progress = 1;
-	_walk_path = AStarNode::generate_walk_path(g, get_mid_x(), get_mid_y(), g._entity_handler._p.get_mid_x(), g._entity_handler._p.get_mid_y());
+	_walk_path = AStarNode::generate_walk_path(g, mid_x(), mid_y(), g._entity_handler._p.mid_x(), g._entity_handler._p.mid_y());
 }
 
 void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
@@ -111,7 +111,7 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 		}
 		bounce_acc = 0.05f;
 		
-		damage = 5;
+		damage = ((Shot*)e)->_damage;
 		break;
 	}
 	case MOVING_RECT_TYPES::ENEMY:
@@ -155,7 +155,7 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 				float y_vel = ny;
 				int total_particles = damage;
 				for (int i = 0; i < total_particles; ++i) {
-					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 255 });
+					Particle* e = new Particle(mid_x(), mid_y(), x_vel * General::randf01(), y_vel * General::randf01(), { 0, 200, 255, 255 });
 					g._entity_handler._particles.emplace_back(e);
 				}
 			}
@@ -164,7 +164,7 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 				float y_vel = ny * 3.f;
 				int total_particles = 50;
 				for (int i = 0; i < total_particles; ++i) {
-					Particle* e = new Particle(get_mid_x(), get_mid_y(), x_vel * (0.25f + 0.75f*General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 255 });
+					Particle* e = new Particle(mid_x(), mid_y(), x_vel * (0.25f + 0.75f*General::randf01()), y_vel * (0.25f + 0.75f * General::randf01()), { 0, 200, 255, 255 });
 					g._entity_handler._particles.emplace_back(e);
 				}
 			}

@@ -29,8 +29,8 @@ bool Door::logic(Game& g)
 			p.change_y_vel(ny * bounce);
 		}
 		
-		float player_leftness = get_mid_x() - p.get_mid_x();
-		float y_dif = std::abs(get_mid_y() - p.get_mid_y());
+		float player_leftness = mid_x() - p.mid_x();
+		float y_dif = std::abs(mid_y() - p.mid_y());
 		_show_e_sign = 0 < player_leftness && player_leftness < 150.f && y_dif < 150.f;
 
 		if (_show_e_sign) {
@@ -52,7 +52,7 @@ bool Door::logic(Game& g)
 
 		// close text when far away
 		if (_opened_text) {
-			if (abs(get_y_vel()) > 1.f) {
+			if (abs(y_vel()) > 1.f) {
 				_opened_text = false;
 			}
 		}

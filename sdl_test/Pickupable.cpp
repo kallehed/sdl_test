@@ -22,8 +22,8 @@ Pickupable::Pickupable(PICKUPABLE_TYPE type, float x, float y, float x_vel, floa
 		_texture = TEX::Heart;
 	}
 
-	set_x(x - get_half_w());
-	set_y(y - get_half_h());
+	set_x(x - half_w());
+	set_y(y - half_h());
 
 	change_x_vel(x_vel);
 	change_y_vel(y_vel);

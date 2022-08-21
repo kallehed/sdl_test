@@ -67,6 +67,21 @@ public:
 		"yo...\0thanks for the coin...\0hehe...           ";
 	int _NPC_SUS_SELLER_TEXT2_TOTAL_CHARS = 48;
 
+	char _NPC_GUN_GIRL_TEXT[217] =
+		"Hi, this is the\nGun upgrade store!\0"
+		"Here you will find\nthe things that make\nor break your gunning!\0"
+		"So, pick wisely,\nand you shall be happy with\nyour choice!\0"
+		"(I do not take responsibility\nfor any misuse of these wares)";
+	int _NPC_GUN_GIRL_TEXT_TOTAL_CHARS = 217;
+
+	char _NPC_GUN_GIRL_TEXT2[215] =
+		"Hi, this is the\nGun upgrade store!\0"
+		"Hm,    \nit seems you do not have\na gun yet...\0"
+		"How unfortunate.\0"
+		"Still, you can always enjoy\nthe beauty of these upgrades...\0"
+		"(As long as you're not one\nof those ANTI-gunning people)";
+	int _NPC_GUN_GIRL_TEXT2_TOTAL_CHARS = 215;
+
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);
 public:

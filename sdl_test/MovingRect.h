@@ -32,8 +32,8 @@ public:
 	virtual void draw(Game& g) = 0;
 	virtual bool logic(Game& g) = 0;
 
-	float get_x_vel() const;
-	float get_y_vel() const;
+	float x_vel() const;
+	float y_vel() const;
 
 	virtual ~MovingRect();
 };

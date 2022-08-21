@@ -19,6 +19,8 @@ public:
 	bool _transaction_succeded = false; // display buy text
 	bool _transaction_failed = false; // display fail text
 
+	int _text_scale = 2;
+
 	MOVING_RECT_TYPES get_moving_rect_type() const;
 
 	Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float y);

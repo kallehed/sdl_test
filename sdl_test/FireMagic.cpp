@@ -11,8 +11,8 @@ FireMagic::FireMagic(MovingRect* owner, float x, float y, int damage, float area
 	_owner(owner),
 	_damage(damage)
 {
-	set_x(x - get_half_w());
-	set_y(y - get_half_h());
+	set_x(x - half_w());
+	set_y(y - half_h());
 }
 
 // first frame, be in _entities, then next, remove self, add to _draw_entities

@@ -10,8 +10,8 @@ Explosion::Explosion(float x, float y, int damage, float area_factor)
 	: MovingRect(0, 0, area_factor*300.f, area_factor*300.f, 0.0f),
 	_damage(damage)
 {
-	set_x(x - get_half_w());
-	set_y(y - get_half_h());
+	set_x(x - half_w());
+	set_y(y - half_h());
 }
 
 // first frame, be in _entities, then next, remove self, add to _draw_entities

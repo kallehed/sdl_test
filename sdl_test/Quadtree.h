@@ -86,8 +86,8 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::node_do_intersection(int32_t index, G& g)
                 if (General::rect_intersection<T>(*e1, *e2))
                 {
                     // collision
-                    float dx = e1->get_mid_x() - e2->get_mid_x();
-                    float dy = e1->get_mid_y() - e2->get_mid_y();
+                    float dx = e1->mid_x() - e2->mid_x();
+                    float dy = e1->mid_y() - e2->mid_y();
                     float dist = sqrtf(dx * dx + dy * dy);
 
                     float nx = dx / dist;
@@ -145,10 +145,10 @@ void Quadtree<T, PER_NODE, MAX_DEPTH>::node_draw(int32_t index, G& g, int x, int
 template <typename T, int PER_NODE, int MAX_DEPTH>
 void Quadtree<T, PER_NODE, MAX_DEPTH>::add_to_right_nodes(T* e, size_t node_index, int depth, int x, int y, int x2, int y2, int half_w, int half_h)
 {
-    int e_x = (int)e->get_x();
-    int e_y = (int)e->get_y();
-    int e_x2 = e_x + (int)e->get_w();
-    int e_y2 = e_y + (int)e->get_h();
+    int e_x = (int)e->x();
+    int e_y = (int)e->y();
+    int e_x2 = e_x + (int)e->w();
+    int e_y2 = e_y + (int)e->h();
 
     if (e_x < x2) // on left side
     {

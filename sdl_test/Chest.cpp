@@ -18,7 +18,7 @@ bool Chest::logic(Game& g)
 
 	if (!_showing_text) {
 		constexpr float threshold = 85.f;
-		_show_e_sign = threshold > abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+		_show_e_sign = threshold > abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y());
 
 		if (_show_e_sign) {
 			if (g._keys_frame[SDL_SCANCODE_E])
@@ -37,7 +37,7 @@ bool Chest::logic(Game& g)
 	else {
 		// showing text
 		constexpr float threshold = 150.f;
-		bool far_away = threshold < abs(get_mid_x() - p.get_mid_x()) + abs(get_mid_y() - p.get_mid_y());
+		bool far_away = threshold < abs(mid_x() - p.mid_x()) + abs(mid_y() - p.mid_y());
 
 		if (far_away || g._keys_frame[SDL_SCANCODE_E]) {
 			delete this;

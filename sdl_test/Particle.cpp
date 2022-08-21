@@ -6,11 +6,11 @@ MOVING_RECT_TYPES Particle::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::PARTICLE;
 }
 
-Particle::Particle(float x, float y, float x_vel, float y_vel, SDL_Color color)
-	: MovingRect(0, 0, (float)(3 + rand()%6), (float)(3 + rand()%6), 0.003f)
+Particle::Particle(float x, float y, float x_vel, float y_vel, SDL_Color color, int thick)
+	: MovingRect(0, 0, (float)(3 + rand()%thick), (float)(3 + rand()%thick), 0.003f)
 {
-	set_x(x - get_half_w());
-	set_y(y - get_half_h());
+	set_x(x - half_w());
+	set_y(y - half_h());
 
 	change_x_vel(x_vel / 40.f);
 	change_y_vel(y_vel / 40.f);
@@ -40,7 +40,7 @@ void Particle::draw(Game& g)
 {
 	SDL_SetRenderDrawColor(g._renderer, _color.r, _color.g, _color.b, _color.a);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_Rect rect = { g._cam.convert_x((int)x()), g._cam.convert_y((int)y()),(int)w(),(int)h() };
 	SDL_RenderFillRect(g._renderer, &rect);
 	
 }

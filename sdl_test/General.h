@@ -40,7 +40,7 @@ public:
 template <typename T>
 bool General::rect_intersection(T& a, T& b)
 {
-	return General::general_rect_intersection<float>(a.get_x(), a.get_y(), a.get_w(), a.get_h(), b.get_x(), b.get_y(), b.get_w(), b.get_h());
+	return General::general_rect_intersection<float>(a.x(), a.y(), a.w(), a.h(), b.x(), b.y(), b.w(), b.h());
 }
 
 

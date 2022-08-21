@@ -12,16 +12,16 @@ public:
 	double _degrees_turned;
 	float _speed; //= 0.05f;
 
+	int _damage;
+
 	TEX::TEX _image;
 
 	// which entity created this shot(maybe don't hurt them?)?
 	MovingRect* _owner;
 
-	int _damage = 5;
-
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
-	Shot(MovingRect* owner, float x, float y, float x_dir, float y_dir, float speed, TEX::TEX image = TEX::Bullet);
+	Shot(MovingRect* owner, int damage, float x, float y, float x_dir, float y_dir, float speed, TEX::TEX image = TEX::Bullet);
 
 	void turn_according_to_dir();
 

@@ -60,12 +60,12 @@ int Camera::convert_y_to_i(float y)
 void Camera::play_logic(Game& g)
 {
 	Player& p = g._entity_handler._p;
-	float target_x = p.get_mid_x() - g._WIDTH / 2.f;
-	float target_y = p.get_mid_y() - g._HEIGHT / 2.f;
+	float tarx = p.mid_x() - g._WIDTH / 2.f;
+	float tary = p.mid_y() - g._HEIGHT / 2.f;
 
 	float speed = 0.2f;
-	_x += (target_x - _x) * speed;
-	_y += (target_y - _y) * speed;
+	_x += (tarx - _x) * speed;
+	_y += (tary - _y) * speed;
 
 	//if (_shake_timer > 0.f) {
 		//_shake_timer -= g._dt;
@@ -215,17 +215,17 @@ void Camera::edit_logic(Game& g)
 					}
 					case CHEST:
 					{
-						g._entity_handler._draw_entities.push_back(new Chest(0,r_x, r_y));
+						g._entity_handler._draw_entities.push_back(new Chest(-1,r_x, r_y));
 						break;
 					}
 					case BUYABLE:
 					{
-						g._entity_handler._draw_entities.push_back(new Buyable(0,-420,BUYABLE_TYPE::FASTER_FIRE_RECHARGE, r_x, r_y));
+						g._entity_handler._draw_entities.push_back(new Buyable(-1,-420,BUYABLE_TYPE::FASTER_FIRE_RECHARGE, r_x, r_y));
 						break;
 					}
 					case BOSS_HEAD:
 					{
-						g._entity_handler._entities.push_back(new BossBody(r_x, r_y));
+						g._entity_handler._entities.push_back(new BossBody(-1,r_x, r_y));
 						break;
 					}
 					}
@@ -240,7 +240,7 @@ void Camera::edit_logic(Game& g)
 				for (int i = ((int)g._entity_handler._entities.size()) - 1; i > -1; --i) {
 					auto& e = g._entity_handler._entities[i];
 					if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
-						e->get_x(), e->get_y(), e->get_w(), e->get_h()))
+						e->x(), e->y(), e->w(), e->h()))
 					{
 						delete e;
 						g._entity_handler._entities.erase(g._entity_handler._entities.begin() + i);
@@ -255,7 +255,7 @@ void Camera::edit_logic(Game& g)
 					for (int i = ((int)g._entity_handler._draw_entities.size()) - 1; i > -1; --i) {
 						auto& e = g._entity_handler._draw_entities[i];
 						if (General::general_rect_intersection(r_x, r_y, 0.f, 0.f,
-							e->get_x(), e->get_y(), e->get_w(), e->get_h()))
+							e->x(), e->y(), e->w(), e->h()))
 						{
 							delete e;
 							g._entity_handler._draw_entities.erase(g._entity_handler._draw_entities.begin() + i);
@@ -588,8 +588,11 @@ void Camera::load_from_file(Game& g, int level)
 				++onetime_index;
 			}
 			else if (type == "BossBody") {
-				BossBody* e = new BossBody(j * _fgrid, i * _fgrid);
-				g._entity_handler._entities.emplace_back(e);
+				if (onetimes.find({ level, onetime_index }) == onetimes.end()) {
+					BossBody* e = new BossBody(onetime_index,j * _fgrid, i * _fgrid); // Head constructor
+					g._entity_handler._entities.emplace_back(e);
+				}
+				++onetime_index;
 			}
 			else if (type == "Player") {
 				if (player_has_been_placed_by_portal == false) {
@@ -826,25 +829,29 @@ void Camera::draw_hud(Game& g)
 	
 	{ // left weapon chosen
 		int specific_x = hud_x;
-		for (int i = 0; i < (int)PLAYER_WEAPON::TOTAL; ++i)
+		for (int i = 0; i < L_WEAPON::TOTAL; ++i)
 		{	
-			SDL_Rect draw_rect = { specific_x, hud_y, 20, 20 };
-			
-			if ((int)p._left_weapon == i) { // if chosen, mark as green 
-				SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, a);
-				SDL_RenderFillRect(g._renderer, &draw_rect);
-			}
-			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
-			SDL_RenderDrawRect(g._renderer, &draw_rect);
-			
-			specific_x += 25;
+			if (p._have_l_weapon[i])
+			{
+				SDL_Rect draw_rect = { specific_x, hud_y, 20, 20 };
 
+				// if chosen, mark as green
+				if (p._left_weapon == i)
+				{ 
+					SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, a);
+					SDL_RenderFillRect(g._renderer, &draw_rect);
+				}
+				SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
+				SDL_RenderDrawRect(g._renderer, &draw_rect);
+
+				specific_x += 25;
+			}
 		}
 	}
 	hud_y += hud_y_increase;
 	
 	{ // left weapon "ammo" left
-		if (p._left_weapon == PLAYER_WEAPON::FIRE_MAGIC)
+		if (p._left_weapon == L_WEAPON::FIRE_MAGIC)
 		{
 			float dim = 10.f; // divide width by this
 
@@ -862,7 +869,7 @@ void Camera::draw_hud(Game& g)
 			SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
 			SDL_RenderDrawRect(g._renderer, &draw_rect);
 		}
-		else if (p._left_weapon == PLAYER_WEAPON::GUN)
+		else if (p._left_weapon == L_WEAPON::GUN)
 		{ // shots player has
 			SDL_SetRenderDrawColor(g._renderer, 75, 75, 75, a);
 

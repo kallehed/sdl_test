@@ -1,11 +1,14 @@
 #pragma once
 
-enum class PLAYER_WEAPON : char {
-	FIRE_MAGIC = 0,
-	GUN,
+// left-click weapon for player
+namespace L_WEAPON {
+	enum _ : char {
+		FIRE_MAGIC = 0,
+		GUN,
 
-	TOTAL
-};
+		TOTAL
+	};
+}
 
 enum class MOVING_RECT_TYPES : char {
 	PLAYER = 0,
@@ -96,6 +99,7 @@ namespace TEX {
 		BossHead,
 		Needle,
 		BossHeadBite,
+		GirlGreenDress,
 
 		TOTAL
 	};
@@ -118,6 +122,7 @@ enum class NPC_TYPE { // NPCX is the red bear now
 	GREEN_BOMB_GUY,
 	NPC3,
 	SUS_SELLER,
+	GUN_GIRL,
 
 	TOTAL
 };
@@ -138,6 +143,11 @@ enum class BUYABLE_TYPE {
 
 	// Gunning
 	ABILITY_TO_GUN,
+
+	// Gun Upgrade Store
+	FASTER_SHOTS,
+	FASTER_RELOAD,
+	INCREASED_DURABILITY,
 
 	TOTAL
 };

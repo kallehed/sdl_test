@@ -12,8 +12,8 @@ Bomb::Bomb(float x, float y, float x_vel, float y_vel, int damage, float area_fa
 	_damage(damage),
 	_area_factor(area_factor)
 {
-	set_x(x - get_half_w());
-	set_y(y - get_half_h());
+	set_x(x - half_w());
+	set_y(y - half_h());
 
 	change_x_vel(x_vel / 20.f);
 	change_y_vel(y_vel / 20.f);
@@ -27,7 +27,7 @@ bool Bomb::logic(Game& g)
 	_detonation_timer -= g._dt;
 	if (_detonation_timer <= 0.f || _lives < 1) // detonate
 	{
-		g._entity_handler._entities_to_add.push_back(new Explosion(get_mid_x(), get_mid_y(), _damage, _area_factor));
+		g._entity_handler._entities_to_add.push_back(new Explosion(mid_x(), mid_y(), _damage, _area_factor));
 		
 		// shake screen
 		g._cam.shake(g, 1.20f, 50.f);
@@ -53,7 +53,7 @@ void Bomb::draw(Game& g)
 
 	//SDL_SetRenderDrawColor(g._renderer, 175, 0, 0, 255);
 
-	SDL_Rect rect = { g._cam.convert_x((int)get_x()), g._cam.convert_y((int)get_y()),(int)get_w(),(int)get_h() };
+	SDL_Rect rect = { g._cam.convert_x((int)x()), g._cam.convert_y((int)y()),(int)w(),(int)h() };
 	//SDL_RenderFillRect(g._renderer, &rect);
 	SDL_RenderCopy(g._renderer, tex, NULL, &rect);
 }
@@ -79,7 +79,7 @@ void Bomb::intersection(Game& g, float nx, float ny, MovingRect* e)
 	}
 	case MOVING_RECT_TYPES::BOMB:
 	{
-		float bounce_acc = 0.05f;
+		float bounce_acc = 0.02f;
 
 		change_x_vel(bounce_acc * nx);
 		change_y_vel(bounce_acc * ny);
