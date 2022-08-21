@@ -4,6 +4,8 @@
 #include "Explosion.h"
 #include "FireMagic.h"
 #include "Particle.h"
+#include "Pickupable.h"
+#include "Buyable.h"
 
 MOVING_RECT_TYPES BossBody::get_moving_rect_type() const
 {
@@ -21,26 +23,105 @@ bool BossBody::logic(Game& g)
 {
 	auto& p = g._entity_handler._p;
 
-	// check hp situation
-	if (_hp <= 0) {
-		if (_back != nullptr) {
-			_back->_next = _next;
+	if (_more_to_add == _largest_more_to_add) // code only run in waiting for player to arrive
+	{
+		_hp = _max_hp;
+		 // Head, will start the boss when player is near
+		if (600.f > abs(p.get_mid_x() - get_mid_x()) + abs(p.get_mid_y() - get_mid_y()))
+		{
+			// start boss
+
+			// block path to escape
+			for (int i = 48; i <= 51; ++i) {
+				g._tile_handler._tiles[i][51] = TILE::BLOCK;
+				g._tile_handler._texs[i][51] = TEX::CobbleStone;
+			}
 		}
-		if (_next != nullptr) {
-			_next->_back = _back;
+		else {
+			return false; // do nothing
+		}
+	}
+
+	if (_more_to_add > 0)
+	{
+		BossBody* e = new BossBody(_x + 20, _y, _more_to_add - 1, this);
+		_back = e;
+		g._entity_handler._entities_to_add.emplace_back(e);
+
+		_more_to_add = 0;
+	}
+
+	// check hp situation
+	if (_hp <= 0)
+	{
+		if (_back == nullptr && _next == nullptr)
+		{
+			// last one to die.
+
+			// UN-block path to escape
+			for (int i = 48; i <= 51; ++i) {
+				g._tile_handler._tiles[i][51] = TILE::VOID;
+				g._tile_handler._texs[i][51] = TEX::VOID;
+			}
+
+			// spawn a boatload of coins
+			{
+				int coins = 50;
+				for (int _ = 0; _ < coins; ++_) {
+					Pickupable* e = new Pickupable(PICKUPABLE_TYPE::COIN, get_mid_x() + _, get_mid_y() + _, get_x_vel() / 20.f, get_y_vel() / 20.f);
+					g._entity_handler._entities_to_add.push_back(e);
+				}
+			}
+
+			// spawn gun upgrade
+			{
+				Buyable* e = new Buyable(-1, 0, BUYABLE_TYPE::ABILITY_TO_GUN, _x, _y);
+				g._entity_handler._draw_entities.emplace_back(e);
+			}
+		}
+		else
+		{ // fix hole in linked list
+			if (_back != nullptr) { // remove self from linked list
+				_back->_next = _next;
+			}
+			if (_next != nullptr) {
+				_next->_back = _back;
+			}
 		}
 
 		delete this;
 		return true;
 	}
 
-	if (_more_to_add > 0)
-	{
-		BossBody* e = new BossBody(_x - 100, _y, _more_to_add - 1, this);
-		_back = e;
-		g._entity_handler._entities_to_add.emplace_back(e);
 
-		_more_to_add = 0;
+	// speedy mode logic
+
+	if (_speedy_mode) {
+		if (_timer > 0.f) {
+			_timer -= g._dt;
+		}
+		else {
+			// turn off speedy mode
+			_speedy_mode = false;
+			_timer = -420.f;
+		}
+	}
+	else {
+
+		// head logic for activating timer for speedy mode
+		if (_next == nullptr)
+		{
+			if (_timer == -420.f) { // start timer
+				_timer = 2000.f + 12000.f * ((float)_hp / _max_hp);
+			}
+			else if (_timer > 0.f) {
+				_timer -= g._dt;
+			}
+			else {
+				// activate speedy mode
+				activate_speedy_mode(4000.f, 0);
+			}
+		}
 	}
 	
 
@@ -70,7 +151,7 @@ bool BossBody::logic(Game& g)
 	_x_dir = cosf(_radians_turned);
 	_y_dir = sinf(_radians_turned);
 
-	float speed = true  ? 0.0013f : 0.003f;
+	float speed = !_speedy_mode  ? 0.0016f : 0.003f;
 	change_x_vel(_x_dir * speed);
 	change_y_vel(_y_dir* speed);
 
@@ -79,17 +160,43 @@ bool BossBody::logic(Game& g)
 	return false;
 }
 
+void BossBody::activate_speedy_mode(float time, Uint8 color)
+{
+	_speedy_mode = true;
+	_timer = time;
+	_color = color;
+	if (_back != nullptr)
+	{
+		_back->activate_speedy_mode(time, color + (220/_largest_more_to_add));
+	}
+}
+
 void BossBody::draw(Game& g)
 {
 	SDL_Rect rect = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
 
 	draw_circle(g._renderer, rect.x + _w / 2, rect.y + _h * 0.9f, 25, { 0,0,0,67 });
 
-	TEX::TEX tex = (_next != nullptr) ? TEX::BossBody : TEX::BossHead;
+	TEX::TEX tex = TEX::RedHumanBackwards;
+
+	if (_next != nullptr)
+	{
+		tex = TEX::BossBody;
+	}
+	else {
+		tex = (((int)_timer / (_speedy_mode?150:500)) % 2 == 0) ? TEX::BossHead : TEX::BossHeadBite;
+	}
 
 	double rot = (double)General::radians_to_degrees(_radians_turned);
 
-	SDL_RenderCopyEx(g._renderer, g._textures[tex], NULL, &rect, rot, NULL, SDL_FLIP_NONE);
+	if (_speedy_mode) {
+		SDL_SetTextureColorMod(g._textures[tex], 255, _color, _color);
+	}
+	else {
+		SDL_SetTextureColorMod(g._textures[tex], 255, 255, 255);
+	}
+
+	SDL_RenderCopyEx(g._renderer, g._textures[tex], NULL, &rect, rot, NULL, (SDL_RendererFlip)(SDL_FLIP_VERTICAL|SDL_FLIP_HORIZONTAL));
 
 }
 
@@ -164,6 +271,8 @@ void BossBody::intersection(Game& g, float nx, float ny, MovingRect* e)
 		}
 	}
 }
+
+
 
 void BossBody::take_damage(Game& g, int damage)
 {

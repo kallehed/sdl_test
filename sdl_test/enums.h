@@ -95,6 +95,7 @@ namespace TEX {
 		BossBody,
 		BossHead,
 		Needle,
+		BossHeadBite,
 
 		TOTAL
 	};
@@ -134,6 +135,9 @@ enum class BUYABLE_TYPE {
 
 	// Running
 	ABILITY_TO_RUN,
+
+	// Gunning
+	ABILITY_TO_GUN,
 
 	TOTAL
 };

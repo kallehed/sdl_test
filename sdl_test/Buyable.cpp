@@ -35,6 +35,9 @@ Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float 
 	case ABILITY_TO_RUN:
 		_descriptive_text = "This upgrade literally gives you the ability to run or something I didnt check but I think so????\n(HIGHLY VALUED)";
 		break;
+	case ABILITY_TO_GUN:
+		_descriptive_text = "Gun.\nScroll to equip";
+		break;
 	}
 }
 
@@ -54,7 +57,10 @@ bool Buyable::logic(Game& g)
 					// BUY TRANSACTION CONFIRMED AND PENDING
 					p._coins -= _cost;
 					_transaction_succeded = true;
-					g._save._onetimes.insert({ g._level, _onetime_index });
+
+					if (_onetime_index != -1) { // -1 means it was spawned part of some event, ex: boss death
+						g._save._onetimes.insert({ g._level, _onetime_index });
+					}
 
 					// Variable in respect to type
 					{
@@ -80,6 +86,9 @@ bool Buyable::logic(Game& g)
 							break;
 						case ABILITY_TO_RUN:
 							p._ability_to_run = true;
+							break;
+						case ABILITY_TO_GUN:
+							// gun gun gun
 							break;
 						}
 					}
