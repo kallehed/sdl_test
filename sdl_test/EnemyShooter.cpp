@@ -91,7 +91,7 @@ void EnemyShooter::active_logic(Game& g)
 		Player& p = g._entity_handler._p;
 		General::normalize_vector_two_points(nx, ny, mid_x(), mid_y(), p.mid_x(), p.mid_y());
 
-		auto new_shot = new Shot(this, 5, mid_x(), mid_y(), nx, ny, speed, TEX::MagicOrb);
+		auto new_shot = new Shot(this, 5, mid_x(), mid_y(), nx, ny, speed, 1, TEX::MagicOrb);
 		g._entity_handler._entities_to_add.push_back(new_shot);
 
 	}

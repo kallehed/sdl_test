@@ -6,9 +6,9 @@ MOVING_RECT_TYPES Shot::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::SHOT;
 }
 
-Shot::Shot(MovingRect* owner, int damage, float x, float y, float x_dir, float y_dir, float speed, TEX::TEX image)
+Shot::Shot(MovingRect* owner, int damage, float x, float y, float x_dir, float y_dir, float speed, int lives, TEX::TEX image)
 	: MovingRect(0, 0, 25.f, 25.f, 1.f), _owner(owner), _image(image), _speed(speed),
-	_damage(damage)
+	_damage(damage), _lives(lives)
 {
 	set_x(x - half_w());
 	set_y(y - half_h());
@@ -25,6 +25,12 @@ void Shot::turn_according_to_dir()
 
 bool Shot::logic(Game& g)
 {
+
+	if (_set_new_owner) {
+		_owner = _new_owner;
+		_set_new_owner = false;
+	}
+
 	_ASSERT(abs(_x_dir) <= 1.f);
 	_ASSERT(abs(_y_dir) <= 1.f);
 
@@ -39,7 +45,31 @@ bool Shot::logic(Game& g)
 	if (std::get<0>(res)) {
 		auto pos = std::get<1>(res);
 		g._tile_handler.hurt_tile(g, pos[2], pos[3]);
-		_lives = 0;
+		--_lives;
+		TILE::TILE tile = std::get<2>(res);
+		float tile_x = std::get<1>(res)[0];
+		float tile_y = std::get<1>(res)[1];
+		
+		if (tile == TILE::BLOCK || tile == TILE::DESTRUCTABLE)
+		{
+			float dx = tile_x - x();
+			float dy = tile_y - y();
+			if (x_vel() >= 0.f) { // TODO: FIX ALL THIS WITH THE BOUNDING
+					// top or left side or bottom of tile
+				if (dx > dy) {
+					// top side of tile
+					_y_dir *= -1;
+				}
+				else {
+					// left side of tile
+					_x_dir *= -1;
+				}
+			}
+		}
+
+		//_x_dir *= -1; // TODO: MAKE IT BOUNCE THE RIGHT WAY
+		//_y_dir *= -1;
+		
 	}
 	if (_lives < 1)
 	{
@@ -75,7 +105,8 @@ void Shot::intersection(Game& g, float nx, float ny, MovingRect* e)
 	case MOVING_RECT_TYPES::SHOT:
 	{
 		// *** CHANGE
-		if (_owner != e) {
+		if (_owner != e)
+		{
 			_x_dir = nx;
 			_y_dir = ny;
 			turn_according_to_dir();
@@ -86,15 +117,20 @@ void Shot::intersection(Game& g, float nx, float ny, MovingRect* e)
 	case MOVING_RECT_TYPES::ENEMY:
 	case MOVING_RECT_TYPES::PLAYER:
 	{
-		if (_owner == e) {
-			break; // DONT HURT SELF OVER OWNER!!!!
+		if (_owner != e) { // DONT HURT SELF OVER OWNER!!!!
+			--_lives; 
+
+			_x_dir = nx;
+			_y_dir = ny;
+			turn_according_to_dir();
+			_set_new_owner = true;
+			_new_owner = e;
 		}
-		_lives -= 1;
 		break;
 	}
 	case MOVING_RECT_TYPES::BOMB:
 	{
-		_lives -= 1;
+		--_lives;
 		break;
 	}
 	}

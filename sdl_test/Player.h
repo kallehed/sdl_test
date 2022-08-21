@@ -49,6 +49,8 @@ public:
 	//int _shots = 0;
 	int _shots = 50;
 	int _shot_damage = 5;
+	float _shot_speed = 0.028f;
+	int _shot_lives = 1;
 	float _shoot_time = 600.f; // "reload" time
 
 	// bomb stuff

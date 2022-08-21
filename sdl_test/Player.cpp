@@ -176,10 +176,9 @@ bool Player::logic(Game& g)
 						--_shots;
 
 						// shoot projectile "Shot"
-						float speed = 0.028f;
 						float nx, ny;
 						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(mid_x()), g._cam.convert_y(mid_y()), (float)m_x, (float)m_y);
-						g._entity_handler._entities_to_add.push_back(new Shot(this, _shot_damage, mid_x(), mid_y(), nx, ny, speed));
+						g._entity_handler._entities_to_add.push_back(new Shot(this, _shot_damage, mid_x(), mid_y(), nx, ny, _shot_speed, _shot_lives ));
 					}
 				}
 				break;

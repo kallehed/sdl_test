@@ -411,7 +411,7 @@ bool TileHandler::is_path_clear(Game& g, float x1, float y1, float x2, float y2)
 }
 
 // returns true if any blocking tiles, then gives pos(x, y) of that tile, then (i, j) of tile
-std::tuple<bool, std::array<int, 4>, char> TileHandler::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
+std::tuple<bool, std::array<int, 4>, TILE::TILE> TileHandler::get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h)
 {
 	int j_start = g._cam.convert_x_to_j(x);
 	int j_end = g._cam.convert_x_to_j((x + w - 0.01f)) + 1;

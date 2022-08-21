@@ -38,7 +38,7 @@ public:
 	bool is_path_clear(Game& g, float x1, float y1, float x2, float y2);
 
 	// returns true if any blocking tiles, then gives pos(x, y), then (i, j), then TILE type, of tile
-	std::tuple<bool, std::array<int, 4>, char> get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h);
+	std::tuple<bool, std::array<int, 4>, TILE::TILE> get_blocking_tile_pos_in_area(Game& g, float x, float y, float w, float h);
 
 };
 

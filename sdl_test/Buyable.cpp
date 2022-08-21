@@ -101,13 +101,13 @@ bool Buyable::logic(Game& g)
 							p._have_l_weapon[L_WEAPON::GUN] = true;
 							break;
 						case FASTER_SHOTS:
-							// TODO
+							p._shot_speed *= 1.35f;
 							break;
 						case FASTER_RELOAD:
 							p._shoot_time *= 0.75;
 							break;
 						case INCREASED_DURABILITY:
-							// TODO
+							p._shot_lives += 1;
 							break;
 						}
 					}
