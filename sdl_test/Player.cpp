@@ -361,7 +361,7 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		}
 		else if (p->_type == PICKUPABLE_TYPE::SHOT) {
 			// 1 to 3 possible gain
-			_shots += 1 + (rand() % 3);
+			_shots += 3 + (rand() % 4);
 		}
 		else if (p->_type == PICKUPABLE_TYPE::HEART) {
 			// constant gain

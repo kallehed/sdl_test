@@ -15,6 +15,7 @@ Shot::Shot(MovingRect* owner, int damage, float x, float y, float x_dir, float y
 	_x_dir = x_dir;
 	_y_dir = y_dir;
 	turn_according_to_dir();
+	_lives = 10000;
 }
 
 void Shot::turn_according_to_dir()
@@ -46,29 +47,36 @@ bool Shot::logic(Game& g)
 		auto pos = std::get<1>(res);
 		g._tile_handler.hurt_tile(g, pos[2], pos[3]);
 		--_lives;
+		_owner = nullptr; // possibly bounce
 		TILE::TILE tile = std::get<2>(res);
-		float tile_x = std::get<1>(res)[0];
-		float tile_y = std::get<1>(res)[1];
 		
-		if (tile == TILE::BLOCK || tile == TILE::DESTRUCTABLE)
+		if (tile == TILE::BLOCK) // Destructible does not deflect
 		{
-			float dx = tile_x - x();
-			float dy = tile_y - y();
-			if (x_vel() >= 0.f) { // TODO: FIX ALL THIS WITH THE BOUNDING
-					// top or left side or bottom of tile
-				if (dx > dy) {
-					// top side of tile
-					_y_dir *= -1;
-				}
-				else {
-					// left side of tile
-					_x_dir *= -1;
-				}
-			}
-		}
+			float tile_x = std::get<1>(res)[0];
+			float tile_y = std::get<1>(res)[1];
 
-		//_x_dir *= -1; // TODO: MAKE IT BOUNCE THE RIGHT WAY
-		//_y_dir *= -1;
+			int i = std::get<1>(res)[2];
+			int j = std::get<1>(res)[3];
+
+
+			// TODO
+			// Check if tiles above or below, left + right, are BLOCK or DESCTRUCTIBLE,
+			// deduce what way to fly based on that. 
+			// Currently, wrong direction is taken sometimes, based on ONLY position
+			// if ()
+
+			// get which velocity axis to turn
+			float to_top = (y() + h()) - tile_y;
+			float to_bottom =  (tile_y + g._cam._fgrid) - y();
+
+			float to_left = (x() + w()) - tile_x;
+			float to_right = (tile_x + g._cam._fgrid) - x();
+
+			float smallest_y = to_top < to_bottom ? to_top : to_bottom;
+			float smallest_x = to_left < to_right ? to_left : to_right;
+
+			(smallest_y < smallest_x ? _y_dir : _x_dir) *= -1;
+		}
 		
 	}
 	if (_lives < 1)

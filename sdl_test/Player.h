@@ -47,7 +47,7 @@ public:
 
 	// gun stuff
 	//int _shots = 0;
-	int _shots = 50;
+	int _shots = 500;
 	int _shot_damage = 5;
 	float _shot_speed = 0.028f;
 	int _shot_lives = 1;
