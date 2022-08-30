@@ -51,6 +51,11 @@ constexpr float General::tau()
 	return 2.f * General::pi();
 }
 
+constexpr float General::inv_sqrt_of_2()
+{
+	return 0.70710678118f;
+}
+
 float General::radians_to_degrees(float radians)
 {
 	return (180.f / General::pi()) * radians; // left side is compile-time probably

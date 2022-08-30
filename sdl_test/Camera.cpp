@@ -27,7 +27,7 @@ void Camera::construct(Game& g)
 void Camera::shake(Game& g, float divider, float intensity)
 {
 	_shake_divider = divider; // completly replace possible previous shaking
-	_shake_intensity = intensity;
+	_shake_intensity += intensity;
 }
 
 int Camera::convert_x(int x) const {

@@ -15,7 +15,6 @@ Shot::Shot(MovingRect* owner, int damage, float x, float y, float x_dir, float y
 	_x_dir = x_dir;
 	_y_dir = y_dir;
 	turn_according_to_dir();
-	_lives = 10000;
 }
 
 void Shot::turn_according_to_dir()
@@ -50,8 +49,13 @@ bool Shot::logic(Game& g)
 		_owner = nullptr; // possibly bounce
 		TILE::TILE tile = std::get<2>(res);
 		
-		if (tile == TILE::BLOCK) // Destructible does not deflect
+		bool bounced = false;
+
+		switch (tile) {
+		case TILE::BLOCK: // Destructible does not deflect
 		{
+			bounced = true;
+
 			float tile_x = std::get<1>(res)[0];
 			float tile_y = std::get<1>(res)[1];
 
@@ -67,7 +71,7 @@ bool Shot::logic(Game& g)
 
 			// get which velocity axis to turn
 			float to_top = (y() + h()) - tile_y;
-			float to_bottom =  (tile_y + g._cam._fgrid) - y();
+			float to_bottom = (tile_y + g._cam._fgrid) - y();
 
 			float to_left = (x() + w()) - tile_x;
 			float to_right = (tile_x + g._cam._fgrid) - x();
@@ -76,6 +80,35 @@ bool Shot::logic(Game& g)
 			float smallest_x = to_left < to_right ? to_left : to_right;
 
 			(smallest_y < smallest_x ? _y_dir : _x_dir) *= -1;
+
+			break;
+		}
+		case TILE::TRI_NE:
+		case TILE::TRI_SW:
+		{
+			bounced = true;
+
+			float temp = _x_dir;
+			_x_dir = _y_dir;
+			_y_dir = temp;
+
+			break;
+		}
+		case TILE::TRI_SE:
+		case TILE::TRI_NW:
+		{
+			bounced = true;
+
+			float temp = _x_dir;
+			_x_dir = -_y_dir;
+			_y_dir = -temp;
+
+			break;
+		}
+		}
+		if (bounced) {
+			change_x_vel(_x_dir * _speed);
+			change_y_vel(_y_dir * _speed);
 		}
 		
 	}

@@ -23,6 +23,8 @@ public:
 	// 2 * pi
 	constexpr static float tau();
 
+	constexpr static float inv_sqrt_of_2();
+
 	static float radians_to_degrees(float radians);
 
 	// make radian between 0 and tau (2 * pi)

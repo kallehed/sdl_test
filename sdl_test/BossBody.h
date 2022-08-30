@@ -8,8 +8,8 @@ public:
 	static int _onetime_index;
 
 	static constexpr int _largest_more_to_add = 6;
-	//static constexpr int _max_hp = 70;
-	static constexpr int _max_hp = 20;
+	static constexpr int _max_hp = 70;
+	//static constexpr int _max_hp = 20;
 
 	int _hp = _max_hp;
 	float _x_dir = 1.f;

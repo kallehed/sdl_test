@@ -4,9 +4,9 @@
 
 class Player : public MovingRect {
 public:
-	int _max_hp = 40;
+	int _max_hp = DEV::DEV ? 60: 40;
 	int _hp = _max_hp;
-	int _coins = 1000;
+	int _coins = DEV::DEV ? 1000 : 0;
 
 	// alive stuff
 	bool _alive = true;
@@ -32,8 +32,7 @@ public:
 
 	L_WEAPON::_ _left_weapon = L_WEAPON::FIRE_MAGIC;
 
-	//std::array<bool, L_WEAPON::TOTAL> _have_l_weapon = {true, false}; // play
-	std::array<bool, L_WEAPON::TOTAL> _have_l_weapon = { true, true }; // dev
+	std::array<bool, L_WEAPON::TOTAL> _have_l_weapon = { true, DEV::DEV };
 
 	float _left_timer = 0.f; // left weapon timer
 
@@ -47,14 +46,14 @@ public:
 
 	// gun stuff
 	//int _shots = 0;
-	int _shots = 500;
+	int _shots = DEV::DEV ? 500 : 0;
 	int _shot_damage = 5;
 	float _shot_speed = 0.028f;
 	int _shot_lives = 1;
 	float _shoot_time = 600.f; // "reload" time
 
 	// bomb stuff
-	int _bombs = 5;
+	int _bombs = DEV::DEV ? 50 : 0;
 	float _bomb_area_factor = 1.f;
 	int _bomb_damage = 10;
 
@@ -65,8 +64,7 @@ public:
 	bool _charging_bomb_throw = false;
 
 	// The ability to run: stuff
-	//bool _ability_to_run = false; // play
-	bool _ability_to_run = true; // dev
+	bool _ability_to_run = DEV::DEV ? true : false;
 	float _run_max = 750.f;
 	float _run_current = _run_max;
 	float _run_recharge = 0.5f;

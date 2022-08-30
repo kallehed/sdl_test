@@ -32,6 +32,8 @@ public:
 	SDL_Renderer* _renderer = nullptr;
 	TTF_Font* _font = nullptr;
 
+	// DEV::DEV is in enums.h (gets you abilites direct)
+
 	//textures
 	SDL_Texture* _textures[TEX::TOTAL];
 	SDL_Texture* _press_e_texture;
@@ -65,7 +67,7 @@ public:
 	SaveState _save;
 
 	// what level we are on
-	int _level = 8;
+	int _level = DEV::DEV ? 6 : 0;
 	int _level_to_change_to = 1;
 	bool _change_level = false;
 	std::string _destination_portal = "Error_Name";

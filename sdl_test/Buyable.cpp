@@ -46,7 +46,7 @@ Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float 
 		break;
 	case INCREASED_DURABILITY:
 		_text_scale = 1;
-		_descriptive_text = "Increased durability\n(Bullets survive 1 more hit)";
+		_descriptive_text = "Increased durability\n(Bullets survive 1 more hit)\n((used carefully!))";
 		break;
 	}
 }
