@@ -109,6 +109,8 @@ bool Shot::logic(Game& g)
 		if (bounced) {
 			change_x_vel(_x_dir * _speed);
 			change_y_vel(_y_dir * _speed);
+
+			turn_according_to_dir();
 		}
 		
 	}

@@ -100008,7 +100008,7 @@ Portal
 portal_destination
 6
 portal_name
-potal0
+portal0
 portal_destination_name
 portal2
 END
@@ -100062,7 +100062,7 @@ ENTITY
 i
 32
 j
-43
+47
 type
 Player
 END

@@ -150,6 +150,8 @@ Game::Game()
 			"images/Needle.png",
 			"images/BossHeadBite.png",
 			"images/GirlGreenDress.png",
+			"images/Cactus.png",
+			"images/CactusAngry.png"
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {

@@ -106,6 +106,8 @@ namespace TEX {
 		Needle,
 		BossHeadBite,
 		GirlGreenDress,
+		Cactus,
+		CactusAngry,
 
 		TOTAL
 	};
@@ -133,7 +135,7 @@ enum class NPC_TYPE { // NPCX is the red bear now
 	TOTAL
 };
 
-enum class BUYABLE_TYPE {
+enum class BUYABLE_TYPE : char {
 	// fire upgrades
 	FASTER_FIRE_RECHARGE,
 	LARGER_FIRE_LIMIT,
@@ -154,6 +156,14 @@ enum class BUYABLE_TYPE {
 	FASTER_SHOTS,
 	FASTER_RELOAD,
 	INCREASED_DURABILITY,
+
+	TOTAL
+};
+
+enum class ENEMY_DASH_STATE : char {
+	WAITING,
+	CHARGING,
+	DASHING,
 
 	TOTAL
 };
@@ -179,6 +189,7 @@ namespace ENTITIES {
 		CHEST,
 		BUYABLE,
 		BOSS_HEAD,
+		ENEMY_DASH,
 
 		TOTAL
 	};

@@ -3,6 +3,7 @@
 #include "General.h"
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
+#include "EnemyDash.h"
 #include "Npc.h"
 #include "Portal.h"
 #include "Bonfire.h"
@@ -198,6 +199,11 @@ void Camera::edit_logic(Game& g)
 						g._entity_handler._entities.push_back(new EnemyShooter(r_x, r_y));
 						break;
 					}
+					case ENEMY_DASH:
+					{
+						g._entity_handler._entities.push_back(new EnemyDash(r_x, r_y));
+						break;
+					}
 					case NPC:
 					{
 						g._entity_handler._draw_entities.push_back(new Npc(g, NPC_TYPE::NPC1, r_x, r_y));
@@ -320,6 +326,9 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<EnemyShooter*>(e)) {
 				f << "type\n" << "EnemyShooter\n";
+			}
+			else if (dynamic_cast<EnemyDash*>(e)) {
+				f << "type\n" << "EnemyDash\n";
 			}
 			else if (dynamic_cast<BossBody*>(e)) {
 				f << "type\n" << "BossBody\n";
@@ -547,6 +556,10 @@ void Camera::load_from_file(Game& g, int level)
 				EnemyShooter* e = new EnemyShooter(j * _fgrid, i * _fgrid);
 				g._entity_handler._entities.emplace_back(e);
 			}
+			else if (type == "EnemyDash") {
+				EnemyDash* e = new EnemyDash(j * _fgrid, i * _fgrid);
+				g._entity_handler._entities.emplace_back(e);
+			}
 			else if (type == "Npc") {
 				Npc* e = new Npc(g, npc_type, j * _fgrid, i * _fgrid);
 				g._entity_handler._draw_entities.emplace_back(e);
@@ -705,6 +718,9 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		case ENEMY_SHOOTER:
 			text = "Enemy: Shooter";
+			break;
+		case ENEMY_DASH:
+			text = "Enemy: Dash";
 			break;
 		case NPC:
 			text = "Npc";
