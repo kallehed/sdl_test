@@ -6,10 +6,20 @@ MOVING_RECT_TYPES Door::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::DOOR;
 }
 
-Door::Door(float x, float y, int onetime_index)
+Door::Door(float x, float y, int onetime_index, DOOR_TYPE type)
 	: MovingRect(x, y, 32.f*3.f, 53.f*3.f, 0.f),
-	_onetime_index(onetime_index)
+	_onetime_index(onetime_index),
+	_type(type)
 {
+	using enum DOOR_TYPE;
+	switch (_type) {
+	case OH_HEY:
+		_descriptive_text = "Oh hey";
+		break;
+	case MORE_DIALOGUE:
+		_descriptive_text = "I'm in quite a hurry,\nbut it's REALLY important\nthat you know that...";
+		break;
+	}
 }
 
 bool Door::logic(Game& g)

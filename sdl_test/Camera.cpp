@@ -221,7 +221,7 @@ void Camera::edit_logic(Game& g)
 					}
 					case CHEST:
 					{
-						g._entity_handler._draw_entities.push_back(new Chest(-1,r_x, r_y));
+						g._entity_handler._draw_entities.push_back(new Chest(-1,r_x, r_y, 10, CHEST_TYPE::COIN_CHEST));
 						break;
 					}
 					case BUYABLE:
@@ -232,6 +232,11 @@ void Camera::edit_logic(Game& g)
 					case BOSS_HEAD:
 					{
 						g._entity_handler._entities.push_back(new BossBody(-1,r_x, r_y));
+						break;
+					}
+					case HP_UPGRADE:
+					{
+						g._entity_handler._draw_entities.push_back(new Chest(-1, r_x, r_y, 5, CHEST_TYPE::HP_UPGRADE));
 						break;
 					}
 					}
@@ -362,6 +367,7 @@ void Camera::save_to_file(Game& g)
 				Chest* chest = static_cast<Chest*>(e);
 				f << "type\n" << "Chest\n";
 				f << "chest_amount\n" << std::to_string(chest->_chest_amount) << "\n";
+				f << "chest_type\n" << std::to_string((int)chest->_type) << "\n";
 			}
 			else if (dynamic_cast<Buyable*>(e)) {
 				Buyable* buyable = (Buyable*)e;
@@ -372,6 +378,7 @@ void Camera::save_to_file(Game& g)
 			else if (dynamic_cast<Door*>(e)) {
 				Door* door = (Door*)e;
 				f << "type\n" << "Door\n";
+				f << "door_type\n" << std::to_string((int)door->_type) << "\n";
 			}
 			f << "END\n";
 		}
@@ -458,10 +465,14 @@ void Camera::load_from_file(Game& g, int level)
 
 	// CHEST STUFF
 	int chest_amount = 0;
+	CHEST_TYPE chest_type = CHEST_TYPE::COIN_CHEST;
 
 	// BUYABLE STUFF
 	int buyable_cost = -420;
 	BUYABLE_TYPE buyable_type = BUYABLE_TYPE::FASTER_FIRE_RECHARGE;
+
+	// DOOR STUFF
+	DOOR_TYPE door_type = DOOR_TYPE::OH_HEY;
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
@@ -547,6 +558,14 @@ void Camera::load_from_file(Game& g, int level)
 					std::getline(f, t);
 					buyable_type = (BUYABLE_TYPE)std::stoi(t);
 				}
+				else if (t == "door_type") {
+					std::getline(f, t);
+					door_type = (DOOR_TYPE)std::stoi(t);
+				}
+				else if (t == "chest_type") {
+					std::getline(f, t);
+					chest_type = (CHEST_TYPE)std::stoi(t);
+				}
 			}
 			if (type == "EnemyBasic") {
 				EnemyBasic* e = new EnemyBasic(j * _fgrid, i * _fgrid);
@@ -580,8 +599,7 @@ void Camera::load_from_file(Game& g, int level)
 			}
 			else if (type == "Chest") {
 				if (onetimes.find({level, onetime_index}) == onetimes.end()) {
-					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid);
-					e->_chest_amount = chest_amount;
+					Chest* e = new Chest(onetime_index, j * _fgrid, i * _fgrid, chest_amount, chest_type);
 					g._entity_handler._draw_entities.emplace_back(e);
 				}
 				++onetime_index;
@@ -595,7 +613,7 @@ void Camera::load_from_file(Game& g, int level)
 			}
 			else if (type == "Door") {
 				if (onetimes.find({ level, onetime_index }) == onetimes.end()) {
-					Door* e = new Door(j * _fgrid, i * _fgrid, onetime_index);
+					Door* e = new Door(j * _fgrid, i * _fgrid, onetime_index, door_type);
 					g._entity_handler._draw_entities.emplace_back(e);
 				}
 				++onetime_index;
@@ -740,6 +758,9 @@ void Camera::draw_edit_text(Game& g)
 		case BOSS_HEAD:
 			text = "BossHead";
 			break;
+		case HP_UPGRADE:
+			text = "Hp Upgrade";
+			break;
 		}
 		SDL_Color c = { 0,0,0 };
 		draw_text_background(g, text, c, {255,255,255,255}, 0, 0, 3);
@@ -798,19 +819,20 @@ void Camera::draw_hud(Game& g)
 	{ // health
 
 		// black area
-		SDL_Rect black_rect = { hud_x, hud_y, 100, 20 };
+		int max_width = 2 * p._max_hp;
+		SDL_Rect black_rect = { hud_x, hud_y, max_width, 20 };
 		
 		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
 		SDL_RenderFillRect(g._renderer, &black_rect);
 
 		// red health bar
 		SDL_SetRenderDrawColor(g._renderer, 255, 0, 0, a);
-		black_rect.w = (int)(black_rect.w * ((float)p._hp / p._max_hp));
+		black_rect.w = (int)(max_width * ((float)p._hp / p._max_hp));
 		SDL_RenderFillRect(g._renderer, &black_rect);
 
 		// black borders
 		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
-		black_rect.w = 100;
+		black_rect.w = max_width;
 		SDL_RenderDrawRect(g._renderer, &black_rect);
 	}
 	hud_y += hud_y_increase;
@@ -916,5 +938,12 @@ void Camera::draw_hud(Game& g)
 		draw_rect.w = (int)max_x;
 		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, a);
 		SDL_RenderDrawRect(g._renderer, &draw_rect);
+	}
+
+	// Teleport to other level through portal, black screen
+	if (g._change_level) {
+		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 100);
+		constexpr const SDL_Rect draw_rect = { 0,0, 10000, 10000 };
+		SDL_RenderFillRect(g._renderer, &draw_rect);
 	}
 }

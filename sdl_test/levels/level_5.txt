@@ -100037,6 +100037,8 @@ type
 Chest
 chest_amount
 20
+chest_type
+0
 END
 ENTITY
 i

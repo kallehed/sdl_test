@@ -6,8 +6,10 @@ class Door : public MovingRect
 public:
 	int _onetime_index;
 
+	DOOR_TYPE _type;
+
 	// text to display ALL THE TIME
-	const char* _descriptive_text = "Oh hey";
+	const char* _descriptive_text;
 
 	bool _show_e_sign = false; // "Press e"
 
@@ -16,7 +18,7 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const;
 
-	Door(float x, float y, int onetime_index);
+	Door(float x, float y, int onetime_index, DOOR_TYPE type);
 
 	bool logic(Game& g);
 

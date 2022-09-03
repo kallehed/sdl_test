@@ -25,6 +25,7 @@ bool Portal::logic(Game& g)
 			g._level_to_change_to = _destination_level;
 			g._destination_portal = _destination_name;
 			g._change_level = true;
+			g._cam.shake(g, 1.175f, 70.f);
 		}
 	}
 

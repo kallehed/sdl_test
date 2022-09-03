@@ -110,13 +110,14 @@ namespace TEX {
 		CactusAngry,
 		BombMan,
 		TreeDude,
+		HeartContainer,
 
 		TOTAL
 	};
 }
 
 // Pickupables
-enum class PICKUPABLE_TYPE {
+enum class PICKUPABLE_TYPE : char {
 	COIN,
 	SHOT,
 	BOMB,
@@ -125,7 +126,7 @@ enum class PICKUPABLE_TYPE {
 	TOTAL
 };
 
-enum class NPC_TYPE { // NPCX is the red bear now
+enum class NPC_TYPE : char { // NPCX is the red bear now
 	NPC1,
 	NPC2,
 	GNOME,
@@ -134,8 +135,13 @@ enum class NPC_TYPE { // NPCX is the red bear now
 	SUS_SELLER,
 	GUN_GIRL,
 	TREE_DUDE,
+	NPC4,
 
 	TOTAL
+};
+enum class DOOR_TYPE : char {
+	OH_HEY,
+	MORE_DIALOGUE,
 };
 
 enum class BUYABLE_TYPE : char {
@@ -161,6 +167,11 @@ enum class BUYABLE_TYPE : char {
 	INCREASED_DURABILITY,
 
 	TOTAL
+};
+
+enum class CHEST_TYPE : char {
+	COIN_CHEST,
+	HP_UPGRADE,
 };
 
 enum class ENEMY_BASIC_STATE : char
@@ -200,6 +211,7 @@ namespace ENTITIES {
 		BUYABLE,
 		BOSS_HEAD,
 		ENEMY_DASH,
+		HP_UPGRADE,
 
 		TOTAL
 	};

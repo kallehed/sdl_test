@@ -47,6 +47,18 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 			g._save._red_bear_stage = 2;
 		}
 		break;
+	case NPC_TYPE::NPC4:
+		_text = g._entity_handler._NPC_4_TEXT;
+		_total_chars = g._entity_handler._NPC_4_TOTAL_CHARS;
+		_tex = TEX::RedBear;
+
+		if (g._save._red_bear_stage > 3) {
+			_invisible = true;
+		}
+		else {
+			g._save._red_bear_stage = 3;
+		}
+		break;
 
 	case NPC_TYPE::GNOME:
 		_text = g._entity_handler._NPC_GNOME_TEXT;
