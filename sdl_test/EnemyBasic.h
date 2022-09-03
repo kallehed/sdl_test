@@ -5,26 +5,16 @@
 
 class EnemyBasic : public Enemy {
 private:
-	bool _idle_state = false;
-	float _timer = 3000.f * General::randf01();
-	float _idle_x_dir = 0.f;
-	float _idle_y_dir = 0.f;
-
-	static constexpr float _idle_speed = 0.001f;
-	static constexpr float _active_basic_speed = 0.0015f;
-
-	float _hurt_timer = 0.f;
+	float _active_timer = 3000.f * General::randf01();
 	
-	bool _active_scared = false;
-	bool _active_increased_speed = false;
+	ENEMY_BASIC_STATE _state = ENEMY_BASIC_STATE::NORMAL;
 
 public:
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
 	EnemyBasic(float x, float y);
-	void draw(Game& g) override;
-	void idle_logic(Game& g);
+	void draw(Game& g) override final;
 	void take_damage(Game& g, int damage = 5) override final;
-	void active_logic(Game& g);
+	void active_logic(Game& g) override final;
 };
 

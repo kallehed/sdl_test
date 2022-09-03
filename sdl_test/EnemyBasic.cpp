@@ -10,13 +10,7 @@ MOVING_RECT_TYPES EnemyBasic::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::ENEMY;
 }
 
-// TODO: Make Destructible tile only give hearts + ammo.
-// + There should only be one "Pickupable" class.
-// + Enemies should be able to give variable coin amounts
-// + Coins should be displayed by number instead of bar
-// 
-
-EnemyBasic::EnemyBasic(float x, float y) : Enemy(x, y, 40.f,40.f, 20, 150.f, 200.f, 5000.f)
+EnemyBasic::EnemyBasic(float x, float y) : Enemy(x, y, 40.f,40.f, 20, 150.f, 200.f, 5000.f, 0.0015f, 3000.f,2000.f, 0.f, 0.f, 0.001f)
 {
 }
 
@@ -36,7 +30,7 @@ void EnemyBasic::draw(Game& g)
 		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 100, 100, 100);
 		_hurt_timer -= g._dt;
 	}
-	else if (_active_increased_speed) { // make it read
+	else if (_state == ENEMY_BASIC_STATE::ANGRY) { // make it RED
 		//SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 255, 200, 200);
 		SDL_SetTextureColorMod(g._textures[TEX::BlueSlime], 255, 255, 255);
 		SDL_SetRenderDrawBlendMode(g._renderer, SDL_BLENDMODE_BLEND);
@@ -54,103 +48,53 @@ void EnemyBasic::draw(Game& g)
 	SDL_RenderCopyEx(g._renderer, g._textures[TEX::BlueSlime], NULL, &rect, NULL, NULL, flip);
 }
 
-void EnemyBasic::idle_logic(Game& g)
-{
-	_timer += g._dt;
-	if (!_idle_state) // wait for a moment still
-	{
-		if (_timer > 3000.f) {
-			_idle_state = true;
-			_timer = 1000.f * General::randf01();
-
-			float random_radians = ((float)M_PI * (rand() % 360)) / 180.f;
-			_idle_x_dir = cos(random_radians);
-			_idle_y_dir = sin(random_radians);
-		}
-	}
-	else { // walk
-		change_x_vel(_idle_speed * _idle_x_dir);
-		change_y_vel(_idle_speed * _idle_y_dir);
-		if (_timer > 2000.f) {
-			_idle_state = false;
-			_timer = 0.f;
-		}
-	}
-}
-
 void EnemyBasic::take_damage(Game& g, int damage)
 {
-	_hp -= damage;
-	_hurt_timer = 150.f;
+	// call Enemy's take_damage
+	this->Enemy::take_damage(g, damage);
 
 	// possibly get scared
 	int randint = rand() % 100;
 	if (randint >= 80) // 20 % chance
 	{
 		if (randint >= 90) {
-			_active_increased_speed = true;
-			_timer = 0.f;
+			_state = ENEMY_BASIC_STATE::ANGRY;
+			_active_timer = 0.f;
 		}
 		else {
-			_active_scared = true;
-			_timer = 0.f;
-		}
-		
+			_state = ENEMY_BASIC_STATE::AFRAID;
+			_active_timer = 0.f;
+		}	
 	}
 }
 
 void EnemyBasic::active_logic(Game& g)
 {
-	if (_active_scared) // run away from player
-	{ 
+	using enum ENEMY_BASIC_STATE;
+	switch (_state) {
+	case NORMAL: // go to player
+	{
+		stay_in_range_of_player(g);
+		break;
+	}
+	case AFRAID: // run away
+	{
 		go_towards_player(g, (-1.f) * _active_basic_speed);
-		_timer += g._dt;
-		if (_timer > 3000) {
-			_active_scared = false;
+		_active_timer += g._dt;
+		if (_active_timer > 3000) {
+			_state = NORMAL;
 		}
-	} else
-	if (_active_increased_speed) // run away from player
-	{
-		go_towards_player(g, _active_basic_speed*2.f);
-		_timer += g._dt;
-		if (_timer > 3000) {
-			_active_increased_speed = false;
-		}
+		break;
 	}
-	else
-	if (g._tile_handler.is_path_clear(g, x(), y(), g._entity_handler._p.x(), g._entity_handler._p.y()))
+	case ANGRY: // run to player IN RED
 	{
-		go_towards_player(g, _active_basic_speed);
-		_walk_path.clear(); // clear path
+		go_towards_player(g, _active_basic_speed * 2.f);
+		_active_timer += g._dt;
+		if (_active_timer > 3000) {
+			_state = NORMAL;
+		}
+		break;
 	}
-	else
-	{
-		// walk in path
-		if (_walk_path.empty() || _path_progress >= _walk_path.size())
-		{
-			new_walk_path(g);
-			if (_walk_path.empty())
-			{
-				go_towards_player(g, _active_basic_speed);
-			}
-		}
-		else // move through A* path
-		{ 
-			// left upper point of tile
-			float tile_x = _walk_path[_path_progress][1] * g._cam._fgrid;
-			float tile_y = _walk_path[_path_progress][0] * g._cam._fgrid;
-			// where the (middle point of this rect) should go
-			float dst_x = tile_x + g._cam._fgrid / 2.f;
-			float dst_y = tile_y + g._cam._fgrid / 2.f;
-			go_towards(dst_x, dst_y, _active_basic_speed);
-
-			// completely inside tile => go to next
-			if (x() > tile_x && y() > tile_y &&
-				x() + w() < tile_x + g._cam._grid && y() + h() < tile_y + g._cam._grid)
-			{
-				_path_progress += 1;
-			}
-		}
 	}
 }
 

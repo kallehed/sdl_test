@@ -93,6 +93,13 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		set_w(16.f * 4.f);
 		set_h(32.f * 4.f);
 		break;
+	case NPC_TYPE::TREE_DUDE:
+		_tex = TEX::TreeDude;
+		_text = g._entity_handler._NPC_TREE_DUDE_TEXT;
+		_total_chars = g._entity_handler._NPC_TREE_DUDE_TOTAL_CHARS;
+		set_w(44.f * 3.f);
+		set_h(46.f * 3.f);
+		break;
 	default:
 		std::cout << "ERROR_NPC_TYPE";
 		std::cin.get();

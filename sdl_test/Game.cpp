@@ -41,7 +41,6 @@ void draw_circle(SDL_Renderer* renderer, float x, float y, float radius, SDL_Col
 	}
 
 	SDL_RenderGeometry(renderer, NULL, verts, total_vertices, indices, total_indices);
-
 }
 
 
@@ -80,8 +79,7 @@ Game::Game()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	_window = SDL_CreateWindow("SDLtest",
-		//SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		50,50, // Specific for dev
+		DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED, DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED,
 		_WIDTH, _HEIGHT,
 		SDL_WINDOW_SHOWN);
 	SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
@@ -151,7 +149,9 @@ Game::Game()
 			"images/BossHeadBite.png",
 			"images/GirlGreenDress.png",
 			"images/Cactus.png",
-			"images/CactusAngry.png"
+			"images/CactusAngry.png",
+			"images/BombMan.png",
+			"images/TreeDude.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
@@ -175,7 +175,7 @@ Game::Game()
 
 	_cam.load_from_file(*this, _level);
 
-	changeScale(2);
+	if (DEV::DEV) changeScale(2);
 }
 
 void Game::start_game()
@@ -267,18 +267,21 @@ void Game::game_loop()
 
 		// IMPORTANT EVENTS, FROM CLICKING
 		if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
-		if (_keys_frame[SDL_SCANCODE_K]) {
-			if (_edit_mode == false) {
-				_edit_mode = true;
-				_save.reset();
-				_cam.load_from_file(*this, _level);
-			}
-			else {
-				_edit_mode = false;
-				_cam.save_to_file(*this);
+
+		if constexpr (DEV::DEV) {
+			if (_keys_frame[SDL_SCANCODE_K]) {
+				if (_edit_mode == false) {
+					_edit_mode = true;
+					_save.reset();
+					_cam.load_from_file(*this, _level);
+				}
+				else {
+					_edit_mode = false;
+					_cam.save_to_file(*this);
+				}
 			}
 		}
-		if (_keys_frame[SDL_SCANCODE_O]) {
+		if (_keys_frame[SDL_SCANCODE_O]) { // scale change
 			changeScale(-1);
 		}
 		if (_keys_frame[SDL_SCANCODE_P]) {
@@ -303,12 +306,14 @@ void Game::game_loop()
 				SDL_RenderClear(_renderer);
 				int text_x = _WIDTH / 4;
 				int text_y = _HEIGHT / 4;
-				if (_ > 25) {
+				if (_ > 25)
+				{
 					_cam.draw_text(*this, "You died.", { 0,0,0,255 }, text_x, text_y, 5);
-					if (_ > 60) {
+					if (_ > 60)
+					{
 						_cam.draw_text(*this, "Sad.", { 0,0,0,255 }, text_x+100, text_y+100, 4);
-
-						if (_ > 90) {
+						if (_ > 90)
+						{
 							_cam.draw_text(*this, "OH and also you lose half of your money now :(", { 0,0,0,255 }, text_x-260, text_y + 200, 3);
 						}
 					}
@@ -320,7 +325,6 @@ void Game::game_loop()
 			_cam.load_from_file(*this, _entity_handler._p._respawn_level);
 			_entity_handler._p.set_x(_entity_handler._p._respawn_x);
 			_entity_handler._p.set_y(_entity_handler._p._respawn_y);
-
 			
 			_entity_handler._p._respawn = false;
 			_entity_handler._p._alive = true;

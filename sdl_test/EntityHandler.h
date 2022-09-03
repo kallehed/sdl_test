@@ -82,6 +82,16 @@ public:
 		"(As long as you're not one\nof those ANTI-gunning people)";
 	int _NPC_GUN_GIRL_TEXT2_TOTAL_CHARS = 215;
 
+	char _NPC_TREE_DUDE_TEXT[352] =
+		"Oh, what a nice visit!\0"
+		"Such trees like myself\nrarely see anyone\naround here.\0"
+		"The only thing I see\nall day is that beautiful\nchest north of my leaves...\0"
+		"It sure would be a shame\nif someone were to confiscate\nit...\0"
+		"Luckily all my past visitors\nhave been nice,\0"
+		"and kept away their naugthy\nhands from it...\0"
+		"Hopefully, the same thing will\nbe said of you...";
+	int _NPC_TREE_DUDE_TOTAL_CHARS = 352;
+
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);
 public:

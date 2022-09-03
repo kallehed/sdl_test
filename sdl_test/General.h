@@ -10,6 +10,7 @@ public:
 
 	static int mod(int a, int b);
 
+	// random float from 0 to 1
 	static float randf01();
 
 	// takes two references, which are set to normalized vectors of two points, returns length

@@ -8,11 +8,16 @@
 #include "Shot.h"
 #include "AStarNode.h"
 
-Enemy::Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time) : MovingRect(x, y, w, h, 0.01f),
+Enemy::Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time, float active_basic_speed, float idle_still_time, float idle_walk_time, float get_away_distance, float get_closer_distance, float idle_speed)
+	: MovingRect(x, y, w, h, 0.01f),
 	_max_hp(max_hp), _hp(max_hp), _activation_radius_squared(activation_radius*activation_radius),
-	_deactivation_radius_squared(deactivation_radius*deactivation_radius), _active_time(active_time)
+	_deactivation_radius_squared(deactivation_radius*deactivation_radius), _active_time(active_time),
+	_active_basic_speed(active_basic_speed),
+	_idle_still_time(idle_still_time), _idle_walk_time(idle_walk_time),
+	_get_away_distance_squared(powf(get_away_distance, 2.f)), _get_closer_distance_squared(powf(get_closer_distance, 2.f)),
+	_idle_speed(idle_speed)
 {
-	make_idle();
+	set_active(false);
 }
 
 bool Enemy::logic(Game& g)
@@ -25,21 +30,21 @@ bool Enemy::logic(Game& g)
 		// potentially switch phase
 		if (in_radius_squared_of_player(g, _activation_radius_squared))
 		{
-			make_active();
+			set_active(true);
 		}
 	}
 	else { // active phase
 		
 		active_logic(g);
 
-		_active_timer += g._dt;
-		if (_active_timer > _active_time) // return to idle phase
+		_timer += g._dt;
+		if (_timer > _active_time) // return to idle phase
 		{ 
-			make_idle();
+			set_active(false);
 		}
 		else if (in_radius_squared_of_player(g, _deactivation_radius_squared)) // keep being in attack phase
 		{ 
-			_active_timer = 0.f;
+			_timer = 0.f;
 		}
 	}
 
@@ -69,20 +74,98 @@ bool Enemy::logic(Game& g)
 	return false;
 }
 
-void Enemy::make_active()
+void Enemy::idle_logic(Game& g)
 {
-	_active = true;
-	_active_timer = 0.f;
+	_timer += g._dt;
+	if (!_idle_state) // wait for a moment still
+	{
+		if (_timer > _idle_still_time)
+		{
+			_idle_state = true;
+			_timer = 1000.f * General::randf01();
+
+			float random_radians = General::tau() * General::randf01();
+			_idle_x_dir = cosf(random_radians);
+			_idle_y_dir = sinf(random_radians);
+		}
+	}
+	else // walk
+	{
+		change_x_vel(_idle_speed * _idle_x_dir);
+		change_y_vel(_idle_speed * _idle_y_dir);
+		if (_timer > _idle_walk_time) {
+			_idle_state = false;
+			_timer = 0.f;
+		}
+	}
 }
 
-void Enemy::make_idle() 
+void Enemy::stay_in_range_of_player(Game& g)
 {
-	_active = false;
+	// check if distance to player is too far away => go closer
+	float distance_to_player_squared;
+	{
+		float dx = mid_x() - g._entity_handler._p.mid_x();
+		float dy = mid_y() - g._entity_handler._p.mid_y();
+		distance_to_player_squared = dx * dx + dy * dy;
+	}
+	if (distance_to_player_squared > _get_closer_distance_squared)
+	{
+		// too far away
+		if (g._tile_handler.is_path_clear(g, x(), y(), g._entity_handler._p.x(), g._entity_handler._p.y()))
+		{
+			go_towards_player(g, _active_basic_speed);
+			_walk_path.clear(); // clear path
+		}
+		else
+		{
+			// walk in path
+			if (_walk_path.empty() || _path_progress >= _walk_path.size())
+			{
+				new_walk_path(g);
+				if (_walk_path.empty())
+				{
+					go_towards_player(g, _active_basic_speed);
+				}
+			}
+			else // move through A* path
+			{
+				// left upper point of tile
+				float tile_x = _walk_path[_path_progress][1] * g._cam._fgrid;
+				float tile_y = _walk_path[_path_progress][0] * g._cam._fgrid;
+				// where the (middle point of this rect) should go
+				float dst_x = tile_x + g._cam._fgrid / 2.f;
+				float dst_y = tile_y + g._cam._fgrid / 2.f;
+				go_towards(dst_x, dst_y, _active_basic_speed);
+
+				// completely inside tile => go to next
+				if (x() > tile_x && y() > tile_y &&
+					x() + w() < tile_x + g._cam._grid && y() + h() < tile_y + g._cam._grid)
+				{
+					_path_progress += 1;
+				}
+			}
+		}
+	}
+	else if (distance_to_player_squared < _get_away_distance_squared)
+	{
+		// get away
+		go_towards_player(g, (-1.f) * _active_basic_speed);
+	}
+	else {
+		// best bounds, stay still?
+	}
 }
+
+void Enemy::set_active(bool active)
+{
+	_active = active;
+	_timer = 0.f;
+}
+
 
 void Enemy::go_towards_player(Game& g, float speed)
 {
-	//std::cout << "s";
 	this->go_towards(g._entity_handler._p.mid_x(), g._entity_handler._p.mid_y(), speed);
 }
 
@@ -91,6 +174,11 @@ bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
 	float dx = mid_x() - g._entity_handler._p.mid_x();
 	float dy = mid_y() - g._entity_handler._p.mid_y();
 	return dx * dx + dy * dy <= radius_squared;
+}
+
+void Enemy::take_damage(Game& g, int damage) {
+	_hp -= damage;
+	_hurt_timer = 150.f;
 }
 
 void Enemy::new_walk_path(Game& g) // clear
@@ -146,7 +234,7 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 		// shake screen
 		g._cam.shake(g, 1.3f, 10.f);
 
-		make_active(); // become active (aggressive)
+		set_active(true); // become active (aggressive)
 
 		// particles
 		{

@@ -108,6 +108,8 @@ namespace TEX {
 		GirlGreenDress,
 		Cactus,
 		CactusAngry,
+		BombMan,
+		TreeDude,
 
 		TOTAL
 	};
@@ -131,6 +133,7 @@ enum class NPC_TYPE { // NPCX is the red bear now
 	NPC3,
 	SUS_SELLER,
 	GUN_GIRL,
+	TREE_DUDE,
 
 	TOTAL
 };
@@ -158,6 +161,13 @@ enum class BUYABLE_TYPE : char {
 	INCREASED_DURABILITY,
 
 	TOTAL
+};
+
+enum class ENEMY_BASIC_STATE : char
+{
+	NORMAL, // go towards player
+	ANGRY, // run towards player + be red
+	AFRAID, // run away from player 
 };
 
 enum class ENEMY_DASH_STATE : char {
