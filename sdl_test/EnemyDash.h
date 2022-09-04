@@ -6,7 +6,7 @@ class EnemyDash : public Enemy {
 private:
 	ENEMY_DASH_STATE _state = ENEMY_DASH_STATE::WAITING;
 
-	float _dash_x  = 0.f;
+	float _dash_x  = 0.f; // dir + speed to jump
 	float _dash_y = 0.f;
 
 	float _active_timer = 500.f*General::randf01();

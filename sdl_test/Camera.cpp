@@ -4,6 +4,7 @@
 #include "EnemyBasic.h"
 #include "EnemyShooter.h"
 #include "EnemyDash.h"
+#include "EnemyJump.h"
 #include "Npc.h"
 #include "Portal.h"
 #include "Bonfire.h"
@@ -204,6 +205,11 @@ void Camera::edit_logic(Game& g)
 						g._entity_handler._entities.push_back(new EnemyDash(r_x, r_y));
 						break;
 					}
+					case ENEMY_JUMP:
+					{
+						g._entity_handler._entities.push_back(new EnemyJump(r_x, r_y));
+						break;
+					}
 					case NPC:
 					{
 						g._entity_handler._draw_entities.push_back(new Npc(g, NPC_TYPE::NPC1, r_x, r_y));
@@ -334,6 +340,9 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<EnemyDash*>(e)) {
 				f << "type\n" << "EnemyDash\n";
+			}
+			else if (dynamic_cast<EnemyJump*>(e)) {
+				f << "type\n" << "EnemyJump\n";
 			}
 			else if (dynamic_cast<BossBody*>(e)) {
 				f << "type\n" << "BossBody\n";
@@ -579,6 +588,10 @@ void Camera::load_from_file(Game& g, int level)
 				EnemyDash* e = new EnemyDash(j * _fgrid, i * _fgrid);
 				g._entity_handler._entities.emplace_back(e);
 			}
+			else if (type == "EnemyJump") {
+				EnemyJump* e = new EnemyJump(j * _fgrid, i * _fgrid);
+				g._entity_handler._entities.emplace_back(e);
+			}
 			else if (type == "Npc") {
 				Npc* e = new Npc(g, npc_type, j * _fgrid, i * _fgrid);
 				g._entity_handler._draw_entities.emplace_back(e);
@@ -665,6 +678,7 @@ void Camera::draw_text(Game& g, const char* text, const SDL_Color& color, int x,
 
 	SDL_DestroyTexture(texture);
 }
+
 void Camera::draw_text_background(Game& g, const char* text, const SDL_Color& color, const SDL_Color& color2, int x, int y, int scale)
 {
 	SDL_Surface* surface = TTF_RenderText_Solid(g._font, text, color);
@@ -739,6 +753,9 @@ void Camera::draw_edit_text(Game& g)
 			break;
 		case ENEMY_DASH:
 			text = "Enemy: Dash";
+			break;
+		case ENEMY_JUMP:
+			text = "Enemy: Jump";
 			break;
 		case NPC:
 			text = "Npc";

@@ -7,10 +7,11 @@ MOVING_RECT_TYPES Bomb::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::BOMB;
 }
 
-Bomb::Bomb(float x, float y, float x_vel, float y_vel, int damage, float area_factor)
+Bomb::Bomb(float x, float y, float x_vel, float y_vel, int damage, float area_factor, float detonation_time)
 	: MovingRect(0, 0, 30.f, 30.f, 0.003f),
 	_damage(damage),
-	_area_factor(area_factor)
+	_area_factor(area_factor),
+	_detonation_timer(detonation_time)
 {
 	set_x(x - half_w());
 	set_y(y - half_h());

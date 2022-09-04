@@ -166,6 +166,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBasic.cpp" />
     <ClCompile Include="EnemyDash.cpp" />
+    <ClCompile Include="EnemyJump.cpp" />
     <ClCompile Include="EnemyShooter.cpp" />
     <ClCompile Include="EntityHandler.cpp" />
     <ClCompile Include="Explosion.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBasic.h" />
     <ClInclude Include="EnemyDash.h" />
+    <ClInclude Include="EnemyJump.h" />
     <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="EntityHandler.h" />
     <ClInclude Include="enums.h" />

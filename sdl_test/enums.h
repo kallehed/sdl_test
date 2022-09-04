@@ -181,10 +181,19 @@ enum class ENEMY_BASIC_STATE : char
 	AFRAID, // run away from player 
 };
 
-enum class ENEMY_DASH_STATE : char {
+enum class ENEMY_DASH_STATE : char
+{
 	WAITING,
 	CHARGING,
 	DASHING,
+
+	TOTAL
+};
+
+enum class ENEMY_JUMP_STATE : char
+{
+	WAITING,
+	JUMPING,
 
 	TOTAL
 };
@@ -212,6 +221,7 @@ namespace ENTITIES {
 		BOSS_HEAD,
 		ENEMY_DASH,
 		HP_UPGRADE,
+		ENEMY_JUMP,
 
 		TOTAL
 	};
