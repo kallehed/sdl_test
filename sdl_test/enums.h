@@ -111,6 +111,7 @@ namespace TEX {
 		BombMan,
 		TreeDude,
 		HeartContainer,
+		BombMan2,
 
 		TOTAL
 	};
@@ -194,6 +195,7 @@ enum class ENEMY_JUMP_STATE : char
 {
 	WAITING,
 	JUMPING,
+	DASHING,
 
 	TOTAL
 };

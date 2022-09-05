@@ -73,8 +73,9 @@ void EnemyDash::active_logic(Game& g)
 		if (_active_timer >= 1000.f) {
 			_active_timer = 0.f;
 			_state = ENEMY_DASH_STATE::DASHING;
-			_dash_x = -nx * 0.005f;
-			_dash_y = -ny * 0.005f;
+			float speed = 0.005f + 0.004f*(General::randf01() - 0.25f);
+			_dash_x = -nx * speed;
+			_dash_y = -ny * speed;
 		}
 
 		break;

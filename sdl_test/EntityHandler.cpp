@@ -31,9 +31,9 @@ void EntityHandler::logic(Game& g)
 	_quadtree.clear();
 
 	for (auto e : _entities) {
-		_quadtree.add_to_head(e);
+		e->insert_to_intersect(*this);
 	}
-	_quadtree.add_to_head(&_p);
+	_p.insert_to_intersect(*this);
 
 	_quadtree.head_do_intersection(g);
 	

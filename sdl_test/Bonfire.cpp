@@ -57,7 +57,9 @@ void Bonfire::draw(Game& g)
 	{
 		const SDL_Rect rect = { g._cam.convert_x((int)_x), g._cam.convert_y((int)_y),(int)_w,(int)_h };
 
-		SDL_RenderCopy(g._renderer, g._textures[TEX::Bonfire], NULL, &rect);
+		//TEX::TEX tex = TEX::Bonfire;
+
+		SDL_RenderCopyEx(g._renderer, g._textures[TEX::Bonfire], NULL, &rect, 0.0, NULL, (SDL_RendererFlip)((g._ticks/35) % 2));
 
 		// "Press E" Text
 		if (_player_close) {

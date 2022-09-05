@@ -6,7 +6,7 @@ class EnemyJump : public Enemy {
 private:
 	ENEMY_JUMP_STATE _state = ENEMY_JUMP_STATE::WAITING;
 
-	float _jump_x = 0.f; // dir + speed to jump
+	float _jump_x = 0.f; // dir + speed to jump, AND DASH
 	float _jump_y = 0.f;
 
 	float _jump_y_dif = 0.f; // how high above ground when jumping.
@@ -21,5 +21,6 @@ public:
 	EnemyJump(float x, float y);
 	void draw(Game& g) override;
 	void active_logic(Game& g);
+	void insert_to_intersect(EntityHandler& entitiy_handler) override final;
 };
 

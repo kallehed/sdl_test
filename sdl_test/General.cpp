@@ -36,7 +36,7 @@ std::array<float, 3> General::normalize_vector_two_points_arr(float x1, float y1
 	float length = sqrtf(dx * dx + dy * dy);
 	if (length == 0.f)
 	{
-		return {0.f, 0.f};
+		return {0.f, 0.f, 0.f};
 	}
 	return { dx / length , dy / length, length };
 }

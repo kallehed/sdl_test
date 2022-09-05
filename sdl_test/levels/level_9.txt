@@ -100054,9 +100054,9 @@ chest_type
 END
 ENTITY
 i
-1
+2
 j
-94
+2
 type
 Player
 END

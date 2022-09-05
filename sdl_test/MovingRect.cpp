@@ -1,5 +1,4 @@
 #include "MovingRect.h"
-#include "MovingRect.h"
 #include "Game.h"
 #include "General.h"
 
@@ -213,6 +212,11 @@ void MovingRect::change_x_vel(float change)
 void MovingRect::change_y_vel(float change)
 {
 	_frame_y_vel_change += change;
+}
+
+void MovingRect::insert_to_intersect(EntityHandler& entity_handler)
+{
+	entity_handler._quadtree.add_to_head(this);
 }
 
 // left top of movingrect going towards point

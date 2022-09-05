@@ -153,6 +153,7 @@ Game::Game()
 			"images/BombMan.png",
 			"images/TreeDude.png",
 			"images/HeartContainer.png",
+			"images/BombMan2.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {

@@ -4,6 +4,8 @@
 #include "TileHandler.h"
 #include "enums.h"
 
+
+class EntityHandler;
 class Game;
 class Camera;
 
@@ -27,6 +29,7 @@ public:
 	void change_x_vel(float change);
 	void change_y_vel(float change);
 	
+	virtual void insert_to_intersect(EntityHandler& entity_handler); // real
 	virtual void intersection(Game& g, float nx, float ny, MovingRect* e) = 0;
 	virtual MOVING_RECT_TYPES get_moving_rect_type() const = 0;
 	virtual void draw(Game& g) = 0;
