@@ -48,6 +48,18 @@ Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float 
 		_text_scale = 1;
 		_descriptive_text = "Increased durability\n(Bullets survive 1 more hit)\n((used carefully!))";
 		break;
+	case INCREASED_BULLET_DROPS:
+		_text_scale = 1;
+		_descriptive_text = "  Increased gain of bullets\n  When picking up bullet canisters";
+		break;
+	case DONATE_TO_CHARITY:
+		_text_scale = 1;
+		_descriptive_text = "  Donate coins to banana charity\n  to help suffering bananas :(";
+		break;
+	case INCREASED_HP_GAIN:
+		_text_scale = 1;
+		_descriptive_text = "  Increased health-gain when\n  eating hearts";
+		break;
 	}
 }
 
@@ -108,6 +120,15 @@ bool Buyable::logic(Game& g)
 							break;
 						case INCREASED_DURABILITY:
 							p._shot_lives += 1;
+							break;
+						case INCREASED_BULLET_DROPS:
+							p._shot_base_gain += 3;
+							break;
+						case DONATE_TO_CHARITY:
+							p._particle_color = { 255,255,0,255 };
+							break;
+						case INCREASED_HP_GAIN:
+							p._heart_hp_gain += 4;
 							break;
 						}
 					}

@@ -24,7 +24,8 @@ class Game {
 public:
 	static constexpr int _HEIGHT = 600;
 	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
-	int _scale = 2;
+	int _scale = DEV::DEV ? 8 : 4;
+	static constexpr float _scale_granularity = 0.25f;
 
 	long long _ticks = 0;
 

@@ -111,7 +111,7 @@ bool Player::logic(Game& g)
 	{
 		int probability = (!_using_run) ? 11 : 3;
 		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && g._ticks % (probability + rand()%11) == 0) {
-			g._entity_handler._particles.emplace_back(new Particle(mid_x(), mid_y(), -x_vel()/4.f, -y_vel()/4.f, {255, 0, 0, 175}));
+			g._entity_handler._particles.emplace_back(new Particle(mid_x(), mid_y(), -x_vel()/4.f, -y_vel()/4.f, _particle_color));
 		}
 	}
 
@@ -361,11 +361,11 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 		}
 		else if (p->_type == PICKUPABLE_TYPE::SHOT) {
 			// 1 to 3 possible gain
-			_shots += 3 + (rand() % 4);
+			_shots += _shot_base_gain + (rand() % 4);
 		}
 		else if (p->_type == PICKUPABLE_TYPE::HEART) {
 			// constant gain
-			_hp += 5;
+			_hp += _heart_hp_gain;
 			_hp = std::min(_max_hp, _hp);
 		}
 		else if (p->_type == PICKUPABLE_TYPE::BOMB) {

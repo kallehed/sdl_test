@@ -112,6 +112,8 @@ namespace TEX {
 		TreeDude,
 		HeartContainer,
 		BombMan2,
+		BananaMan,
+		Mosquito,
 
 		TOTAL
 	};
@@ -137,6 +139,8 @@ enum class NPC_TYPE : char { // NPCX is the red bear now
 	GUN_GIRL,
 	TREE_DUDE,
 	NPC4,
+	BANANA_MAN,
+	MOSQUITO,
 
 	TOTAL
 };
@@ -166,6 +170,11 @@ enum class BUYABLE_TYPE : char {
 	FASTER_SHOTS,
 	FASTER_RELOAD,
 	INCREASED_DURABILITY,
+
+	// BananaMan store
+	INCREASED_BULLET_DROPS,
+	DONATE_TO_CHARITY,
+	INCREASED_HP_GAIN,
 
 	TOTAL
 };

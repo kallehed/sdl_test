@@ -2,11 +2,17 @@
 #include "MovingRect.h"
 #include "enums.h"
 
+#include <SDL.h>
+
 class Player : public MovingRect {
 public:
 	int _max_hp = DEV::DEV ? 60: 40;
 	int _hp = _max_hp;
 	int _coins = DEV::DEV ? 1000 : 0;
+
+	// getting items stuff
+	int _heart_hp_gain = 5;
+	int _shot_base_gain = 3; // what you get AT LEAST when touching shot canister(bullets...)
 
 	// alive stuff
 	bool _alive = true;
@@ -26,6 +32,7 @@ public:
 	bool _forward = true; // facing forward
 	bool _right = true; // facing right
 	float _walk_animation_timer = 0.f;
+	SDL_Color _particle_color = { 255, 0, 0, 175 };
 
 	// flash black when hit
 	bool _took_damage_this_frame = false;

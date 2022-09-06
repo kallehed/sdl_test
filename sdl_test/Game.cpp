@@ -58,16 +58,17 @@ SDL_Texture* Game::loadTexture(const char* path)
 
 void Game::changeScale(int change)
 {
-	_scale = std::min(6, std::max(_scale + change, 1));
+	//_scale = std::min(12, std::max(_scale + change, 1));
+	_scale = std::max(_scale + change, 1);
 
-	float r_scale = _scale * 0.5f;
+	float r_scale = _scale * _scale_granularity;
 	SDL_SetWindowSize(_window, (int)(_WIDTH * r_scale), (_HEIGHT * r_scale));
 	SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
 }
 
 Uint32 Game::getMouseState(int* x, int* y)
 {
-	float r_scale = _scale * 0.5f;
+	float r_scale = _scale * _scale_granularity;
 	Uint32 buttons = SDL_GetMouseState(x, y);
 	(*x) = (int)((*x)/r_scale); // correctly place mouse position when window is bigger
 	(*y) = (int)((*y)/r_scale);
@@ -154,6 +155,8 @@ Game::Game()
 			"images/TreeDude.png",
 			"images/HeartContainer.png",
 			"images/BombMan2.png",
+			"images/BananaMan.png",
+			"images/Mosquito.png",
 			
 		};
 		for (int i = 0; i < TEX::TOTAL; ++i) {
@@ -174,10 +177,9 @@ Game::Game()
 	// at 1 or 2, makes text very blurry.
 	
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
+	changeScale(0);
 
 	_cam.load_from_file(*this, _level);
-
-	if (DEV::DEV) changeScale(2);
 }
 
 void Game::start_game()

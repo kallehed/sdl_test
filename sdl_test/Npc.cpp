@@ -90,7 +90,6 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		if (g._save._sus_seller_stage > 0) {
 			_invisible = true;
 		}
-
 		break;
 	case NPC_TYPE::GUN_GIRL:
 		if (g._entity_handler._p._have_l_weapon[L_WEAPON::GUN]) {
@@ -111,6 +110,20 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 		_total_chars = g._entity_handler._NPC_TREE_DUDE_TOTAL_CHARS;
 		set_w(44.f * 3.f);
 		set_h(46.f * 3.f);
+		break;
+	case NPC_TYPE::BANANA_MAN:
+		_tex = TEX::BananaMan;
+		_text = g._entity_handler._NPC_BANANA_MAN_TEXT;
+		_total_chars = g._entity_handler._NPC_BANANA_MAN_TOTAL_CHARS;
+		set_w(15.f * 3.f);
+		set_h(35.f * 3.f);
+		break;
+	case NPC_TYPE::MOSQUITO:
+		_tex = TEX::Mosquito;
+		_text = g._entity_handler._NPC_MOSQUITO_TEXT;
+		_total_chars = g._entity_handler._NPC_MOSQUITO_TOTAL_CHARS;
+		set_w(32.f * 2.f);
+		set_h(32.f * 2.f);
 		break;
 	default:
 		std::cout << "ERROR_NPC_TYPE";

@@ -107,6 +107,23 @@ public:
 		"Hopefully, the same thing will\nbe said of you...";
 	int _NPC_TREE_DUDE_TOTAL_CHARS = 352;
 
+	char _NPC_BANANA_MAN_TEXT[287] =
+		"Hi,      \nI'm Barry, the Banana man.\0"
+		"Yeah, you've probably\nheard of me before right?\0"
+		"I'm quite famous around here.\0"
+		"(But more like INfamous)\nhehe...\0"
+		"Well,      \nYou've come to the\nperfect place for shopping!\0"
+		"Treat yourself to these\nbeautiful items!\0"
+		"(More like 'BANANAeutiful'...)\nhehe...";
+	int _NPC_BANANA_MAN_TOTAL_CHARS = 287;
+
+	char _NPC_MOSQUITO_TEXT[118] =
+		"Bzz   \0"
+		"Bzzzz     \0"
+		"You know you can\nchange the window size with\nO and P right?\0"
+		"O and P, don't forget it         \nBzzzz";
+	int _NPC_MOSQUITO_TOTAL_CHARS = 118;
+
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);
 public:

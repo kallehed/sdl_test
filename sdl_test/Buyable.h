@@ -6,7 +6,7 @@ class Buyable : public MovingRect
 public:
 	int _onetime_index;
 
-	int _cost = 42069; // cost to buy in coins
+	int _cost; // cost to buy in coins
 
 	BUYABLE_TYPE _type;
 

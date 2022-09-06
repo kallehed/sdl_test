@@ -100788,7 +100788,7 @@ ENTITY
 i
 1
 j
-33
+68
 type
 Player
 END
