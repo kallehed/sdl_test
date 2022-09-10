@@ -55004,9 +55004,9 @@ i
 j
 0
 tile
-0
+1
 tex
-28
+0
 END
 TILE
 i
@@ -55014,7 +55014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -55024,7 +55024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 28
 END
@@ -56006,7 +56006,7 @@ j
 tile
 0
 tex
-28
+0
 END
 TILE
 i
@@ -56016,7 +56016,7 @@ j
 tile
 0
 tex
-28
+0
 END
 TILE
 i
@@ -56024,7 +56024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 28
 END
@@ -57006,7 +57006,7 @@ j
 tile
 0
 tex
-28
+0
 END
 TILE
 i
@@ -57016,7 +57016,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -57024,7 +57024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 28
 END
@@ -58006,7 +58006,7 @@ j
 tile
 0
 tex
-28
+0
 END
 TILE
 i
@@ -58014,7 +58014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -58024,7 +58024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 28
 END
@@ -59006,7 +59006,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -59014,7 +59014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -60006,7 +60006,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -60014,7 +60014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -61006,7 +61006,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -61014,7 +61014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -62006,7 +62006,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -62014,7 +62014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -62024,7 +62024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 28
 END
@@ -62034,7 +62034,7 @@ i
 j
 3
 tile
-0
+1
 tex
 28
 END
@@ -62044,7 +62044,7 @@ i
 j
 4
 tile
-0
+1
 tex
 28
 END
@@ -63006,7 +63006,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -63016,7 +63016,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -63026,7 +63026,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -63036,7 +63036,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -63044,9 +63044,9 @@ i
 j
 4
 tile
-1
+0
 tex
-28
+-1
 END
 TILE
 i
@@ -63054,9 +63054,9 @@ i
 j
 5
 tile
-1
+0
 tex
-28
+-1
 END
 TILE
 i
@@ -64006,7 +64006,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -64016,7 +64016,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -64026,7 +64026,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -64036,7 +64036,7 @@ j
 tile
 0
 tex
-28
+-1
 END
 TILE
 i
@@ -64044,9 +64044,9 @@ i
 j
 4
 tile
-1
+0
 tex
-28
+-1
 END
 TILE
 i
@@ -65004,7 +65004,7 @@ i
 j
 0
 tile
-0
+1
 tex
 28
 END
@@ -65014,7 +65014,7 @@ i
 j
 1
 tile
-0
+1
 tex
 28
 END
@@ -65024,7 +65024,7 @@ i
 j
 2
 tile
-0
+1
 tex
 28
 END
@@ -65034,7 +65034,7 @@ i
 j
 3
 tile
-0
+1
 tex
 28
 END
@@ -79476,7 +79476,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79486,7 +79486,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79496,7 +79496,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79506,7 +79506,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79516,7 +79516,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79526,7 +79526,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79536,7 +79536,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -79546,7 +79546,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80466,7 +80466,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80476,7 +80476,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80486,7 +80486,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80496,7 +80496,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80506,7 +80506,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80516,7 +80516,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80526,7 +80526,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80536,7 +80536,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80546,7 +80546,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80556,7 +80556,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80566,7 +80566,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80576,7 +80576,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -80586,7 +80586,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81466,7 +81466,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81476,7 +81476,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81486,7 +81486,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81496,7 +81496,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81506,7 +81506,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81516,7 +81516,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81526,7 +81526,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81536,7 +81536,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81546,7 +81546,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81556,7 +81556,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81566,7 +81566,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81576,7 +81576,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81586,7 +81586,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -81596,7 +81596,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82486,7 +82486,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82496,7 +82496,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82506,7 +82506,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82516,7 +82516,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82526,7 +82526,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82536,7 +82536,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82546,7 +82546,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82556,7 +82556,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82566,7 +82566,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82576,7 +82576,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -82586,7 +82586,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -83506,7 +83506,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -83516,7 +83516,7 @@ j
 tile
 0
 tex
--1
+28
 END
 TILE
 i
@@ -100764,9 +100764,23 @@ portal1
 END
 ENTITY
 i
-12
+56
 j
-88
+0
+type
+Portal
+portal_destination
+12
+portal_name
+portal2
+portal_destination_name
+portal0
+END
+ENTITY
+i
+56
+j
+0
 type
 Player
 END

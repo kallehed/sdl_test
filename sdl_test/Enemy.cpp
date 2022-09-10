@@ -221,6 +221,11 @@ void Enemy::intersection(Game& g, float nx, float ny, MovingRect* e)
 		damage =  ((FireMagic*)e)->_damage;
 		break;
 	}
+	case MOVING_RECT_TYPES::BOSS2:
+	{
+		bounce_acc = 0.05f;
+		break;
+	}
 	}
 
 	if (bounce_acc != 0.f) {

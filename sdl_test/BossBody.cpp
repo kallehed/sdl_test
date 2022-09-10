@@ -226,16 +226,6 @@ void BossBody::intersection(Game& g, float nx, float ny, MovingRect* e)
 		bounce_acc = 0.0075f;
 		break;
 	}
-	case MOVING_RECT_TYPES::SHOT:
-	{
-		if (((Shot*)e)->_owner == this) { // can't shoot self(not instantly anyway)
-			break;
-		}
-		bounce_acc = 0.05f;
-
-		damage = 5;
-		break;
-	}
 	case MOVING_RECT_TYPES::EXPLOSION:
 	{
 		bounce_acc = 0.1f;

@@ -60,6 +60,9 @@ Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float 
 		_text_scale = 1;
 		_descriptive_text = "  Increased health-gain when\n  eating hearts";
 		break;
+	case WIN_THE_GAME:
+		_text_scale = 1;
+		_descriptive_text = "   YOU WIN THE GAME!\n   Credits: Kallehed on github\n   WOOOHOOOOOOOOOOO!!!";
 	}
 }
 
@@ -130,6 +133,8 @@ bool Buyable::logic(Game& g)
 						case INCREASED_HP_GAIN:
 							p._heart_hp_gain += 4;
 							break;
+						case WIN_THE_GAME:
+							p._max_hp *= 2;
 						}
 					}
 				}

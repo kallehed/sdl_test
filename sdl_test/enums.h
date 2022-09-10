@@ -33,6 +33,7 @@ enum class MOVING_RECT_TYPES : char {
 	BUYABLE,
 	DOOR,
 	BOSS,
+	BOSS2,
 
 	TOTAL
 };
@@ -114,6 +115,7 @@ namespace TEX {
 		BombMan2,
 		BananaMan,
 		Mosquito,
+		GreenSlime12,
 
 		TOTAL
 	};
@@ -176,6 +178,9 @@ enum class BUYABLE_TYPE : char {
 	DONATE_TO_CHARITY,
 	INCREASED_HP_GAIN,
 
+	// WIN
+	WIN_THE_GAME,
+
 	TOTAL
 };
 
@@ -205,6 +210,19 @@ enum class ENEMY_JUMP_STATE : char
 	WAITING,
 	JUMPING,
 	DASHING,
+
+	TOTAL
+};
+
+enum class BOSS2_STATE : char
+{
+	WAITING_FOR_PLAYER, // fight not active yet
+	ATTACKING,
+	DECIDING,
+	SHOOTING,
+	SPAWNING,
+	RANDOM_WALK,
+	BOMBING,
 
 	TOTAL
 };

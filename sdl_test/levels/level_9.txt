@@ -100056,7 +100056,7 @@ ENTITY
 i
 2
 j
-2
+97
 type
 Player
 END

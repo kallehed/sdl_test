@@ -12,6 +12,7 @@
 #include "Buyable.h"
 #include "Door.h"
 #include "BossBody.h"
+#include "Boss2.h"
 #include <fstream>
 
 void Camera::construct(Game& g)
@@ -328,7 +329,7 @@ void Camera::save_to_file(Game& g)
 
 	// (ENTITY)s
 	for (auto e : g._entity_handler._entities) {
-		if (dynamic_cast<Enemy*>(e) || dynamic_cast<BossBody*>(e)) {
+		if (dynamic_cast<Enemy*>(e) || dynamic_cast<BossBody*>(e) || dynamic_cast<Boss2*>(e)) {
 			f << "ENTITY\n";
 			f << "i\n" << std::to_string(g._cam.convert_y_to_i(e->_y)) << "\n";
 			f << "j\n" << std::to_string(g._cam.convert_x_to_j(e->_x)) << "\n";
@@ -346,6 +347,9 @@ void Camera::save_to_file(Game& g)
 			}
 			else if (dynamic_cast<BossBody*>(e)) {
 				f << "type\n" << "BossBody\n";
+			}
+			else if (dynamic_cast<Boss2*>(e)) {
+				f << "type\n" << "Boss2\n";
 			}
 			f << "END\n";
 		}
@@ -634,6 +638,13 @@ void Camera::load_from_file(Game& g, int level)
 			else if (type == "BossBody") {
 				if (onetimes.find({ level, onetime_index }) == onetimes.end()) {
 					BossBody* e = new BossBody(onetime_index,j * _fgrid, i * _fgrid); // Head constructor
+					g._entity_handler._entities.emplace_back(e);
+				}
+				++onetime_index;
+			}
+			else if (type == "Boss2") {
+				if (onetimes.find({ level, onetime_index }) == onetimes.end()) {
+					Boss2* e = new Boss2(onetime_index, j * _fgrid, i * _fgrid);
 					g._entity_handler._entities.emplace_back(e);
 				}
 				++onetime_index;
