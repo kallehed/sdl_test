@@ -41,7 +41,7 @@ void EnemyJump::draw(Game& g)
 		SDL_SetTextureColorMod(g._textures[tex], 255, 255, 255);
 	}
 
-	draw_rect.y += _jump_y_dif;
+	draw_rect.y += (int)_jump_y_dif;
 	SDL_RenderCopyEx(g._renderer, g._textures[tex], NULL, &draw_rect, NULL, NULL, flip);
 }
 

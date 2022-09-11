@@ -40,6 +40,16 @@ public:
 	static bool general_rect_intersection(T x1, T y1, T w1, T h1, T x2, T y2, T w2, T h2);
 };
 
+constexpr float General::pi()
+{
+	return 3.14159274101257324219f;
+}
+
+constexpr float General::tau()
+{
+	return 2.f * General::pi();
+}
+
 template <typename T>
 bool General::rect_intersection(T& a, T& b)
 {

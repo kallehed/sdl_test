@@ -9,7 +9,7 @@ public:
 
 	BOSS2_STATE _state = BOSS2_STATE::WAITING_FOR_PLAYER;
 
-	static constexpr int _max_hp = 200;
+	static constexpr int _max_hp = 600;
 	int _hp = _max_hp;
 
 	int _damage = 5;

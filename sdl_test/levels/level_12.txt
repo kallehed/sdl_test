@@ -100022,7 +100022,7 @@ portal2
 END
 ENTITY
 i
-80
+87
 j
 57
 type

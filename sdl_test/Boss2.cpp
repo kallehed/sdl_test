@@ -19,6 +19,7 @@ Boss2::Boss2(int onetime_index, float x, float y) // head
 {
 	_onetime_index = onetime_index;
 	_SHOOTING_has_shot = false;
+	_RANDOM_WALK_x_dir = 0.f;
 }
 
 bool Boss2::logic(Game& g)
@@ -170,8 +171,8 @@ bool Boss2::logic(Game& g)
 		if ((int)(_timer / 500.f) % 2 == 0) {
 			if (!_RANDOM_WALK_has_changed_dir) {
 				_RANDOM_WALK_has_changed_dir = true;
-				_RANDOM_WALK_x_dir = 0.5 - General::randf01();
-				_RANDOM_WALK_y_dir = 0.5 - General::randf01();
+				_RANDOM_WALK_x_dir = 0.5f - General::randf01();
+				_RANDOM_WALK_y_dir = 0.5f - General::randf01();
 			}
 		}
 		else {

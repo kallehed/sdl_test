@@ -100046,9 +100046,9 @@ portal0
 END
 ENTITY
 i
-10
+1
 j
-21
+1
 type
 Player
 END

@@ -56,8 +56,8 @@ bool Shot::logic(Game& g)
 		{
 			bounced = true;
 
-			float tile_x = std::get<1>(res)[0];
-			float tile_y = std::get<1>(res)[1];
+			float tile_x = (float)std::get<1>(res)[0];
+			float tile_y = (float)std::get<1>(res)[1];
 
 			int i = std::get<1>(res)[2];
 			int j = std::get<1>(res)[3];
@@ -159,6 +159,7 @@ void Shot::intersection(Game& g, float nx, float ny, MovingRect* e)
 	}
 	case MOVING_RECT_TYPES::ENEMY:
 	case MOVING_RECT_TYPES::PLAYER:
+	case MOVING_RECT_TYPES::BOSS2:
 	{
 		if (_owner != e) { // DONT HURT SELF OVER OWNER!!!!
 			--_lives; 

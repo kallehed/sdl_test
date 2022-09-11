@@ -957,9 +957,18 @@ void Camera::draw_hud(Game& g)
 		// green charge (drawn first, BECAUSE: obvious)
 
 		float max_x = 200.f;
-		int charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));
+		int charge_x = 0;
+		SDL_Color color = { 0,255,0,(Uint8)a };
+		if (p._bomb_recharge_timer > 0.f) {
+			charge_x = (int)(max_x * (p._bomb_recharge_timer / p._bomb_recharge_time));
+			color.r = 255Ui8;
+		}
+		else {
+			charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));
+		}
+		
 		SDL_Rect draw_rect = { hud_x, hud_y, charge_x, 20  };
-		SDL_SetRenderDrawColor(g._renderer, 0, 255, 0, a);
+		SDL_SetRenderDrawColor(g._renderer, color.r, color.g, color.b, color.a);
 		SDL_RenderFillRect(g._renderer, &draw_rect);
 
 		// black boundary

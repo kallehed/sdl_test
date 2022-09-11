@@ -6,6 +6,7 @@
 #include "Particle.h"
 #include "Pickupable.h"
 #include "Buyable.h"
+#include "General.h"
 
 MOVING_RECT_TYPES BossBody::get_moving_rect_type() const
 {
@@ -19,6 +20,7 @@ BossBody::BossBody(int onetime_index, float x, float y) // head
 	_more_to_add(_largest_more_to_add),
 	_next(nullptr)
 {
+	_color = 255;
 	_onetime_index = onetime_index;
 }
 
@@ -27,6 +29,7 @@ BossBody::BossBody(float x, float y, int more_to_add, BossBody* next) // body
 	_more_to_add(more_to_add),
 	_next(next)
 {
+	_color = 255;
 }
 
 bool BossBody::logic(Game& g)
@@ -175,7 +178,7 @@ bool BossBody::logic(Game& g)
 	return false;
 }
 
-void BossBody::activate_speedy_mode(float time, Uint8 color)
+void BossBody::activate_speedy_mode(float time, uint8_t color)
 {
 	_speedy_mode = true;
 	_timer = time;

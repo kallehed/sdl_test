@@ -10,7 +10,8 @@ Chest::Chest(int onetime_index, float x, float y, int amount, CHEST_TYPE type)
 	: MovingRect(x, y, 64, 58, 1.f),
 	_onetime_index(onetime_index),
 	_chest_amount(amount),
-	_type(type)
+	_type(type),
+	_text1("ERROR TEXT")
 {
 	using enum CHEST_TYPE;
 	switch (_type) {

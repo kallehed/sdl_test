@@ -28,8 +28,8 @@ public:
 	float _shake_divider = 1.5f; // shake intensity will be divided by _shake_divider every frame
 	float _shake_intensity = 1.f;
 
-	float _max_x;
-	float _max_y;
+	float _max_x = 0.f;
+	float _max_y = 0.f;
 
 	void construct(Game& g);
 

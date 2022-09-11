@@ -3,7 +3,7 @@
 
 void draw_circle(SDL_Renderer* renderer, float x, float y, float radius, SDL_Color c)
 {
-	constexpr int points = 63; // points on circle radius
+	constexpr int points = 31; // points on circle radius
 	constexpr int total_vertices = points + 1;
 	constexpr int total_indices = points * 3;
 	
@@ -62,7 +62,7 @@ void Game::changeScale(int change)
 	_scale = std::max(_scale + change, 1);
 
 	float r_scale = _scale * _scale_granularity;
-	SDL_SetWindowSize(_window, (int)(_WIDTH * r_scale), (_HEIGHT * r_scale));
+	SDL_SetWindowSize(_window, (int)(_WIDTH * r_scale), (int)(_HEIGHT * r_scale));
 	SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
 }
 
@@ -256,7 +256,6 @@ void Game::game_loop()
 
 					std::cout << " middle mouse pressed MMMMMMMM \n";
 					_mouse_btn_pressed_this_frame[1] = true;
-
 				}
 				else if ((buttons & SDL_BUTTON_RMASK) != 0) { // right mouse pressed
 					

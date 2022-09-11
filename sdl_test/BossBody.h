@@ -26,7 +26,7 @@ public:
 
 	bool _speedy_mode = false;
 
-	Uint8 _color; // color for speedy mode to multiply colors by 
+	uint8_t _color; // color for speedy mode to multiply colors by 
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
@@ -38,7 +38,7 @@ public:
 
 	bool logic(Game& g) override;
 
-	void activate_speedy_mode(float time, Uint8 color);
+	void activate_speedy_mode(float time, uint8_t color);
 
 	void draw(Game& g) override;
 

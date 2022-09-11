@@ -100054,7 +100054,7 @@ chest_type
 END
 ENTITY
 i
-2
+97
 j
 97
 type

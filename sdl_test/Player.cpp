@@ -111,7 +111,7 @@ bool Player::logic(Game& g)
 	// particles when walking
 	{
 		int probability = (!_using_run) ? 11 : 3;
-		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && g._ticks % (probability + rand()%11) == 0) {
+		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && g._ticks % ((long long)probability + rand()%11) == 0) {
 			g._entity_handler._particles.emplace_back(new Particle(mid_x(), mid_y(), -x_vel()/4.f, -y_vel()/4.f, _particle_color));
 		}
 	}
@@ -193,7 +193,8 @@ bool Player::logic(Game& g)
 			if (!_charging_bomb_throw) // "not doing anything bomby" state
 			{
 				// possibly start charging bomb throw?
-				if (_bombs > 0 && g._mouse_btn_pressed_this_frame[2]) // right mouse => start charging
+				_bomb_recharge_timer -= g._dt;
+				if (_bomb_recharge_timer <= 0.f && _bombs > 0 && g._mouse_btn_pressed_this_frame[2]) // right mouse => start charging
 				{
 					_charging_bomb_throw = true;
 				}
@@ -216,6 +217,7 @@ bool Player::logic(Game& g)
 					// reset
 					_charging_bomb_throw = false;
 					_bomb_throw_charge = 0.f;
+					_bomb_recharge_timer = _bomb_recharge_time;
 					--_bombs;
 				}
 				else

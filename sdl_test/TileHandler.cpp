@@ -293,12 +293,12 @@ bool TileHandler::hurt_tile(Game& g, int i, int j)
 					float y = ((float)i + 0.5f) * g._cam._fgrid;
 					float x_vel = (General::randf01() - 0.5f) / 15.f;
 					float y_vel = (General::randf01() - 0.5f) / 15.f;
-					if (rand <= 0.8f) {
+					if (rand <= 0.82f) {
 						// drop heart
 						Pickupable* coin = new Pickupable(PICKUPABLE_TYPE::HEART, x, y, x_vel, y_vel);
 						g._entity_handler._entities_to_add.push_back(coin);
 					}
-					else if (rand <= 0.9f) {
+					else if (rand <= 0.92f) {
 						// drop pickupable shot
 						Pickupable* shot = new Pickupable(PICKUPABLE_TYPE::SHOT, x, y, x_vel, y_vel);
 						g._entity_handler._entities_to_add.push_back(shot);
@@ -432,25 +432,25 @@ std::tuple<bool, std::array<int, 4>, TILE::TILE> TileHandler::get_blocking_tile_
 				}
 				else if (tile == TILE::TRI_NE)
 				{
-					if (intersection_tile<TILE::TRI_NE>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					if (intersection_tile<TILE::TRI_NE>(x, y, w, h, (float)j * r_w, (float)i * r_h, (float)r_w, (float)r_h))
 					{
 						goto GOTO_RETURN;
 					}
 				}
 				else if (tile == TILE::TRI_SE) {
-					if (intersection_tile<TILE::TRI_SE>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					if (intersection_tile<TILE::TRI_SE>(x, y, w, h, (float)j * r_w, (float)i * r_h, (float)r_w, (float)r_h))
 					{
 						goto GOTO_RETURN;
 					}
 				}
 				else if (tile == TILE::TRI_NW) {
-					if (intersection_tile<TILE::TRI_NW>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					if (intersection_tile<TILE::TRI_NW>(x, y, w, h, (float)j * r_w, (float)i * r_h, (float)r_w, (float)r_h))
 					{
 						goto GOTO_RETURN;
 					}
 				}
 				else if (tile == TILE::TRI_SW) {
-					if (intersection_tile<TILE::TRI_SW>(x, y, w, h, j * r_w, i * r_h, r_w, r_h))
+					if (intersection_tile<TILE::TRI_SW>(x, y, w, h, (float)j * r_w, (float)i * r_h, (float)r_w, (float)r_h))
 					{
 						goto GOTO_RETURN;
 					}

@@ -70,9 +70,9 @@ Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
 	case NPC_TYPE::GREEN_BOMB_GUY:
 		_text = g._entity_handler._NPC_GREEN_BOMB_GUY;
 		_total_chars = g._entity_handler._NPC_GREEN_BOMB_GUY_TOTAL_CHARS;
-		_tex = TEX::GreenSlime1;
-		set_w(32.f * 1.75f);
-		set_h(39.f * 1.75f);
+		_tex = TEX::GreenSlime2;
+		set_w(90.f * 1.f);
+		set_h(88.f * 1.f);
 		break;
 	case NPC_TYPE::SUS_SELLER:
 		if (!g._entity_handler._p._ability_to_run) { // Seller text

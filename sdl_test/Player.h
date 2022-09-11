@@ -69,6 +69,8 @@ public:
 	float _bomb_throw_max_charge = 1000.f;
 	signed char _bomb_charge_direction = 1; // 1 = +, -1 = -
 	bool _charging_bomb_throw = false;
+	float _bomb_recharge_timer = 0.f;
+	float _bomb_recharge_time = 1000.f;
 
 	// The ability to run: stuff
 	bool _ability_to_run = DEV::DEV ? true : false;

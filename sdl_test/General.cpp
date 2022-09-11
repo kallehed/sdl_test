@@ -41,16 +41,6 @@ std::array<float, 3> General::normalize_vector_two_points_arr(float x1, float y1
 	return { dx / length , dy / length, length };
 }
 
-constexpr float General::pi()
-{
-	return 3.14159274101257324219f;
-}
-
-constexpr float General::tau()
-{
-	return 2.f * General::pi();
-}
-
 constexpr float General::inv_sqrt_of_2()
 {
 	return 0.70710678118f;

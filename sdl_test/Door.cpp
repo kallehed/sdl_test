@@ -9,7 +9,8 @@ MOVING_RECT_TYPES Door::get_moving_rect_type() const
 Door::Door(float x, float y, int onetime_index, DOOR_TYPE type)
 	: MovingRect(x, y, 32.f*3.f, 53.f*3.f, 0.f),
 	_onetime_index(onetime_index),
-	_type(type)
+	_type(type),
+	_descriptive_text("ERROR DOOR TEXT")
 {
 	using enum DOOR_TYPE;
 	switch (_type) {

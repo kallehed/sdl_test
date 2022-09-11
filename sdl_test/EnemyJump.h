@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Enemy.h"
+#include "General.h"
 
 class EnemyJump : public Enemy {
 private:

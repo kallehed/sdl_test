@@ -100070,9 +100070,9 @@ npc_type
 END
 ENTITY
 i
-13
+1
 j
-11
+5
 type
 Player
 END

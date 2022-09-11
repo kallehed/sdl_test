@@ -10,7 +10,7 @@ public:
 	int _H = INT_MAX; // heuristic, manhattan distance
 	int _F = INT_MAX; // G + H
 	bool _closed = false;
-	int _i, _j;
+	int _i = 0, _j = 0;
 
 	void set_variables(int G, int H);
 

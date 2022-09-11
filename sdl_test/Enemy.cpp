@@ -52,7 +52,7 @@ bool Enemy::logic(Game& g)
 
 	// particles
 	{
-		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && g._ticks % (20 + rand() % 11) == 0) {
+		if (abs(x_vel()) + abs(y_vel()) >= 0.05f && (g._ticks % (20 + (long long)(rand() % 11)) == 0)) {
 			g._entity_handler._particles.emplace_back(new Particle(mid_x(), mid_y(), 0.f, 0.f, { 0, 200, 255, 255 }));
 		}
 	}

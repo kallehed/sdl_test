@@ -51,7 +51,7 @@ void EntityHandler::draw(Game& g)
 	for (auto& e : _entities) e->draw(g);
 	for (auto& e : _draw_entities) e->draw(g);
 	_p.draw(g);
-	_quadtree.head_draw(g);
+	if constexpr (DEV::DEV) _quadtree.head_draw(g);
 }
 
 void EntityHandler::place_enemy(Game& g, int x, int y)

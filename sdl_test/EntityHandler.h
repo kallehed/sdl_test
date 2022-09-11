@@ -103,7 +103,7 @@ public:
 		"The only thing I see\nall day is that beautiful\nchest north of my leaves...\0"
 		"It sure would be a shame\nif someone were to confiscate\nit...\0"
 		"Luckily all my past visitors\nhave been nice,\0"
-		"and kept away their naugthy\nhands from it...\0"
+		"and kept their naugthy hands\naway from it...\0"
 		"Hopefully, the same thing will\nbe said of you...";
 	int _NPC_TREE_DUDE_TOTAL_CHARS = 352;
 

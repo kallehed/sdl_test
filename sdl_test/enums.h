@@ -3,7 +3,7 @@
 
 namespace DEV {
 	// Whether to get abilites(gun, run...coins) directly, set to false for playing game, otherwise true
-	constexpr bool DEV = true;
+	constexpr bool DEV = false;
 }
 
 // left-click weapon for player
