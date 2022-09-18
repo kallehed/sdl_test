@@ -305,7 +305,10 @@ void Camera::save_to_file(Game& g)
 	* type : EnemyBasic, EnemyShooter, Npc, Player, Portal
 	* 
 	* BACKGROUND_TILE
-	* followed by tex
+	* followed by TEX::TEX
+	* 
+	* MUSIC
+	* followed by MUS::_
 	* 
 	*/
 
@@ -410,6 +413,13 @@ void Camera::save_to_file(Game& g)
 	{
 		f << "BACKGROUND_TILE\n";
 		f << std::to_string(g._tile_handler._background_tile) << "\n";
+		f << "END\n";
+	}
+
+	// background music
+	{
+		f << "MUSIC\n";
+		f << std::to_string(g._current_music) << "\n";
 		f << "END\n";
 	}
 
@@ -527,6 +537,11 @@ void Camera::load_from_file(Game& g, int level)
 			std::getline(f, t);
 			g._tile_handler._background_tile = (TEX::TEX)std::stoi(t);
 			std::getline(f, t); // move past end
+		}
+		else if (t == "MUSIC") {
+			std::getline(f, t);
+			g.play_music((MUS::_)std::stoi(t));
+			std::getline(f, t);
 		}
 		else if (t == "ENTITY") {
 			while (t != "END") {
@@ -655,7 +670,6 @@ void Camera::load_from_file(Game& g, int level)
 					g._entity_handler._p.set_y(i * _fgrid);
 				}
 			}
-			
 		}
 	}
 

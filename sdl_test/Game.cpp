@@ -76,9 +76,27 @@ Uint32 Game::getMouseState(int* x, int* y)
 	return buttons;
 }
 
+void Game::play_music(MUS::_ music)
+{
+	if (music == (MUS::_)(-1)) {
+		Mix_HaltMusic();
+		_current_music = music;
+	}
+	else {
+		if (music != _current_music) {
+			// music
+			_current_music = music;
+			Mix_PlayMusic(_music[_current_music], -1);
+		}
+	}
+}
+
 Game::Game()
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+		std::cin.get();
+	}
 	_window = SDL_CreateWindow("SDLtest",
 		DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED, DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED,
 		_WIDTH, _HEIGHT,
@@ -91,6 +109,11 @@ Game::Game()
 
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	TTF_Init();
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		std::cin.get();
+	}
 
 	_font = TTF_OpenFont("fonts/8bitoperator.ttf", 12);
 	if (!_font) {
@@ -98,8 +121,8 @@ Game::Game()
 		std::cin.get(); // stop
 	}
 
-	{
-		const char* paths[TEX::TOTAL] = {
+	{ // load images
+		constexpr const char* paths[TEX::TOTAL] = {
 			"images/FireMagic.png",
 			"images/BombExplosion.png",
 			"images/Bomb.png",
@@ -165,6 +188,22 @@ Game::Game()
 		}
 	}
 
+	// Load music
+	{
+		constexpr const char* paths[MUS::TOTAL] = {
+			"music/WeirdPiece.wav",
+			"music/FirstBossPiece.wav",
+			"music/FinalBossPiece.wav",
+		};
+		for (int i = 0; i < MUS::TOTAL; ++i) {
+			_music[i] = Mix_LoadMUS(paths[i]);
+			if (_music[i] == NULL) {
+				printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+				std::cin.get();
+			}
+		}
+	}
+
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	_tile_handler.TileHandler_construct(*this);
 	_cam.construct(*this);
@@ -190,6 +229,10 @@ void Game::start_game()
 
 void Game::close_game()
 {
+	for (int i = 0; i < MUS::TOTAL; ++i) {
+		Mix_FreeMusic(_music[i]);
+	}
+
 	TTF_CloseFont(_font);
 	_font = NULL;
 
@@ -203,6 +246,7 @@ void Game::close_game()
 	SDL_DestroyWindow(_window);
 	_window = NULL;
 
+	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();

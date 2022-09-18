@@ -100024,12 +100024,15 @@ portal0
 END
 ENTITY
 i
-42
+1
 j
-23
+18
 type
 Player
 END
 BACKGROUND_TILE
 25
+END
+MUSIC
+0
 END

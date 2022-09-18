@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include <array>
 #include <string>
@@ -33,7 +34,11 @@ public:
 	SDL_Renderer* _renderer = nullptr;
 	TTF_Font* _font = nullptr;
 
-	// DEV::DEV is in enums.h (gets you abilites direct)
+	// DEV::DEV is in "enums.h" (gets you abilites direct)
+
+	// music
+	Mix_Music* _music[MUS::TOTAL];
+	MUS::_ _current_music = (MUS::_)(-1);
 
 	//textures
 	SDL_Texture* _textures[TEX::TOTAL];
@@ -68,12 +73,14 @@ public:
 	SaveState _save;
 
 	// what level we are on
-	int _level = DEV::DEV ? 12 : 0;
+	int _level = DEV::DEV ? 0 : 0;
 	int _level_to_change_to = 1;
 	bool _change_level = false;
 	std::string _destination_portal = "Error_Name";
 
 	SDL_Texture* loadTexture(const char* path);
+
+	void play_music(MUS::_ music);
 
 	void changeScale(int change);
 	Uint32 getMouseState(int* x, int* y);
