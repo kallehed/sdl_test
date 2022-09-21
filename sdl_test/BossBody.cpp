@@ -42,7 +42,10 @@ bool BossBody::logic(Game& g)
 		 // Head, will start the boss when player is near
 		if (600.f > abs(p.mid_x() - mid_x()) + abs(p.mid_y() - mid_y()))
 		{
-			// start boss
+			// ** START BOSS **
+
+			// music
+			g.play_music(MUS::First_Boss);
 
 			// block path to escape
 			for (int i = 48; i <= 51; ++i) {
@@ -76,6 +79,9 @@ bool BossBody::logic(Game& g)
 				g._tile_handler._tiles[i][51] = TILE::VOID;
 				g._tile_handler._texs[i][51] = TEX::VOID;
 			}
+
+			// play win music
+			g.play_music(MUS::Win_Piece);
 
 			// spawn a boatload of coins
 			{

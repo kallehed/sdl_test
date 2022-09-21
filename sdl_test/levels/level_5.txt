@@ -100102,12 +100102,15 @@ buyable_type
 END
 ENTITY
 i
-97
+54
 j
-2
+67
 type
 Player
 END
 BACKGROUND_TILE
 34
+END
+MUSIC
+0
 END

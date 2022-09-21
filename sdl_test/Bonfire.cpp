@@ -43,6 +43,7 @@ bool Bonfire::logic(Game& g)
 					// will be healed at end of animation
 					_fire_animation = true;
 					_player_close = false;
+					g.play_sound(SOUND::Bonfire);
 				}
 			}
 		}

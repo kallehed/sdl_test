@@ -35,6 +35,9 @@ bool Boss2::logic(Game& g)
 			// become active
 			_state = BOSS2_STATE::ATTACKING;
 
+			// start music
+			g.play_music(MUS::Final_Boss);
+
 			for (int j = 55; j <= 58; ++j) { // Block path to escape
 				g._tile_handler._tiles[78][j] = TILE::BLOCK;
 				g._tile_handler._texs[78][j] = TEX::CobbleStone;
@@ -223,6 +226,9 @@ bool Boss2::logic(Game& g)
 	{
 		//heal player
 		p._hp = p._max_hp;
+
+		// Win music
+		g.play_music(MUS::Win_Piece);
 
 		// UN-block path to escape
 		for (int j = 55; j <= 58; ++j) {

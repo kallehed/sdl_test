@@ -160,6 +160,8 @@ bool Player::logic(Game& g)
 
 						FireMagic* e = new FireMagic(this, e_x, e_y, _fire_magic_damage, _fire_magic_area_factor);
 						g._entity_handler._entities_to_add.push_back(e);
+
+						g.play_sound(SOUND::Fire);
 					}
 				}
 				break;
@@ -180,6 +182,8 @@ bool Player::logic(Game& g)
 						float nx, ny;
 						General::normalize_vector_two_points(nx, ny, g._cam.convert_x(mid_x()), g._cam.convert_y(mid_y()), (float)m_x, (float)m_y);
 						g._entity_handler._entities_to_add.push_back(new Shot(this, _shot_damage, mid_x(), mid_y(), nx, ny, _shot_speed, _shot_lives ));
+					
+						g.play_sound(SOUND::Shoot);
 					}
 				}
 				break;
@@ -305,6 +309,8 @@ void Player::take_damage(Game& g, int damage)
 		g._slow_motion_factor = 0.5f;
 
 		_took_damage_this_frame = true;
+
+		g.play_sound(SOUND::PlayerHit);
 	}
 }
 
@@ -370,19 +376,23 @@ void Player::intersection(Game& g, float nx, float ny, MovingRect* e)
 	{
 		Pickupable* p = static_cast<Pickupable*>(e);
 		if (p->_type == PICKUPABLE_TYPE::COIN) {
+			g.play_sound(SOUND::Coin);
 			_coins += 1;
 		}
 		else if (p->_type == PICKUPABLE_TYPE::SHOT) {
 			// 1 to 3 possible gain
 			_shots += _shot_base_gain + (rand() % 4);
+			g.play_sound(SOUND::GetItem);
 		}
 		else if (p->_type == PICKUPABLE_TYPE::HEART) {
 			// constant gain
 			_hp += _heart_hp_gain;
 			_hp = std::min(_max_hp, _hp);
+			g.play_sound(SOUND::Heal);
 		}
 		else if (p->_type == PICKUPABLE_TYPE::BOMB) {
 			_bombs += 2 + (rand() % 2);
+			g.play_sound(SOUND::GetItem);
 		}
 		break;
 	}

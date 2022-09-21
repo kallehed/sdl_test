@@ -2,7 +2,7 @@
 
 namespace DEV {
 	// Whether to get abilites(gun, run...coins) directly, set to false for playing game, otherwise true
-	constexpr bool DEV = false;
+	constexpr bool DEV = true;
 }
 
 // left-click weapon for player
@@ -123,9 +123,34 @@ namespace TEX {
 namespace MUS {
 	enum _ : char
 	{
-		Weird_Piece,
+		Weird_Piece, // level 4, 5
 		First_Boss,
 		Final_Boss,
+		Nice_Piece, // level 3
+		Restaurant_Piece, // level 2
+		Chill_Piece, // level 8
+		First_Piece, // level 6
+		Win_Piece, // When winning against boss
+		Harder_Piece, // level 11
+		Start_Piece, // level 0
+		Easy_Piece, // level 1
+		Lose_Piece,
+
+		TOTAL
+	};
+}
+
+namespace SOUND {
+	enum _ : char 
+	{
+		Coin,
+		Heal,
+		Fire,
+		Bonfire,
+		Shoot,
+		GetItem,
+		EnemyHit,
+		PlayerHit,
 
 		TOTAL
 	};

@@ -91,6 +91,11 @@ void Game::play_music(MUS::_ music)
 	}
 }
 
+void Game::play_sound(SOUND::_ sound)
+{
+	Mix_PlayChannel(-1, _sound[sound], 0);
+}
+
 Game::Game()
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
@@ -194,6 +199,15 @@ Game::Game()
 			"music/WeirdPiece.wav",
 			"music/FirstBossPiece.wav",
 			"music/FinalBossPiece.wav",
+			"music/NicePiece.wav",
+			"music/RestaurantPiece.wav",
+			"music/ChillPiece.wav",
+			"music/FirstPiece.wav",
+			"music/WeirdPiece.wav",
+			"music/HarderPiece.wav",
+			"music/StartPiece.wav",
+			"music/EasyPiece.wav",
+			"music/LosePiece.wav",
 		};
 		for (int i = 0; i < MUS::TOTAL; ++i) {
 			_music[i] = Mix_LoadMUS(paths[i]);
@@ -202,6 +216,28 @@ Game::Game()
 				std::cin.get();
 			}
 		}
+	}
+	// load sound effects
+	{
+		constexpr const char* paths[SOUND::TOTAL] = {
+			"music/sound/Coin.wav",
+			"music/sound/Heal.wav",
+			"music/sound/Fire.wav",
+			"music/sound/Bonfire.wav",
+			"music/sound/Shoot.wav",
+			"music/sound/GetItem.wav",
+			"music/sound/EnemyHit.wav",
+			"music/sound/PlayerHit.wav",
+		};
+
+		for (int i = 0; i < SOUND::TOTAL; ++i) {
+			_sound[i] = Mix_LoadWAV(paths[i]);
+			if (_sound[i] == NULL) {
+				printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+				std::cin.get();
+			}
+		}
+
 	}
 
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
@@ -229,8 +265,13 @@ void Game::start_game()
 
 void Game::close_game()
 {
+	for (int i = 0; i < SOUND::TOTAL; ++i) {
+		Mix_FreeChunk(_sound[i]);
+		_sound[i] = NULL;
+	}
 	for (int i = 0; i < MUS::TOTAL; ++i) {
 		Mix_FreeMusic(_music[i]);
+		_music[i] = NULL;
 	}
 
 	TTF_CloseFont(_font);
@@ -314,7 +355,7 @@ void Game::game_loop()
 		}
 
 		// IMPORTANT EVENTS, FROM CLICKING
-		if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
+		//if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
 
 		if constexpr (DEV::DEV) {
 			if (_keys_frame[SDL_SCANCODE_K]) {

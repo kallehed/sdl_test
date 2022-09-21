@@ -40,6 +40,9 @@ public:
 	Mix_Music* _music[MUS::TOTAL];
 	MUS::_ _current_music = (MUS::_)(-1);
 
+	// sound effects
+	Mix_Chunk* _sound[SOUND::TOTAL];
+
 	//textures
 	SDL_Texture* _textures[TEX::TOTAL];
 	SDL_Texture* _press_e_texture;
@@ -81,6 +84,7 @@ public:
 	SDL_Texture* loadTexture(const char* path);
 
 	void play_music(MUS::_ music);
+	void play_sound(SOUND::_ sound);
 
 	void changeScale(int change);
 	Uint32 getMouseState(int* x, int* y);

@@ -179,6 +179,7 @@ bool Enemy::in_radius_squared_of_player(Game& g, float radius_squared)
 void Enemy::take_damage(Game& g, int damage) {
 	_hp -= damage;
 	_hurt_timer = 150.f;
+	g.play_sound(SOUND::EnemyHit);
 }
 
 void Enemy::new_walk_path(Game& g) // clear
