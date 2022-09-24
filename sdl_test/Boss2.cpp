@@ -199,7 +199,7 @@ bool Boss2::logic(Game& g)
 				_BOMBING_has_thrown_bomb = true;
 				if (General::randf01() > 0.3f) {
 					float speed = 0.005f * dist;
-					Bomb* e = new Bomb(mid_x(), mid_y(), nx * speed, ny * speed, 10, 1.f, 2000.f);
+					Bomb* e = new Bomb(g, mid_x(), mid_y(), nx * speed, ny * speed, 10, 1.f, 2000.f);
 					g._entity_handler._entities_to_add.emplace_back(e);
 				}
 			}

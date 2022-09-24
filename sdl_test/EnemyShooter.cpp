@@ -48,6 +48,8 @@ void EnemyShooter::active_logic(Game& g)
 
 		Shot* new_shot = new Shot(this, 5, mid_x(), mid_y(), nx, ny, speed, 1, TEX::MagicOrb);
 		g._entity_handler._entities_to_add.push_back(new_shot);
+
+		g.play_sound(SOUND::Shoot);
 	}
 
 	stay_in_range_of_player(g);

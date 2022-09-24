@@ -203,11 +203,10 @@ Game::Game()
 			"music/RestaurantPiece.wav",
 			"music/ChillPiece.wav",
 			"music/FirstPiece.wav",
-			"music/WeirdPiece.wav",
+			"music/WinPiece.wav",
 			"music/HarderPiece.wav",
-			"music/StartPiece.wav",
-			"music/EasyPiece.wav",
-			"music/LosePiece.wav",
+			"music/SolemnPiece.wav",
+			"music/DiePiece.wav",
 		};
 		for (int i = 0; i < MUS::TOTAL; ++i) {
 			_music[i] = Mix_LoadMUS(paths[i]);
@@ -228,6 +227,12 @@ Game::Game()
 			"music/sound/GetItem.wav",
 			"music/sound/EnemyHit.wav",
 			"music/sound/PlayerHit.wav",
+			"music/sound/Speak.wav",
+			"music/sound/Explosion.wav",
+			"music/sound/Buy.wav",
+			"music/sound/BuyFail.wav",
+			"music/sound/Portal.wav",
+			"music/sound/Fuse.wav",
 		};
 
 		for (int i = 0; i < SOUND::TOTAL; ++i) {
@@ -239,6 +244,7 @@ Game::Game()
 		}
 
 	}
+	Mix_VolumeMusic(90);
 
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	_tile_handler.TileHandler_construct(*this);

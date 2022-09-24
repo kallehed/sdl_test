@@ -100070,9 +100070,9 @@ npc_type
 END
 ENTITY
 i
-20
+1
 j
-47
+1
 type
 Player
 END
@@ -100080,5 +100080,5 @@ BACKGROUND_TILE
 25
 END
 MUSIC
-10
+9
 END

@@ -132,9 +132,8 @@ namespace MUS {
 		First_Piece, // level 6
 		Win_Piece, // When winning against boss
 		Harder_Piece, // level 11
-		Start_Piece, // level 0
-		Easy_Piece, // level 1
-		Lose_Piece,
+		Solemn_Piece, // level 0
+		Die_Piece,
 
 		TOTAL
 	};
@@ -151,6 +150,12 @@ namespace SOUND {
 		GetItem,
 		EnemyHit,
 		PlayerHit,
+		Speak,
+		Explosion,
+		Buy,
+		BuyFail,
+		Portal,
+		Fuse,
 
 		TOTAL
 	};

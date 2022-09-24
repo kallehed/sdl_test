@@ -21,6 +21,7 @@ bool Explosion::logic(Game& g)
 	if (_exploded == false)
 	{
 		_exploded = true;
+		g.play_sound(SOUND::Explosion);
 	}
 	else
 	{

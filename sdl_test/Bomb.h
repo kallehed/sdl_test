@@ -12,7 +12,7 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override;
 
-	Bomb(float x, float y, float x_vel, float y_vel, int damage, float area_factor, float detonation_time=2000.f);
+	Bomb(Game& g, float x, float y, float x_vel, float y_vel, int damage, float area_factor, float detonation_time=2000.f);
 
 	bool logic(Game& g) override;
 

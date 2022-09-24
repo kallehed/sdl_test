@@ -43,6 +43,8 @@ bool Chest::logic(Game& g)
 			{
 				// Chest actived, destroy + give item(s)
 
+				g.play_sound(SOUND::GetItem);
+
 				switch (_type) {
 				case CHEST_TYPE::COIN_CHEST:
 					// GIVE PLAYER MONEYYYYYYYYY

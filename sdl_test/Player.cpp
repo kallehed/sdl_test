@@ -216,7 +216,7 @@ bool Player::logic(Game& g)
 					float x_vel = nx * bomb_speed;
 					float y_vel = ny * bomb_speed;
 
-					g._entity_handler._entities_to_add.push_back(new Bomb(mid_x(), mid_y(), x_vel, y_vel, _bomb_damage, _bomb_area_factor));
+					g._entity_handler._entities_to_add.push_back(new Bomb(g, mid_x(), mid_y(), x_vel, y_vel, _bomb_damage, _bomb_area_factor));
 
 					// reset
 					_charging_bomb_throw = false;

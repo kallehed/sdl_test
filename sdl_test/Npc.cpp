@@ -166,6 +166,8 @@ bool Npc::logic(Game& g)
 				_text[_chars_in] = _temp;
 				++_chars_in;
 
+				if (_chars_in % 2 == 0) g.play_sound(SOUND::Speak);
+
 				if (_text[_chars_in] == '\0') {
 					// at end of page
 					_end_of_page = true;

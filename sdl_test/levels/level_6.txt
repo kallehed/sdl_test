@@ -100786,9 +100786,9 @@ chest_type
 END
 ENTITY
 i
-1
+12
 j
-68
+71
 type
 Player
 END

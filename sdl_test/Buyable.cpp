@@ -80,6 +80,7 @@ bool Buyable::logic(Game& g)
 				// Possibly buy what is BUYABLE
 				if (p._coins >= _cost) {
 					// BUY TRANSACTION CONFIRMED AND PENDING
+					g.play_sound(SOUND::Buy);
 					p._coins -= _cost;
 					_transaction_succeded = true;
 
@@ -140,6 +141,7 @@ bool Buyable::logic(Game& g)
 				}
 				else {
 					_transaction_failed = true;
+					g.play_sound(SOUND::BuyFail);
 				}
 
 				_show_e_sign = true;

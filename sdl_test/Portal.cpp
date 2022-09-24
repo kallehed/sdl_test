@@ -22,6 +22,7 @@ bool Portal::logic(Game& g)
 		if (g._keys_frame[SDL_SCANCODE_E])
 		{
 			// teleport to other level
+			g.play_sound(SOUND::Portal);
 			g._level_to_change_to = _destination_level;
 			g._destination_portal = _destination_name;
 			g._change_level = true;

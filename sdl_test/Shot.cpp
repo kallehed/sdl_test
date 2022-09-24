@@ -111,6 +111,8 @@ bool Shot::logic(Game& g)
 			change_y_vel(_y_dir * _speed);
 
 			turn_according_to_dir();
+
+			g.play_sound(SOUND::EnemyHit);
 		}
 		
 	}

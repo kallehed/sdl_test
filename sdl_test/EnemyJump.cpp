@@ -92,7 +92,7 @@ void EnemyJump::active_logic(Game& g)
 		if ( !_bombed &&_jump_vel > 0.f) {
 			_bombed = true;
 			
-			g._entity_handler._entities_to_add.push_back(new Bomb(mid_x(), mid_y(), 0.f, 0.f, 7, 1.f, 400.f));
+			g._entity_handler._entities_to_add.push_back(new Bomb(g, mid_x(), mid_y(), 0.f, 0.f, 7, 1.f, 400.f));
 		}
 
 		if (_jump_y_dif > 0.f) {
