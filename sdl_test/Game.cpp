@@ -396,7 +396,9 @@ void Game::game_loop()
 		// possibly enter state of "YOU DIED"
 		if (_entity_handler._p._respawn) 
 		{
-			for (int _ = 0; _ < 125; ++_) {
+			play_music(MUS::Die_Piece);
+			Mix_PlayMusic(_music[MUS::Die_Piece], 0);
+			for (int _ = 0; _ < 175; ++_) {
 				SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
 				SDL_RenderClear(_renderer);
 				int text_x = _WIDTH / 4;
