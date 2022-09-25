@@ -315,7 +315,7 @@ void Camera::save_to_file(Game& g)
 	std::cout << "SAVE\n";
 
 	// Create and open a text file
-	std::string text_file = "levels/level_" + std::to_string((int)g._level) + ".txt";
+	std::string text_file = "data/levels/level_" + std::to_string((int)g._level) + ".txt";
 	std::ofstream f(text_file);
 
 	// (TILE)s
@@ -457,7 +457,7 @@ void Camera::load_from_file(Game& g, int level)
 	std::string t;
 
 	// Read from the text file
-	std::string text_file = "levels/level_" + std::to_string(level) + ".txt";
+	std::string text_file = "data/levels/level_" + std::to_string(level) + ".txt";
 
 	std::ifstream f(text_file);
 
