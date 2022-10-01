@@ -399,6 +399,7 @@ void Game::game_loop()
 			play_music(MUS::Die_Piece);
 			Mix_PlayMusic(_music[MUS::Die_Piece], 0);
 			for (int _ = 0; _ < 175; ++_) {
+				SDL_Delay(20);
 				SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
 				SDL_RenderClear(_renderer);
 				int text_x = _WIDTH / 4;
