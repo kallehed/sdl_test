@@ -108,8 +108,8 @@ Game::Game()
 		SDL_WINDOW_SHOWN);
 	SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
 	
-	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
@@ -433,10 +433,12 @@ void Game::game_loop()
 
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;
 		if (_ticks % 60 == 0) {
-			if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
+			//if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
 		}
 		_dt = 1000.f * (SDL_GetPerformanceCounter() - start_time) / ((float)SDL_GetPerformanceFrequency());
-		_dt = std::min(_MAX_DT, _dt); // no less than 50 fps simulated.
+		SDL_Delay(std::min((Uint32)30,std::max((Uint32)0,(Uint32)floor(16.666f - _dt))));
+		//_dt = std::min(_MAX_DT, _dt); // no less than 50 fps simulated.
+		_dt = _MAX_DT;
 		_dt *= _slow_motion_factor;
 		_slow_motion_factor += 0.02f;
 		_slow_motion_factor = std::min(1.f, _slow_motion_factor);
