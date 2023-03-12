@@ -520,7 +520,7 @@ void Camera::load_from_file(Game& g, int level)
 					tex = (TEX::TEX)std::stoi(t);
 				}
 			}
-			_ASSERT(i >= 0 && j >= 0 && i < g._tile_handler._len && j < g._tile_handler._len);
+			//_ASSERT(i >= 0 && j >= 0 && i < g._tile_handler._len && j < g._tile_handler._len);
 			g._tile_handler._tiles[i][j] = tile;
 			g._tile_handler._texs[i][j] = tex;
 
@@ -975,7 +975,7 @@ void Camera::draw_hud(Game& g)
 		SDL_Color color = { 0,255,0,(Uint8)a };
 		if (p._bomb_recharge_timer > 0.f) {
 			charge_x = (int)(max_x * (p._bomb_recharge_timer / p._bomb_recharge_time));
-			color.r = 255Ui8;
+			color.r = 255;
 		}
 		else {
 			charge_x = (int)(max_x * (p._bomb_throw_charge / p._bomb_throw_max_charge));

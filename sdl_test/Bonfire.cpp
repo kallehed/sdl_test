@@ -85,9 +85,9 @@ void Bonfire::draw(Game& g)
 			uint8_t c_val = g._ticks % 256;
 			uint8_t c_val2 = (g._ticks*2 + 126) % 256;
 			uint8_t c_val3 = (g._ticks * 3) % 256;
-			SDL_Color c1 = { c_val,(Uint8)(c_val3%100Ui8),0,alpha };
+			SDL_Color c1 = { c_val,(Uint8)(c_val3%100),0,alpha };
 			SDL_Color c2 = { c_val3,0,0,alpha };
-			SDL_Color c3 = { c_val2,(Uint8)(c_val%100Ui8),0,alpha };
+			SDL_Color c3 = { c_val2,(Uint8)(c_val%100),0,alpha };
 			SDL_Color colors[4] = { c1,c2, c2,c3 };
 
 			constexpr uint8_t indices[6] =

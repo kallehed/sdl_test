@@ -31,8 +31,8 @@ bool Shot::logic(Game& g)
 		_set_new_owner = false;
 	}
 
-	_ASSERT(abs(_x_dir) <= 1.f);
-	_ASSERT(abs(_y_dir) <= 1.f);
+	//_ASSERT(abs(_x_dir) <= 1.f);
+	//_ASSERT(abs(_y_dir) <= 1.f);
 
 	change_x_vel(_x_dir*_speed);
 	change_y_vel(_y_dir*_speed);

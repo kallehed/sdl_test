@@ -2,7 +2,7 @@
 
 #include <array>
 #include <unordered_set>
-
+#include <cstddef>
 
 // Hash for std::array<int, 2>
 struct HashArray2Int {

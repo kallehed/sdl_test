@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Player.h"
-#include "QuadTree.h"
+#include "Quadtree.h"
 
 class Game;
 
