@@ -76,7 +76,7 @@ void Bonfire::draw(Game& g)
 		{ 
 			uint8_t alpha = (Uint8)(255.f * (_animation_timer / _animation_time));
 
-			constexpr float vertices[4*2] =
+			const float vertices[4*2] =
 			{ 0,0,
 			g._WIDTH, 0,
 			0, g._HEIGHT,

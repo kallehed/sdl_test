@@ -293,7 +293,7 @@ void Player::draw(Game& g)
 	// draw black flash when hit
 	if (_took_damage_this_frame) {
 		SDL_SetRenderDrawColor(g._renderer, 0, 0, 0, 126);
-		constexpr SDL_Rect full_screen_rect = { 0,0,g._WIDTH, g._HEIGHT };
+		const SDL_Rect full_screen_rect = { 0,0,g._WIDTH, g._HEIGHT };
 		SDL_RenderFillRect(g._renderer, &full_screen_rect);
 	}
 }
