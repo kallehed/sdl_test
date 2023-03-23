@@ -6,7 +6,7 @@ MOVING_RECT_TYPES Pickupable::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::PICKUPABLE;
 }
 
-Pickupable::Pickupable(PICKUPABLE_TYPE type, float x, float y, float x_vel, float y_vel)
+Pickupable::Pickupable(PICKUPABLE_TYPE::_ type, float x, float y, float x_vel, float y_vel)
 	: _type(type), MovingRect(0, 0, 30.f, 30.f, 0.003f)
 {
 	if (_type == PICKUPABLE_TYPE::COIN) {

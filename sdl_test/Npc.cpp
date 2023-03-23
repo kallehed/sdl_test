@@ -7,7 +7,7 @@ MOVING_RECT_TYPES Npc::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::NPC;
 }
 
-Npc::Npc(Game& g, NPC_TYPE type, float x, float y)
+Npc::Npc(Game& g, NPC_TYPE::_ type, float x, float y)
 	: MovingRect(x, y, 64, 74, 0.f), _npc_type(type)
 {
 	switch (_npc_type) {

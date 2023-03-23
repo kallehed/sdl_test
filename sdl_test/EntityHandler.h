@@ -132,5 +132,5 @@ public:
 	void logic(Game& g);
 	void draw(Game& g);
 	void place_enemy(Game& g, int x, int y);
-	void place_npc(Game& g, NPC_TYPE type, float x, float y);
+	void place_npc(Game& g, NPC_TYPE::_ type, float x, float y);
 };

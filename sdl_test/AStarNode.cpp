@@ -2,7 +2,6 @@
 #include "Game.h"
 #include <array>
 
-// TODO: MAKE THIS A SEPERATE FILE FOR ASTARNODE
 void AStarNode::set_variables(int G, int H)
 {
 	_G = G;

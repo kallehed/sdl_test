@@ -70,7 +70,7 @@ void EnemyBasic::take_damage(Game& g, int damage)
 
 void EnemyBasic::active_logic(Game& g)
 {
-	using enum ENEMY_BASIC_STATE;
+	using namespace ENEMY_BASIC_STATE;
 	switch (_state) {
 	case NORMAL: // go to player
 	{

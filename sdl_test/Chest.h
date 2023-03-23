@@ -11,7 +11,7 @@ public:
 	const char* _text1;
 	const char* _text2;
 
-	CHEST_TYPE _type;
+	CHEST_TYPE::_ _type;
 
 	TEX::TEX _tex;
 
@@ -22,7 +22,7 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const;
 
-	Chest(int onetime_index, float x, float y, int amount, CHEST_TYPE type);
+	Chest(int onetime_index, float x, float y, int amount, CHEST_TYPE::_ type);
 
 	bool logic(Game& g);
 

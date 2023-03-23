@@ -60,7 +60,7 @@ void EntityHandler::place_enemy(Game& g, int x, int y)
 		_entities.push_back(new EnemyShooter((float)x + g._cam._x + _, (float)y + g._cam._y));
 }
 
-void EntityHandler::place_npc(Game& g, NPC_TYPE type, float x, float y)
+void EntityHandler::place_npc(Game& g, NPC_TYPE::_ type, float x, float y)
 {
 	_draw_entities.push_back(new Npc(g, type, x, y));
 }

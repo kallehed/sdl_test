@@ -7,7 +7,7 @@
 class Npc : public MovingRect
 {
 public:
-	NPC_TYPE _npc_type;
+	NPC_TYPE::_ _npc_type;
 
 	// whether visible or not
 	bool _press_e_sign = false;
@@ -29,7 +29,7 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;
 
-	Npc(Game& g, NPC_TYPE type, float x, float y);
+	Npc(Game& g, NPC_TYPE::_ type, float x, float y);
 	
 	~Npc();
 

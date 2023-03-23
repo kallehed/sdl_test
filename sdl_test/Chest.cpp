@@ -6,14 +6,14 @@ MOVING_RECT_TYPES Chest::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::CHEST;
 }
 
-Chest::Chest(int onetime_index, float x, float y, int amount, CHEST_TYPE type)
+Chest::Chest(int onetime_index, float x, float y, int amount, CHEST_TYPE::_ type)
 	: MovingRect(x, y, 64, 58, 1.f),
 	_onetime_index(onetime_index),
 	_chest_amount(amount),
 	_type(type),
 	_text1("ERROR TEXT")
 {
-	using enum CHEST_TYPE;
+	using namespace CHEST_TYPE;
 	switch (_type) {
 	case COIN_CHEST:
 		_tex = TEX::Chest;

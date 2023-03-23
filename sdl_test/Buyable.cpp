@@ -6,13 +6,13 @@ MOVING_RECT_TYPES Buyable::get_moving_rect_type() const
 	return MOVING_RECT_TYPES::BUYABLE;
 }
 
-Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float y)
+Buyable::Buyable(int onetime_index, int cost, BUYABLE_TYPE::_ type, float x, float y)
 	: MovingRect(x, y, 60, 60, 1.f),
 	_onetime_index(onetime_index),
 	_cost(cost),
 	_type(type)
 {
-	using enum BUYABLE_TYPE;
+	using namespace BUYABLE_TYPE;
 	switch (_type) {
 	case FASTER_FIRE_RECHARGE:
 		_descriptive_text = "Faster Fire\nRecharge";
@@ -90,7 +90,7 @@ bool Buyable::logic(Game& g)
 
 					// Variable in respect to type
 					{
-						using enum BUYABLE_TYPE;
+						using namespace BUYABLE_TYPE;
 						switch (_type) {
 						case FASTER_FIRE_RECHARGE:
 							p._fire_magic_increase *= 1.35f;

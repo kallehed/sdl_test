@@ -8,7 +8,7 @@ public:
 
 	int _cost; // cost to buy in coins
 
-	BUYABLE_TYPE _type;
+	BUYABLE_TYPE::_ _type;
 
 	// text to display ALL THE TIME
 	const char* _descriptive_text = "ERROR_DESCRIPTIVE_TEXT";
@@ -23,7 +23,7 @@ public:
 
 	MOVING_RECT_TYPES get_moving_rect_type() const;
 
-	Buyable(int onetime_index, int cost, BUYABLE_TYPE type, float x, float y);
+	Buyable(int onetime_index, int cost, BUYABLE_TYPE::_ type, float x, float y);
 
 	bool logic(Game& g);
 

@@ -55,7 +55,7 @@ namespace TILE {
 
 // Textures. WARNING: ONLY ADD TEXTURES TO END!!!! OTHERWISE TEXTURES WILL BE SWAPPED WHEN LOADING SAVE
 namespace TEX {
-	enum TEX : char {
+	enum TEX : signed char {
 		VOID = -1,
 		FireMagic = 0,
 		BombExplosion,
@@ -162,79 +162,90 @@ namespace SOUND {
 }
 
 // Pickupables
-enum class PICKUPABLE_TYPE : char {
-	COIN,
-	SHOT,
-	BOMB,
-	HEART,
+namespace PICKUPABLE_TYPE {
+	enum _: char {
+		COIN,
+		SHOT,
+		BOMB,
+		HEART,
 
-	TOTAL
-};
+		TOTAL
+	};
+}
+namespace NPC_TYPE {
+	enum _ : char { // NPCX is the red bear now
+		NPC1,
+		NPC2,
+		GNOME,
+		GREEN_BOMB_GUY,
+		NPC3,
+		SUS_SELLER,
+		GUN_GIRL,
+		TREE_DUDE,
+		NPC4,
+		BANANA_MAN,
+		MOSQUITO,
 
-enum class NPC_TYPE : char { // NPCX is the red bear now
-	NPC1,
-	NPC2,
-	GNOME,
-	GREEN_BOMB_GUY,
-	NPC3,
-	SUS_SELLER,
-	GUN_GIRL,
-	TREE_DUDE,
-	NPC4,
-	BANANA_MAN,
-	MOSQUITO,
+		TOTAL
+	};
+}
+namespace DOOR_TYPE {
+	enum _ : char {
+		OH_HEY,
+		MORE_DIALOGUE,
+	};
+}
 
-	TOTAL
-};
-enum class DOOR_TYPE : char {
-	OH_HEY,
-	MORE_DIALOGUE,
-};
+namespace BUYABLE_TYPE{
+	enum _ : char {
+		// fire upgrades
+		FASTER_FIRE_RECHARGE,
+		LARGER_FIRE_LIMIT,
+		INCREASED_FIRE_DAMAGE,
+		LARGER_FIRE_AREA,
 
-enum class BUYABLE_TYPE : char {
-	// fire upgrades
-	FASTER_FIRE_RECHARGE,
-	LARGER_FIRE_LIMIT,
-	INCREASED_FIRE_DAMAGE,
-	LARGER_FIRE_AREA,
+		// bomb upgrades
+		LARGER_BOMB_AREA,
+		INCREASED_BOMB_DAMAGE,
 
-	// bomb upgrades
-	LARGER_BOMB_AREA,
-	INCREASED_BOMB_DAMAGE,
+		// Running
+		ABILITY_TO_RUN,
 
-	// Running
-	ABILITY_TO_RUN,
+		// Gunning
+		ABILITY_TO_GUN,
 
-	// Gunning
-	ABILITY_TO_GUN,
+		// Gun Upgrade Store
+		FASTER_SHOTS,
+		FASTER_RELOAD,
+		INCREASED_DURABILITY,
 
-	// Gun Upgrade Store
-	FASTER_SHOTS,
-	FASTER_RELOAD,
-	INCREASED_DURABILITY,
+		// BananaMan store
+		INCREASED_BULLET_DROPS,
+		DONATE_TO_CHARITY,
+		INCREASED_HP_GAIN,
 
-	// BananaMan store
-	INCREASED_BULLET_DROPS,
-	DONATE_TO_CHARITY,
-	INCREASED_HP_GAIN,
+		// WIN
+		WIN_THE_GAME,
 
-	// WIN
-	WIN_THE_GAME,
+		TOTAL
+	};
+}
 
-	TOTAL
-};
+namespace CHEST_TYPE {
+	enum  _ : char {
+		COIN_CHEST,
+		HP_UPGRADE,
+	};
+}
 
-enum class CHEST_TYPE : char {
-	COIN_CHEST,
-	HP_UPGRADE,
-};
-
-enum class ENEMY_BASIC_STATE : char
-{
-	NORMAL, // go towards player
-	ANGRY, // run towards player + be red
-	AFRAID, // run away from player 
-};
+namespace ENEMY_BASIC_STATE {
+	enum _ : char
+	{
+		NORMAL, // go towards player
+		ANGRY, // run towards player + be red
+		AFRAID, // run away from player 
+	};
+}
 
 enum class ENEMY_DASH_STATE : char
 {

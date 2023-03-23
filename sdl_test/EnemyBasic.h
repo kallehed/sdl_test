@@ -7,7 +7,7 @@ class EnemyBasic : public Enemy {
 private:
 	float _active_timer = 3000.f * General::randf01();
 	
-	ENEMY_BASIC_STATE _state = ENEMY_BASIC_STATE::NORMAL;
+	ENEMY_BASIC_STATE::_ _state = ENEMY_BASIC_STATE::NORMAL;
 
 public:
 	MOVING_RECT_TYPES get_moving_rect_type() const override final;

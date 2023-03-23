@@ -480,7 +480,7 @@ void Camera::load_from_file(Game& g, int level)
 	std::string portal_destination_name = "Error_Destination_name";
 
 	// NPC STUFF
-	NPC_TYPE npc_type = NPC_TYPE::NPC1;
+	NPC_TYPE::_ npc_type = NPC_TYPE::NPC1;
 
 	// ONETIME INDEX, used by Chest + Buyable
 	int onetime_index = 0;
@@ -488,14 +488,14 @@ void Camera::load_from_file(Game& g, int level)
 
 	// CHEST STUFF
 	int chest_amount = 0;
-	CHEST_TYPE chest_type = CHEST_TYPE::COIN_CHEST;
+	CHEST_TYPE::_ chest_type = CHEST_TYPE::COIN_CHEST;
 
 	// BUYABLE STUFF
 	int buyable_cost = -420;
-	BUYABLE_TYPE buyable_type = BUYABLE_TYPE::FASTER_FIRE_RECHARGE;
+	BUYABLE_TYPE::_ buyable_type = BUYABLE_TYPE::FASTER_FIRE_RECHARGE;
 
 	// DOOR STUFF
-	DOOR_TYPE door_type = DOOR_TYPE::OH_HEY;
+	DOOR_TYPE::_ door_type = DOOR_TYPE::OH_HEY;
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
@@ -572,7 +572,7 @@ void Camera::load_from_file(Game& g, int level)
 				}
 				else if (t == "npc_type") {
 					std::getline(f, t);
-					npc_type = (NPC_TYPE)std::stoi(t);
+					npc_type = (NPC_TYPE::_)std::stoi(t);
 				}
 				else if (t == "chest_amount") {
 					std::getline(f, t);
@@ -584,15 +584,15 @@ void Camera::load_from_file(Game& g, int level)
 				}
 				else if (t == "buyable_type") {
 					std::getline(f, t);
-					buyable_type = (BUYABLE_TYPE)std::stoi(t);
+					buyable_type = (BUYABLE_TYPE::_)std::stoi(t);
 				}
 				else if (t == "door_type") {
 					std::getline(f, t);
-					door_type = (DOOR_TYPE)std::stoi(t);
+					door_type = (DOOR_TYPE::_)std::stoi(t);
 				}
 				else if (t == "chest_type") {
 					std::getline(f, t);
-					chest_type = (CHEST_TYPE)std::stoi(t);
+					chest_type = (CHEST_TYPE::_)std::stoi(t);
 				}
 			}
 			if (type == "EnemyBasic") {
