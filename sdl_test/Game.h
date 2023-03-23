@@ -59,6 +59,8 @@ public:
 	std::array<int, 2> _mouse_pos_on_latest_press = {0, 0};
 	int32_t _mouse_scroll = 0;
 
+	bool _finger_down = false;
+
 	// how many keys there are
 	static constexpr int _KEY_BOOLS = 256;
 	// keys CURRENTLY pressed

@@ -354,10 +354,17 @@ void Game::game_loop()
 					_mouse_btn_pressed_this_frame[2] = true;	
 				}
 			}
+			else if (e.type == SDL_FINGERDOWN) {
+				_finger_down = true;
+			}
+			else if (e.type == SDL_FINGERUP) {
+				_finger_down = false;
+			}
 			if (e.type == SDL_MOUSEWHEEL)
 			{
 				_mouse_scroll = e.wheel.y;
 			}
+			
 		}
 
 		// IMPORTANT EVENTS, FROM CLICKING
