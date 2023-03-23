@@ -99,10 +99,14 @@ bool Player::logic(Game& g)
 //#define __ANDROID__
 
 #ifdef __ANDROID__
-		int m_x, m_y;
-		Uint32 buttons = g.getMouseState(&m_x, &m_y);
+		int m_xi, m_yi;
+		Uint32 buttons = g.getMouseState(&m_xi, &m_yi);
+		float m_x = m_xi / (float)g._WIDTH, m_y = m_yi / (float)g._HEIGHT;
+		if (m_x <= 0.25f && m_y >= 0.75f) {
+			change_x_vel(((m_x > 0.125f) ? (acc) : (-acc)));
+			change_y_vel(((m_y > 0.865f) ? (acc) : (-acc)));
+		}
 		
-		change_x_vel(m_x * ((m_x > 0.5f) ? (acc) : (-acc)));
 #endif
 	}
 
