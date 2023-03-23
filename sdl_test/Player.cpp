@@ -96,6 +96,14 @@ bool Player::logic(Game& g)
 			change_y_vel(-acc);
 			_forward = false;
 		}
+//#define __ANDROID__
+
+#ifdef __ANDROID__
+		int m_x, m_y;
+		Uint32 buttons = g.getMouseState(&m_x, &m_y);
+		
+		change_x_vel(m_x * ((m_x > 0.5f) ? (acc) : (-acc)));
+#endif
 	}
 
 	// let MovingRect handle the rest
