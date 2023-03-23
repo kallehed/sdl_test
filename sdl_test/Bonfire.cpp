@@ -78,9 +78,9 @@ void Bonfire::draw(Game& g)
 
 			const float vertices[4*2] =
 			{ 0,0,
-			g._WIDTH, 0,
-			0, g._HEIGHT,
-			g._WIDTH, g._HEIGHT };
+			(float)g._WIDTH, 0,
+			0, (float)g._HEIGHT,
+			(float)g._WIDTH, (float)g._HEIGHT };
 
 			uint8_t c_val = g._ticks % 256;
 			uint8_t c_val2 = (g._ticks*2 + 126) % 256;
