@@ -369,7 +369,6 @@ void Game::game_loop()
 
 		// IMPORTANT EVENTS, FROM CLICKING
 		//if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
-
 		if constexpr (DEV::DEV) {
 			if (_keys_frame[SDL_SCANCODE_K]) {
 				if (_edit_mode == false) {

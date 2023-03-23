@@ -25,7 +25,11 @@ class Game {
 public:
 	static constexpr int _HEIGHT = 600;
 	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
+#ifdef __ANDROID__
+	int _scale = 6;
+#else
 	int _scale = DEV::DEV ? 8 : 4;
+#endif
 	static constexpr float _scale_granularity = 0.25f;
 
 	long long _ticks = 0;

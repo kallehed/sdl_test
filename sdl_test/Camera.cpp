@@ -14,6 +14,7 @@
 #include "BossBody.h"
 #include "Boss2.h"
 #include <fstream>
+#include <sstream>
 
 void Camera::construct(Game& g)
 {
@@ -459,7 +460,19 @@ void Camera::load_from_file(Game& g, int level)
 	// Read from the text file
 	std::string text_file = "data/levels/level_" + std::to_string(level) + ".txt";
 
+#ifdef __ANDROID__
+	SDL_RWops* io = SDL_RWFromFile(text_file.c_str(), "r");
+	if (io == NULL) {
+		SDL_Log("testing KALLE FAILED TO LOAD RWOPS FILE");
+		return;
+	}
+	char name[500000];
+	io->read(io, name, sizeof (name), 1);
+	std::stringstream f;
+	f << name;
+#else
 	std::ifstream f(text_file);
+#endif
 
 	bool player_has_been_placed_by_portal = false;
 
@@ -499,6 +512,7 @@ void Camera::load_from_file(Game& g, int level)
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
+		SDL_Log("KALLE log: %s", t.c_str());
 		// Output the text from the file
 		if (t == "TILE") {
 			while (t != "END") {
@@ -676,8 +690,10 @@ void Camera::load_from_file(Game& g, int level)
 	g._cam._max_x = (highest_tile_j + 1) * g._cam._fgrid - g._WIDTH;
 	g._cam._max_y = (highest_tile_i + 1) * g._cam._fgrid - g._HEIGHT;
 
+#ifndef __ANDROID__
 	// Close the file
 	f.close();
+#endif
 }
 
 void Camera::draw_edit(Game& g)
