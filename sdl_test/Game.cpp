@@ -407,42 +407,48 @@ void Game::game_loop()
 			}
 			break;
 #else
-#define KALLE_MOUSE_IN_MOVEMENT_ZONE (m_x <= 0.25f && m_y >= 0.75f)
+#define KALLE_GET_MOUSE_VARS float m_x = e.tfinger.x * _WIDTH, m_y = e.tfinger.y * _HEIGHT;
+#define KALLE_MOUSE_IN_MOVEMENT_ZONE (m_x<= _MOVEBOX_LEN && m_y >= (_HEIGHT-_MOVEBOX_LEN))
             case SDL_FINGERMOTION:
 			{
-                float m_x = e.tfinger.x, m_y = e.tfinger.y;
+                KALLE_GET_MOUSE_VARS
                 SDL_Log("mouse x: KALLE: %f", m_x);
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
-                    _keys_down[SDL_SCANCODE_A] = false;
-                    _keys_down[SDL_SCANCODE_D] = false;
                     _keys_down[SDL_SCANCODE_W] = false;
+                    _keys_down[SDL_SCANCODE_A] = false;
                     _keys_down[SDL_SCANCODE_S] = false;
-                    _keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
-                    _keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
+                    _keys_down[SDL_SCANCODE_D] = false;
+                    //_keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
+                    //_keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
+					if (m_x <= _MOVEBOX_PART) _keys_down[SDL_SCANCODE_A] = true;
+					else if (m_x >= 2.f*_MOVEBOX_PART) _keys_down[SDL_SCANCODE_D] = true;
+
+                    if (m_y <= _HEIGHT - 2.f*_MOVEBOX_PART) _keys_down[SDL_SCANCODE_W] = true;
+					else if (m_y >= _HEIGHT - _MOVEBOX_PART) _keys_down[SDL_SCANCODE_S] = true;
                 } else {
-					_mouse_pos[0] = m_x * _WIDTH;
-                    _mouse_pos[1] = m_y * _HEIGHT;
+					_mouse_pos[0] = m_x;
+                    _mouse_pos[1] = m_y;
 				}
             }
             break;
             case SDL_FINGERDOWN:
 			{
-                float m_x = e.tfinger.x, m_y = e.tfinger.y;
+                KALLE_GET_MOUSE_VARS
 				SDL_Log("pressed KALLE fingerdown");
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
-                    _keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
-                    _keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
+                    //_keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
+                    //_keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
                 } else {
                     _mouse_btn_pressed_this_frame[0] = true;
 					_mouse_btn_down[0] = true;
-                    _mouse_pos[0] = m_x * _WIDTH;
-                    _mouse_pos[1] = m_y * _HEIGHT;
+                    _mouse_pos[0] = m_x;
+                    _mouse_pos[1] = m_y;
                 }
             }
             break;
             case SDL_FINGERUP:
 			{
-                float m_x = e.tfinger.x, m_y = e.tfinger.y;
+                KALLE_GET_MOUSE_VARS
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
                     _keys_down[SDL_SCANCODE_A] = false;
                     _keys_down[SDL_SCANCODE_D] = false;
@@ -599,6 +605,20 @@ void Game::game_draw()
 	if constexpr (EDIT) { // exclusive edit-things-to-draw
 		_cam.draw_edit_text(*this); // grid
 	}
+
+#ifdef __ANDROID__
+    {
+        SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 75);
+		const SDL_Rect r = {0, _HEIGHT - _MOVEBOX_LEN, _MOVEBOX_LEN, _MOVEBOX_LEN};
+		SDL_RenderFillRect(_renderer, &r);
+        SDL_SetRenderDrawColor(_renderer, 200,200,200,255);
+        SDL_RenderDrawLine(_renderer, (int)_MOVEBOX_PART, _HEIGHT - _MOVEBOX_LEN, (int)_MOVEBOX_PART, _HEIGHT);
+        SDL_RenderDrawLine(_renderer, (int)(_MOVEBOX_PART*2.f), _HEIGHT - _MOVEBOX_LEN, (int)(_MOVEBOX_PART*2.f), _HEIGHT);
+
+        SDL_RenderDrawLine(_renderer, 0, (int)(_HEIGHT - 2.f*_MOVEBOX_PART), _MOVEBOX_LEN, (int)(_HEIGHT - 2.f*_MOVEBOX_PART));
+        SDL_RenderDrawLine(_renderer, 0, (int)(_HEIGHT - _MOVEBOX_PART), _MOVEBOX_LEN, (int)(_HEIGHT - _MOVEBOX_PART));
+    }
+#endif
 
 	SDL_RenderPresent(_renderer);
 }

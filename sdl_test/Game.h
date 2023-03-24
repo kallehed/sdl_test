@@ -26,6 +26,11 @@ public:
 	static constexpr int _HEIGHT = 600;
 	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
 
+	// for android, should be in lower left corner of screen
+	static constexpr int _MOVEBOX_LEN = 200;
+	// divided into a 3x3 box for movement on ANDROID
+	static constexpr float _MOVEBOX_PART = _MOVEBOX_LEN/3.f;
+
 	long long _ticks = 0;
 
 	SDL_Window* _window = nullptr;

@@ -16,14 +16,29 @@ public:
 
 	// mutable data, delegated to one Npc at a time.
 	// They can change the data, but will restore it on destruction.
+#ifndef __ANDROID__
 	char _NPC_1_TEXT[284] = 
-		"Oh\0Right\0Hi, do not threat,\nfor I will help you!\0"
+		"Oh\0Right\0Hi, do not fret,\nfor I will help you!\0"
 		"Firstly...   \nAs you probably already know,   \nyou can move with the arrows.\0"
 		"Secondly, you can 'left click'\nto attack with fire!\0"
 		"Maybe also something with\nyour 'right click'...\0"
 		"Thirdly...      \nI have nothing more to say...\0"
 		"Good luck?";
 	int _NPC_1_TOTAL_CHARS = 284;
+#else
+	char _NPC_1_TEXT[3720] =
+		"Oh\0Right\0Hi, do not fret,\nfor I will help you!\0"
+		"Ahhh, very interesting!\0It seems you are an\nAndroid user?\0"
+		"Well...   \nAs you probably already know,   \nyou can move by toucing the\0"
+		"bottom left corner.\0"
+		"Secondly, you can touch the\nscreen anywhere else to\nattack with fire!\0"
+		"Once you get bombs\nyou will also be able\nto triple touch and quadruple\0touch to throw bombs!\0"
+		"Thirdly...      \nI have nothing more to say...\0"
+		"Except wait,     \nin the VERY far future,   \nyou will be able to\0switch weapons!\0"
+		"That will be\nachieved by placing FIVE\nfingers at once on the screen\0"
+		"Anyway...   \nGood luck?";
+	int _NPC_1_TOTAL_CHARS = 3720;
+#endif
 
 	char _NPC_2_TEXT[245] =
 		"Ah, you survived the path!    \nGreat, you are truly strong\nin many ways.\0"
