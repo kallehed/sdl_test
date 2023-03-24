@@ -576,7 +576,13 @@ void Game::game_logic()
 template <bool EDIT>
 void Game::game_draw()
 {
+#ifdef __ANDROID__
+	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
+#else
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+#endif
+	
+	
 	SDL_RenderClear(_renderer);
 
 	if constexpr (EDIT) { // exclusive edit-things-to-draw
