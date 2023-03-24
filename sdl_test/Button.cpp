@@ -24,8 +24,7 @@ Button::~Button()
 BTN::BTN Button::logic(Game& g)
 {
 	// left click
-	int m_x, m_y;
-	g.getMouseState(&m_x, &m_y);
+	int m_x = g._mouse_pos[0], m_y = g._mouse_pos[1];
 
 	if (General::general_rect_intersection(
 		_rect.x, _rect.y, _rect.w, _rect.h,

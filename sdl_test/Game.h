@@ -25,12 +25,6 @@ class Game {
 public:
 	static constexpr int _HEIGHT = 600;
 	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
-#ifdef __ANDROID__
-	int _scale = 7;
-#else
-	int _scale = DEV::DEV ? 8 : 4;
-#endif
-	static constexpr float _scale_granularity = 0.25f;
 
 	long long _ticks = 0;
 
@@ -61,7 +55,7 @@ public:
 
 	std::array<bool, 3> _mouse_btn_pressed_this_frame = { false, false, false }; // left, middle, right
 	std::array<bool, 3> _mouse_btn_down = {false, false, false}; // same as prev line
-	std::array<int, 2> _mouse_pos_on_latest_press = {0, 0};
+	std::array<int, 2> _mouse_pos = {0, 0};
 	int32_t _mouse_scroll = 0;
 
 	// how many keys there are
@@ -92,7 +86,6 @@ public:
 	void play_sound(SOUND::_ sound);
 
 	void changeScale(int change);
-	void getMouseState(int* x, int* y);
 
 	Game();
 	void start_game();

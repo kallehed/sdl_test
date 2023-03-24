@@ -161,9 +161,8 @@ void Camera::edit_logic(Game& g)
 			// place/delete things stuff
 
 			// mouse x and y, on screen
-			int m_x;
-			int m_y;
-			g.getMouseState(&m_x, &m_y);
+			int m_x = g._mouse_pos[0];
+			int m_y = g._mouse_pos[1];
 
 			// real x and y, on map
 			float r_x = _x + m_x;

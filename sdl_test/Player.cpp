@@ -137,8 +137,7 @@ bool Player::logic(Game& g)
 
 	// use weapons(both left and right)
 	{
-		int m_x, m_y;
-		g.getMouseState(&m_x, &m_y);
+		int m_x = g._mouse_pos[0], m_y = g._mouse_pos[1];
 
 		// left mouse button weapons
 		{

@@ -56,35 +56,6 @@ SDL_Texture* Game::loadTexture(const char* path)
 	return newTexture;
 }
 
-void Game::changeScale(int change)
-{
-	//_scale = std::min(12, std::max(_scale + change, 1));
-	_scale = std::max(_scale + change, 1);
-
-	float r_scale = _scale * _scale_granularity;
-	SDL_SetWindowSize(_window, (int)(_WIDTH * r_scale), (int)(_HEIGHT * r_scale));
-	SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
-}
-
-void Game::getMouseState(int* x, int* y)
-{
-
-#ifndef __ANDROID__
-	float r_scale = _scale * _scale_granularity;
-	Uint32 buttons = SDL_GetMouseState(x, y);
-	(*x) = (int)((*x)/r_scale); // correctly place mouse position when window is bigger
-	(*y) = (int)((*y)/r_scale);
-#else
-	Uint32 buttons;
-	//float r_scale = _scale * _scale_granularity * 1.f;
-	float r_scale = 1.f;
-	(*x) = _mouse_pos_on_latest_press[0];
-	(*y) = _mouse_pos_on_latest_press[1];
-	(*x) = (int)((*x)/r_scale); // correctly place mouse position when window is bigger
-	(*y) = (int)((*y)/r_scale);
-#endif
-}
-
 void Game::play_music(MUS::_ music)
 {
 	if (music == (MUS::_)(-1)) {
@@ -116,8 +87,8 @@ Game::Game()
 	_window = SDL_CreateWindow("Legend of the Banana Man",
 		DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED, DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED,
 		_WIDTH, _HEIGHT,
-		SDL_WINDOW_SHOWN);
-	SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	//SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
 	
 	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
@@ -257,7 +228,7 @@ Game::Game()
 	}
 	Mix_VolumeMusic(90);
 
-	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	_tile_handler.TileHandler_construct(*this);
 	_cam.construct(*this);
 
@@ -274,7 +245,14 @@ Game::Game()
 	// at 1 or 2, makes text very blurry.
 	
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
-	changeScale(0);
+	//changeScale(0);
+	// 
+	// JUST TESTING THINGS
+	//_scale = std::max(_scale + change, 1);
+	//SDL_SetWindowSize(_window, (int)(_WIDTH* r_scale), (int)(_HEIGHT* r_scale));
+	//SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
+	
+	SDL_RenderSetLogicalSize(_renderer, _WIDTH, _HEIGHT);
 
 	_cam.load_from_file(*this, _level);
 }
@@ -330,11 +308,30 @@ void Game::game_loop()
 		{
 			//User requests quit
             switch (e.type) {
-            case SDL_QUIT: {
+            case SDL_QUIT:
+			{
 				running = false;
 			}
             break;
-            case SDL_KEYDOWN: {
+			case SDL_WINDOWEVENT:
+			{
+				switch (e.window.event) {
+				case SDL_WINDOWEVENT_RESIZED:
+				{
+					SDL_Log("Window %d resized to %dx%d",
+						e.window.windowID, e.window.data1,
+						e.window.data2);
+					//SDL_RenderSetLogicalSize(_renderer,e.window.data1, e.window.data2);
+					//float sx = e.window.data1 / (float)_WIDTH, sy = e.window.data2 / (float)_HEIGHT;
+					//SDL_RenderSetScale(_renderer, sx, sy);
+				}
+				break;
+				}
+			}
+			break;
+			
+            case SDL_KEYDOWN:
+			{
 				if (e.key.keysym.scancode < _KEY_BOOLS) {
 					if (_keys_down[e.key.keysym.scancode] == false) {
 						_keys_frame[e.key.keysym.scancode] = true;
@@ -348,43 +345,71 @@ void Game::game_loop()
 #endif
 			}
             break;
-			case SDL_KEYUP: {
+			case SDL_KEYUP:
+			{
 				if (e.key.keysym.scancode < _KEY_BOOLS) {
 					_keys_down[e.key.keysym.scancode] = false;
 				}
 			}
             break;
 #ifndef __ANDROID__
-            case SDL_MOUSEBUTTONDOWN: {
-				int x, y;
-				Uint32 buttons;
-				buttons = getMouseState(&x, &y);
-				_mouse_pos_on_latest_press = { x, y };
-
-				if ((buttons & SDL_BUTTON_LMASK) != 0) { // left mouse pressed
-					
-					std::cout << " left mouse pressed \n";
-					_mouse_btn_pressed_this_frame[0] = true;
+            case SDL_MOUSEBUTTONDOWN:
+			{
+				switch (e.button.button) {
+				case SDL_BUTTON_LEFT: { // left mouse pressed
+						std::cout << " left mouse pressed \n";
+						_mouse_btn_pressed_this_frame[0] = true;
+						_mouse_btn_down[0] = true;
+					}
+				break;
+				case SDL_BUTTON_MIDDLE: { // middle mouse pressed
+						std::cout << " middle mouse pressed MMMMMMMM \n";
+						_mouse_btn_pressed_this_frame[1] = true;
+						_mouse_btn_down[1] = true;
+					}
+				break;
+				case SDL_BUTTON_RIGHT: { // right mouse pressed
+						std::cout << " right mouse pressed \n";
+						_mouse_btn_pressed_this_frame[2] = true;
+						_mouse_btn_down[2] = true;
+					}
 				}
-				else if ((buttons & SDL_BUTTON_MMASK) != 0) { // middle mouse pressed
-
-					std::cout << " middle mouse pressed MMMMMMMM \n";
-					_mouse_btn_pressed_this_frame[1] = true;
-				}
-				else if ((buttons & SDL_BUTTON_RMASK) != 0) { // right mouse pressed
-					
-					std::cout << " right mouse pressed \n";
-					_mouse_btn_pressed_this_frame[2] = true;	
-				}
+				break;
 			}
             break;
-            case SDL_MOUSEWHEEL: {
+			case SDL_MOUSEBUTTONUP:
+			{
+				switch (e.button.button) {
+				case SDL_BUTTON_LEFT: { // left mouse pressed
+					_mouse_btn_down[0] = false;
+				}
+				break;
+				case SDL_BUTTON_MIDDLE: { // middle mouse pressed
+					_mouse_btn_down[1] = false;
+				}
+				break;
+				case SDL_BUTTON_RIGHT: { // right mouse pressed
+					_mouse_btn_down[2] = false;
+				}
+				}
+				break;
+			}
+			break;
+            case SDL_MOUSEWHEEL:
+			{
 				_mouse_scroll = e.wheel.y;
 			}
             break;
+			case SDL_MOUSEMOTION:
+			{
+				_mouse_pos[0] = e.motion.x;
+				_mouse_pos[1] = e.motion.y;
+			}
+			break;
 #else
 #define KALLE_MOUSE_IN_MOVEMENT_ZONE (m_x <= 0.25f && m_y >= 0.75f)
-            case SDL_FINGERMOTION: {
+            case SDL_FINGERMOTION:
+			{
                 float m_x = e.tfinger.x, m_y = e.tfinger.y;
                 SDL_Log("mouse x: KALLE: %f", m_x);
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
@@ -395,12 +420,13 @@ void Game::game_loop()
                     _keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
                     _keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
                 } else {
-					_mouse_pos_on_latest_press[0] = m_x * _WIDTH;
-                    _mouse_pos_on_latest_press[1] = m_y * _HEIGHT;
+					_mouse_pos[0] = m_x * _WIDTH;
+                    _mouse_pos[1] = m_y * _HEIGHT;
 				}
             }
             break;
-            case SDL_FINGERDOWN: {
+            case SDL_FINGERDOWN:
+			{
                 float m_x = e.tfinger.x, m_y = e.tfinger.y;
 				SDL_Log("pressed KALLE fingerdown");
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
@@ -409,12 +435,13 @@ void Game::game_loop()
                 } else {
                     _mouse_btn_pressed_this_frame[0] = true;
 					_mouse_btn_down[0] = true;
-                    _mouse_pos_on_latest_press[0] = m_x * _WIDTH;
-                    _mouse_pos_on_latest_press[1] = m_y * _HEIGHT;
+                    _mouse_pos[0] = m_x * _WIDTH;
+                    _mouse_pos[1] = m_y * _HEIGHT;
                 }
             }
             break;
-            case SDL_FINGERUP: {
+            case SDL_FINGERUP:
+			{
                 float m_x = e.tfinger.x, m_y = e.tfinger.y;
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
                     _keys_down[SDL_SCANCODE_A] = false;
@@ -426,7 +453,8 @@ void Game::game_loop()
 				}
             }
             break;
-            case SDL_MULTIGESTURE: {
+            case SDL_MULTIGESTURE:
+			{
 				//_mouse_btn_pressed_this_frame[0] = false;
 				SDL_Log("KALLE pressed multigest: %d", e.mgesture.numFingers);
                 switch (e.mgesture.numFingers) {
@@ -465,12 +493,6 @@ void Game::game_loop()
 					_cam.save_to_file(*this);
 				}
 			}
-		}
-		if (_keys_frame[SDL_SCANCODE_O]) { // scale change
-			changeScale(-1);
-		}
-		if (_keys_frame[SDL_SCANCODE_P]) {
-			changeScale(1);
 		}
 
 		game_logic();
