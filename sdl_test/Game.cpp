@@ -90,8 +90,8 @@ Game::Game()
 		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	//SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
 	
-	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
@@ -245,12 +245,6 @@ Game::Game()
 	// at 1 or 2, makes text very blurry.
 	
 	//SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
-	//changeScale(0);
-	// 
-	// JUST TESTING THINGS
-	//_scale = std::max(_scale + change, 1);
-	//SDL_SetWindowSize(_window, (int)(_WIDTH* r_scale), (int)(_HEIGHT* r_scale));
-	//SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
 	
 	SDL_RenderSetLogicalSize(_renderer, _WIDTH, _HEIGHT);
 
@@ -321,9 +315,6 @@ void Game::game_loop()
 					SDL_Log("Window %d resized to %dx%d",
 						e.window.windowID, e.window.data1,
 						e.window.data2);
-					//SDL_RenderSetLogicalSize(_renderer,e.window.data1, e.window.data2);
-					//float sx = e.window.data1 / (float)_WIDTH, sy = e.window.data2 / (float)_HEIGHT;
-					//SDL_RenderSetScale(_renderer, sx, sy);
 				}
 				break;
 				}
@@ -485,6 +476,16 @@ void Game::game_loop()
             }
         }
 
+		if (_keys_frame[SDL_SCANCODE_RETURN]) {
+			Uint32 flags = SDL_GetWindowFlags(_window);
+			if (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+				SDL_SetWindowFullscreen(_window, 0);
+			}
+			else {
+				SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			}
+		}
+
 		// IMPORTANT EVENTS, FROM CLICKING
 		//if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
 		if constexpr (DEV::DEV) {
@@ -556,7 +557,7 @@ void Game::game_loop()
 		}
 		_dt = 1000.f * (SDL_GetPerformanceCounter() - start_time) / ((float)SDL_GetPerformanceFrequency());
 		SDL_Delay(std::min((Uint32)30,std::max((Uint32)0,(Uint32)floor(16.666f - _dt))));
-		//_dt = std::min(_MAX_DT, _dt); // no less than 50 fps simulated.
+		//_dt = std::min(_MAX_DT, _dt); // no less than 60 fps simulated.
 		_dt = _MAX_DT;
 		_dt *= _slow_motion_factor;
 		_slow_motion_factor += 0.02f;

@@ -35,20 +35,11 @@ void Camera::shake(Game& g, float divider, float intensity)
 }
 
 int Camera::convert_x(int x) const {
-	return x - (int)_x;
+	return (float)x - _x;
 }
 
 int Camera::convert_y(int y) const {
-	return y - (int)_y;
-}
-
-float Camera::convert_x(float x) const {
-	return x - (float)_x;
-}
-
-float Camera::convert_y(float y) const
-{
-	return y - (float)_y;
+	return (float)y - _y;
 }
 
 int Camera::convert_x_to_j(float x)
@@ -68,8 +59,15 @@ void Camera::play_logic(Game& g)
 	float tary = p.mid_y() - g._HEIGHT / 2.f;
 
 	float speed = 0.2f;
-	_x += (tarx - _x) * speed;
-	_y += (tary - _y) * speed;
+	float x_change = (tarx - _x) * speed;
+	float y_change = (tary - _y) * speed;
+
+	// limit too small camera movements
+	static const float mov_boundary = 1.f;
+	if (std::abs(x_change) > mov_boundary)
+		_x += x_change;
+	if (std::abs(y_change) > mov_boundary)
+		_y += y_change;
 
 	//if (_shake_timer > 0.f) {
 		//_shake_timer -= g._dt;
@@ -89,6 +87,14 @@ void Camera::play_logic(Game& g)
 	float max_y = std::max(_max_y, p._y + p._h - g._HEIGHT);
 	if (_x > max_x) _x = max_x;
 	if (_y > max_y) _y = max_y;
+	
+	// make coordinates NOT too floaty
+	const float dec = 1.f;
+	_x *= dec; _y *= dec;
+	_x = std::round(_x);
+	_y = std::round(_y);
+
+	_x /= dec; _y /= dec;
 }
 
 template <typename T>

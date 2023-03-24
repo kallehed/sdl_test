@@ -17,16 +17,16 @@ public:
 	// mutable data, delegated to one Npc at a time.
 	// They can change the data, but will restore it on destruction.
 #ifndef __ANDROID__
-	char _NPC_1_TEXT[284] = 
+	char _NPC_1_TEXT[282] = 
 		"Oh\0Right\0Hi, do not fret,\nfor I will help you!\0"
 		"Firstly...   \nAs you probably already know,   \nyou can move with the arrows.\0"
 		"Secondly, you can 'left click'\nto attack with fire!\0"
 		"Maybe also something with\nyour 'right click'...\0"
 		"Thirdly...      \nI have nothing more to say...\0"
 		"Good luck?";
-	int _NPC_1_TOTAL_CHARS = 284;
+	int _NPC_1_TOTAL_CHARS = 282;
 #else
-	char _NPC_1_TEXT[3720] =
+	char _NPC_1_TEXT[580] =
 		"Oh\0Right\0Hi, do not fret,\nfor I will help you!\0"
 		"Ahhh, very interesting!\0It seems you are an\nAndroid user?\0"
 		"Well...   \nAs you probably already know,   \nyou can move by toucing the\0"
@@ -37,9 +37,8 @@ public:
 		"Except wait,     \nin the VERY far future,   \nyou will be able to\0switch weapons!\0"
 		"That will be\nachieved by placing FIVE\nfingers at once on the screen\0"
 		"Anyway...   \nGood luck?";
-	int _NPC_1_TOTAL_CHARS = 3720;
+	int _NPC_1_TOTAL_CHARS = 580;
 #endif
-
 	char _NPC_2_TEXT[245] =
 		"Ah, you survived the path!    \nGreat, you are truly strong\nin many ways.\0"
 		"Still, it might be wise to\nheal, and restore your health.    \nProbably for the best.\0"
@@ -132,12 +131,13 @@ public:
 		"(More like 'BANANAeutiful'...)\nhehe...";
 	int _NPC_BANANA_MAN_TOTAL_CHARS = 287;
 
-	char _NPC_MOSQUITO_TEXT[118] =
+	char _NPC_MOSQUITO_TEXT[175] =
 		"Bzz   \0"
 		"Bzzzz     \0"
-		"You know you can\nchange the window size with\nO and P right?\0"
-		"O and P, don't forget it         \nBzzzz";
-	int _NPC_MOSQUITO_TOTAL_CHARS = 118;
+		"I'm a mosquito\0Not that anyone cares...   \nAnyway.\0"
+		"On a computer, it's\npossible to fullscreen by\npressing enter.\0"
+		"Enter to fullscreen.\nDon't forget it!\nBzzzz";
+	int _NPC_MOSQUITO_TOTAL_CHARS = 175;
 
 private:
 	inline void do_logic(Game& g, std::vector<MovingRect*>& vec);

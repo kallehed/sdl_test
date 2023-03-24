@@ -37,8 +37,6 @@ public:
 
 	int convert_x(int x) const;
 	int convert_y(int y) const;
-	float convert_x(float x) const;
-	float convert_y(float y) const;
 	int convert_x_to_j(float x);
 	int convert_y_to_i(float y);
 
