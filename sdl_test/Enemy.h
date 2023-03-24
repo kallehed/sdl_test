@@ -37,7 +37,7 @@ public:
 
 	Enemy(float x, float y,float w, float h, int max_hp, float activation_radius, float deactivation_radius, float active_time, float active_basic_speed, float idle_still_time, float idle_walk_time, float get_away_distance, float get_closer_distance, float idle_speed);
 
-	bool logic(Game& g);
+	bool logic(Game& g) override;
 
 	void idle_logic(Game& g);
 

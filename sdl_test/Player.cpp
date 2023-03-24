@@ -99,7 +99,7 @@ bool Player::logic(Game& g)
 //#define __ANDROID__
 
 #ifdef __ANDROID__
-		if (g._finger_down) {
+		/*if (g._finger_down) {
 			int m_xi, m_yi;
 			Uint32 buttons = g.getMouseState(&m_xi, &m_yi);
 			float m_x = m_xi / (float)g._WIDTH, m_y = m_yi / (float)g._HEIGHT;
@@ -107,7 +107,7 @@ bool Player::logic(Game& g)
 				change_x_vel(((m_x > 0.125f) ? (acc) : (-acc)));
 				change_y_vel(((m_y > 0.865f) ? (acc) : (-acc)));
 			}
-		}
+		}*/
 #endif
 	}
 
@@ -138,7 +138,7 @@ bool Player::logic(Game& g)
 	// use weapons(both left and right)
 	{
 		int m_x, m_y;
-		Uint32 buttons = g.getMouseState(&m_x, &m_y);
+		g.getMouseState(&m_x, &m_y);
 
 		// left mouse button weapons
 		{
@@ -185,7 +185,7 @@ bool Player::logic(Game& g)
 				
 				if (_shots > 0 && _left_timer > _shoot_time)
 				{
-					if ((buttons & SDL_BUTTON_LMASK) != 0) // left
+					if (g._mouse_btn_down[0]) // left
 					//if (g._mouse_btn_pressed_this_frame[0]) // left mouse btn
 					{
 						_left_timer = 0.f;
@@ -220,7 +220,7 @@ bool Player::logic(Game& g)
 			{	// "charging bomb throw" state
 
 				// check if right mouse button has been let go
-				if ((buttons & SDL_BUTTON_RMASK) == 0)
+				if (!g._mouse_btn_down[2])
 				{
 					float bomb_speed = 1.5f * _bomb_throw_charge / _bomb_throw_max_charge;
 					float nx, ny;

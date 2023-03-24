@@ -66,14 +66,23 @@ void Game::changeScale(int change)
 	SDL_RenderSetScale(_renderer, (float)r_scale, (float)r_scale);
 }
 
-Uint32 Game::getMouseState(int* x, int* y)
+void Game::getMouseState(int* x, int* y)
 {
+
+#ifndef __ANDROID__
 	float r_scale = _scale * _scale_granularity;
 	Uint32 buttons = SDL_GetMouseState(x, y);
 	(*x) = (int)((*x)/r_scale); // correctly place mouse position when window is bigger
 	(*y) = (int)((*y)/r_scale);
-
-	return buttons;
+#else
+	Uint32 buttons;
+	//float r_scale = _scale * _scale_granularity * 1.f;
+	float r_scale = 1.f;
+	(*x) = _mouse_pos_on_latest_press[0];
+	(*y) = _mouse_pos_on_latest_press[1];
+	(*x) = (int)((*x)/r_scale); // correctly place mouse position when window is bigger
+	(*y) = (int)((*y)/r_scale);
+#endif
 }
 
 void Game::play_music(MUS::_ music)
@@ -98,10 +107,12 @@ void Game::play_sound(SOUND::_ sound)
 
 Game::Game()
 {
+
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		std::cin.get();
 	}
+	//SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
 	_window = SDL_CreateWindow("Legend of the Banana Man",
 		DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED, DEV::DEV ? 50 : SDL_WINDOWPOS_UNDEFINED,
 		_WIDTH, _HEIGHT,
@@ -251,7 +262,11 @@ Game::Game()
 	_cam.construct(*this);
 
 	// Press E texture
+#ifdef __ANDROID__
+	SDL_Surface* surface = TTF_RenderText_Solid(_font, "Press back", {0,0,0,255});
+#else
 	SDL_Surface* surface = TTF_RenderText_Solid(_font, "Press E", {0,0,0,255});
+#endif
 	_press_e_texture = SDL_CreateTextureFromSurface(_renderer, surface);
 	_press_e_w_and_h = { surface->w, surface->h };
 	SDL_FreeSurface(surface);
@@ -314,25 +329,33 @@ void Game::game_loop()
 		while (SDL_PollEvent(&e) != 0)
 		{
 			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
+            switch (e.type) {
+            case SDL_QUIT: {
 				running = false;
 			}
-			else if (e.type == SDL_KEYDOWN) {
+            break;
+            case SDL_KEYDOWN: {
 				if (e.key.keysym.scancode < _KEY_BOOLS) {
 					if (_keys_down[e.key.keysym.scancode] == false) {
 						_keys_frame[e.key.keysym.scancode] = true;
 					}
 					_keys_down[e.key.keysym.scancode] = true;
 				}
+#ifdef __ANDROID__
+                if (e.key.keysym.sym == SDLK_AC_BACK) { // back key
+                    _keys_frame[SDL_SCANCODE_E] = true;
+                }
+#endif
 			}
-			else if (e.type == SDL_KEYUP) {
+            break;
+			case SDL_KEYUP: {
 				if (e.key.keysym.scancode < _KEY_BOOLS) {
 					_keys_down[e.key.keysym.scancode] = false;
 				}
 			}
-			else if (e.type == SDL_MOUSEBUTTONDOWN) {
-				
+            break;
+#ifndef __ANDROID__
+            case SDL_MOUSEBUTTONDOWN: {
 				int x, y;
 				Uint32 buttons;
 				buttons = getMouseState(&x, &y);
@@ -354,18 +377,79 @@ void Game::game_loop()
 					_mouse_btn_pressed_this_frame[2] = true;	
 				}
 			}
-			else if (e.type == SDL_FINGERDOWN) {
-				_finger_down = true;
-			}
-			else if (e.type == SDL_FINGERUP) {
-				_finger_down = false;
-			}
-			if (e.type == SDL_MOUSEWHEEL)
-			{
+            break;
+            case SDL_MOUSEWHEEL: {
 				_mouse_scroll = e.wheel.y;
 			}
-			
-		}
+            break;
+#else
+#define KALLE_MOUSE_IN_MOVEMENT_ZONE (m_x <= 0.25f && m_y >= 0.75f)
+            case SDL_FINGERMOTION: {
+                float m_x = e.tfinger.x, m_y = e.tfinger.y;
+                SDL_Log("mouse x: KALLE: %f", m_x);
+                if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
+                    _keys_down[SDL_SCANCODE_A] = false;
+                    _keys_down[SDL_SCANCODE_D] = false;
+                    _keys_down[SDL_SCANCODE_W] = false;
+                    _keys_down[SDL_SCANCODE_S] = false;
+                    _keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
+                    _keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
+                } else {
+					_mouse_pos_on_latest_press[0] = m_x * _WIDTH;
+                    _mouse_pos_on_latest_press[1] = m_y * _HEIGHT;
+				}
+            }
+            break;
+            case SDL_FINGERDOWN: {
+                float m_x = e.tfinger.x, m_y = e.tfinger.y;
+				SDL_Log("pressed KALLE fingerdown");
+                if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
+                    _keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
+                    _keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
+                } else {
+                    _mouse_btn_pressed_this_frame[0] = true;
+					_mouse_btn_down[0] = true;
+                    _mouse_pos_on_latest_press[0] = m_x * _WIDTH;
+                    _mouse_pos_on_latest_press[1] = m_y * _HEIGHT;
+                }
+            }
+            break;
+            case SDL_FINGERUP: {
+                float m_x = e.tfinger.x, m_y = e.tfinger.y;
+                if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
+                    _keys_down[SDL_SCANCODE_A] = false;
+                    _keys_down[SDL_SCANCODE_D] = false;
+                    _keys_down[SDL_SCANCODE_W] = false;
+                    _keys_down[SDL_SCANCODE_S] = false;
+                } else {
+					_mouse_btn_down[0] = false; // no shooting
+				}
+            }
+            break;
+            case SDL_MULTIGESTURE: {
+				//_mouse_btn_pressed_this_frame[0] = false;
+				SDL_Log("KALLE pressed multigest: %d", e.mgesture.numFingers);
+                switch (e.mgesture.numFingers) {
+                    case 2:
+
+                        break;
+                    case 3:
+                        _mouse_btn_pressed_this_frame[2] = true;
+						_mouse_btn_down[2] = true;
+                        break;
+                    case 4:
+                        _mouse_btn_down[2] = false;
+                        break;
+                    case 5:
+                        //_keys_frame[SDL_SCANCODE_E] = true;
+						_mouse_scroll = 1;
+                        break;
+                }
+            }
+            break;
+#endif
+            }
+        }
 
 		// IMPORTANT EVENTS, FROM CLICKING
 		//if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }

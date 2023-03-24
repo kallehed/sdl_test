@@ -163,7 +163,7 @@ void Camera::edit_logic(Game& g)
 			// mouse x and y, on screen
 			int m_x;
 			int m_y;
-			Uint32 buttons = g.getMouseState(&m_x, &m_y);
+			g.getMouseState(&m_x, &m_y);
 
 			// real x and y, on map
 			float r_x = _x + m_x;
@@ -173,14 +173,14 @@ void Camera::edit_logic(Game& g)
 				// scroll _edit
 				scroll_enum(g, _edit_tile, TILE::TOTAL);
 
-				if ((buttons & SDL_BUTTON_LMASK) != 0) {
+				if (g._mouse_btn_down[0]) { // left mouse down
 					g._tile_handler.place_tile(g, _edit_tile, m_x, m_y);
 					g._tile_handler.place_tex(g, _edit_tex, m_x, m_y);
 				}
 			}
 			else if (_edit_mode == EDIT_MODE::TEX) {
 				scroll_enum(g, _edit_tex, TEX::TOTAL);
-				if ((buttons & SDL_BUTTON_LMASK) != 0) {
+				if (g._mouse_btn_down[0]) {
 					g._tile_handler.place_tex(g, _edit_tex, m_x, m_y);
 				}
 			}
@@ -466,8 +466,9 @@ void Camera::load_from_file(Game& g, int level)
 		SDL_Log("testing KALLE FAILED TO LOAD RWOPS FILE");
 		return;
 	}
-	char name[500000];
-	io->read(io, name, sizeof (name), 1);
+	const int len = 1000000;
+	char* name = new char[len]();
+	io->read(io, name, len, 1);
 	std::stringstream f;
 	f << name;
 #else
@@ -512,7 +513,7 @@ void Camera::load_from_file(Game& g, int level)
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (std::getline(f, t)) {
-		SDL_Log("KALLE log: %s", t.c_str());
+		//SDL_Log("KALLE log: %s", t.c_str());
 		// Output the text from the file
 		if (t == "TILE") {
 			while (t != "END") {
@@ -693,6 +694,8 @@ void Camera::load_from_file(Game& g, int level)
 #ifndef __ANDROID__
 	// Close the file
 	f.close();
+#else
+	delete [] name;
 #endif
 }
 
