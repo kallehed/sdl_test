@@ -68,7 +68,7 @@ public:
 		"Just a         \ntip";
 	int _NPC_3_TOTAL_CHARS = 135;
 
-	char _NPC_4_TEXT[436] =
+	char _NPC_4_TEXT[434] =
 		"*snacking*\0"
 		"*fumbling*\0"
 		"*resting*\0"
@@ -77,11 +77,11 @@ public:
 		"How ...           \nWell timed.\0"
 		"It seems you still\ncontinue to exist?\0"
 		"I would advice to continue\0"
-		"But, do threat, for there is a\ngreat danger forthcoming...\0"
+		"But, do fret, for there is a\ngreat danger forthcoming...\0"
 		"A dangerous monstrosity of\na monster...\0"
 		"Only a brave warrior like\nyourself could be thought\nto challenge it!\0"
 		"So do go ahead, but\nwith a great deal of anxiety...";
-	int _NPC_4_TOTAL_CHARS = 436;
+	int _NPC_4_TOTAL_CHARS = 434;
 
 	char _NPC_SUS_SELLER_TEXT[211] =
 		"Hey...\0"
