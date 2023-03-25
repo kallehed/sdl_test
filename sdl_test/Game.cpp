@@ -248,6 +248,11 @@ Game::Game()
 	
 	SDL_RenderSetLogicalSize(_renderer, _WIDTH, _HEIGHT);
 
+	{
+		SDL_Surface* s = IMG_Load("data/icons/icon.png");
+		SDL_SetWindowIcon(_window, s);
+	}
+
 	_cam.load_from_file(*this, _level);
 }
 
