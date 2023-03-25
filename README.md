@@ -29,7 +29,6 @@ If you want to try the level editor, change the boolean **DEV** in enum.h to tru
 | at releases,  it's just an exe |
 | with some accompanying files; basically. |
 
-**Only for windows currently though**
 
 # Screenshots:
 ![first](./sdl_test/screenshots/first.png)
