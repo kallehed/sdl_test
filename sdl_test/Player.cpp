@@ -174,6 +174,7 @@ bool Player::logic(Game& g)
 						g._entity_handler._entities_to_add.push_back(e);
 
 						g.play_sound(SOUND::Fire);
+						vibrate_phone(3);
 					}
 				}
 				break;

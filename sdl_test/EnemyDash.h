@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "General.h"
 
-class EnemyDash : public Enemy {
+class EnemyDash final : public Enemy {
 private:
 	ENEMY_DASH_STATE _state = ENEMY_DASH_STATE::WAITING;
 
@@ -17,6 +17,6 @@ public:
 
 	EnemyDash(float x, float y);
 	void draw(Game& g) override;
-	void active_logic(Game& g);
+	void active_logic(Game& g) override;
 };
 

@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-class EnemyShooter : public Enemy {
+class EnemyShooter final : public Enemy {
 private:
 	float _shoot_timer = 0.f;
 public:
@@ -10,6 +10,6 @@ public:
 
 	EnemyShooter(float x, float y);
 	void draw(Game& g) override;
-	void active_logic(Game& g);
+	void active_logic(Game& g) override;
 };
 

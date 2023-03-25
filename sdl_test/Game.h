@@ -20,11 +20,13 @@
 
 // Draw circle
 void draw_circle(SDL_Renderer*, float x, float y, float radius, SDL_Color);
+// Vibrates the phone, ONLY if on a phone
+void vibrate_phone(int millis);
 
 class Game {
 public:
 	static constexpr int _HEIGHT = 600;
-	static constexpr int _WIDTH = (int)(_HEIGHT * 1.77777777); // for screen
+	static constexpr int _WIDTH = (int)(_HEIGHT * 1.777777777777); // for screen
 
 	// for android, should be in lower left corner of screen
 	static constexpr int _MOVEBOX_LEN = 200;

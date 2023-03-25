@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "General.h"
 
-class EnemyBasic : public Enemy {
+class EnemyBasic final : public Enemy {
 private:
 	float _active_timer = 3000.f * General::randf01();
 	

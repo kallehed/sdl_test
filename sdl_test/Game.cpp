@@ -286,6 +286,32 @@ void Game::close_game()
 	SDL_Quit();
 }
 
+#ifdef __ANDROID__
+#include <SDL_system.h>
+#include <jni.h>
+
+void vibrate_phone(int millis)
+{
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject activity = (jobject)SDL_AndroidGetActivity();
+	jclass activityclass = env->GetObjectClass(activity);
+
+	jclass contextClass = env->GetObjectClass(activity);
+	jstring serviceName = env->NewStringUTF("vibrator");
+	jstring serviceString = (jstring)env->CallObjectMethod(activity, env->GetMethodID(contextClass, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;"), serviceName);
+	jclass serviceClass = env->GetObjectClass(serviceString);
+	jmethodID vibrateMethod = env->GetMethodID(serviceClass, "vibrate", "(J)V");
+
+	jlong duration = millis;
+	env->CallVoidMethod(serviceString, vibrateMethod, duration);
+}
+
+#else
+void vibrate_phone(int millis) {
+	// Do nothing
+}
+#endif
+
 void Game::game_loop()
 {
 	bool running = true;
@@ -400,6 +426,12 @@ void Game::game_loop()
 #else
 #define KALLE_GET_MOUSE_VARS float m_x = e.tfinger.x * _WIDTH, m_y = e.tfinger.y * _HEIGHT;
 #define KALLE_MOUSE_IN_MOVEMENT_ZONE (m_x<= _MOVEBOX_LEN && m_y >= (_HEIGHT-_MOVEBOX_LEN))
+#define KALLE_MOVE_IN_MOVEMENT_ZONE \
+		if (m_x <= _MOVEBOX_PART) _keys_down[SDL_SCANCODE_A] = true; \
+		else if (m_x >= 2.f*_MOVEBOX_PART) _keys_down[SDL_SCANCODE_D] = true;\
+		if (m_y <= _HEIGHT - 2.f*_MOVEBOX_PART) _keys_down[SDL_SCANCODE_W] = true;\
+		else if (m_y >= _HEIGHT - _MOVEBOX_PART) _keys_down[SDL_SCANCODE_S] = true;\
+
             case SDL_FINGERMOTION:
 			{
                 KALLE_GET_MOUSE_VARS
@@ -409,17 +441,16 @@ void Game::game_loop()
                     _keys_down[SDL_SCANCODE_A] = false;
                     _keys_down[SDL_SCANCODE_S] = false;
                     _keys_down[SDL_SCANCODE_D] = false;
-                    //_keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
-                    //_keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
-					if (m_x <= _MOVEBOX_PART) _keys_down[SDL_SCANCODE_A] = true;
-					else if (m_x >= 2.f*_MOVEBOX_PART) _keys_down[SDL_SCANCODE_D] = true;
 
-                    if (m_y <= _HEIGHT - 2.f*_MOVEBOX_PART) _keys_down[SDL_SCANCODE_W] = true;
-					else if (m_y >= _HEIGHT - _MOVEBOX_PART) _keys_down[SDL_SCANCODE_S] = true;
+					KALLE_MOVE_IN_MOVEMENT_ZONE
+
                 } else {
 					_mouse_pos[0] = m_x;
                     _mouse_pos[1] = m_y;
+
 				}
+				// calling java to vibrate
+
             }
             break;
             case SDL_FINGERDOWN:
@@ -427,8 +458,9 @@ void Game::game_loop()
                 KALLE_GET_MOUSE_VARS
 				SDL_Log("pressed KALLE fingerdown");
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
-                    //_keys_down[(((m_x < 0.125f) ? (SDL_SCANCODE_A) : (SDL_SCANCODE_D)))] = true;
-                    //_keys_down[(((m_y < 0.875f) ? (SDL_SCANCODE_W) : (SDL_SCANCODE_S)))] = true;
+                    KALLE_MOVE_IN_MOVEMENT_ZONE
+					_keys_down[SDL_SCANCODE_LSHIFT] = true;
+					_keys_frame[SDL_SCANCODE_LSHIFT] = true;
                 } else {
                     _mouse_btn_pressed_this_frame[0] = true;
 					_mouse_btn_down[0] = true;
@@ -439,12 +471,12 @@ void Game::game_loop()
             break;
             case SDL_FINGERUP:
 			{
-                KALLE_GET_MOUSE_VARS
+				KALLE_GET_MOUSE_VARS
                 if (KALLE_MOUSE_IN_MOVEMENT_ZONE) {
-                    _keys_down[SDL_SCANCODE_A] = false;
-                    _keys_down[SDL_SCANCODE_D] = false;
                     _keys_down[SDL_SCANCODE_W] = false;
+                    _keys_down[SDL_SCANCODE_A] = false;
                     _keys_down[SDL_SCANCODE_S] = false;
+                    _keys_down[SDL_SCANCODE_D] = false;
                 } else {
 					_mouse_btn_down[0] = false; // no shooting
 				}
@@ -487,7 +519,6 @@ void Game::game_loop()
 		}
 
 		// IMPORTANT EVENTS, FROM CLICKING
-		//if (_keys_frame[SDL_SCANCODE_ESCAPE]) { running = false; }
 		if constexpr (DEV::DEV) {
 			if (_keys_frame[SDL_SCANCODE_K]) {
 				if (_edit_mode == false) {
@@ -583,14 +614,21 @@ void Game::game_logic()
 template <bool EDIT>
 void Game::game_draw()
 {
-#ifdef __ANDROID__
-	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
-#else
-	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
-#endif
-	
-	
-	SDL_RenderClear(_renderer);
+
+	// there should be a white background on GAMEPLAY parts of the screen
+	// because sometimes flowers are used as a background
+	// other parts default to black, because it's better QOL when playing at night
+	// so better generally.
+	{
+		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
+		SDL_RenderClear(_renderer);
+
+		SDL_Rect rect = {0,0, _WIDTH, _HEIGHT};
+		SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+		SDL_RenderFillRect(_renderer, &rect);
+	}
+
+
 
 	if constexpr (EDIT) { // exclusive edit-things-to-draw
 		_cam.draw_grid(*this); // grid
@@ -608,6 +646,7 @@ void Game::game_draw()
 	}
 
 #ifdef __ANDROID__
+	// bottom left transparent movement box
     {
         SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 75);
 		const SDL_Rect r = {0, _HEIGHT - _MOVEBOX_LEN, _MOVEBOX_LEN, _MOVEBOX_LEN};

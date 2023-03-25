@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "General.h"
 
-class EnemyJump : public Enemy {
+class EnemyJump final : public Enemy {
 private:
 	ENEMY_JUMP_STATE _state = ENEMY_JUMP_STATE::WAITING;
 
@@ -21,7 +21,7 @@ public:
 
 	EnemyJump(float x, float y);
 	void draw(Game& g) override;
-	void active_logic(Game& g);
+	void active_logic(Game& g) override;
 	void insert_to_intersect(EntityHandler& entitiy_handler) override final;
 };
 

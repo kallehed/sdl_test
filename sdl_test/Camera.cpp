@@ -32,6 +32,8 @@ void Camera::shake(Game& g, float divider, float intensity)
 {
 	_shake_divider = divider; // completly replace possible previous shaking
 	_shake_intensity += intensity;
+
+	vibrate_phone((int)((intensity > 20.f) ? (intensity / 2.f) : (intensity)));
 }
 
 int Camera::convert_x(int x) const {

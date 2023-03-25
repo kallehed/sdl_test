@@ -33,6 +33,8 @@ public:
 
 	void construct(Game& g);
 
+	// intensity from 10(pretty low) to 100(max pain) seems to have been used by me
+	// basically consider that the standard lol
 	void shake(Game& g, float divider, float intensity);
 
 	int convert_x(int x) const;
