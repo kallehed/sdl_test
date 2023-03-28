@@ -1,18 +1,27 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(SDL2Test)
+project(SDL2Test LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
+set(SOURCES AStarNode.cpp Bomb.cpp Bonfire.cpp Boss2.cpp BossBody.cpp Button.cpp Buyable.cpp Camera.cpp Chest.cpp Door.cpp EnemyBasic.cpp Enemy.cpp EnemyDash.cpp EnemyHandler.cpp EnemyJump.cpp EnemyShooter.cpp EntityHandler.cpp Explosion.cpp FireMagic.cpp Game.cpp General.cpp main.cpp MovingRect.cpp Npc.cpp Particle.cpp Pickupable.cpp Player.cpp Portal.cpp Rect.cpp SaveState.cpp Shot.cpp TileHandler.cpp)
 
-find_package(SDL2_image REQUIRED)
+# if building shared libs, assume above CMake file has loaded the libraries shared
+# otherwise get all the packages from package manager and build executable
 
-find_package(SDL2_ttf REQUIRED)
+if(BUILD_SHARED_LIBS)
+	add_library(main SHARED)
+	target_sources(main PRIVATE ${SOURCES})
 
-find_package(SDL2_mixer REQUIRED)
+	target_link_libraries(main SDL2 SDL2_image SDL2_mixer SDL2_ttf)
+else()
+	find_package(SDL2 REQUIRED)
+	include_directories(${SDL2_INCLUDE_DIRS})
 
+	find_package(SDL2_image REQUIRED)
+	find_package(SDL2_ttf REQUIRED)
+	find_package(SDL2_mixer REQUIRED)
 
-add_executable(SDL2Test AStarNode.cpp Bomb.cpp Bonfire.cpp Boss2.cpp BossBody.cpp Button.cpp Buyable.cpp Camera.cpp Chest.cpp Door.cpp EnemyBasic.cpp Enemy.cpp EnemyDash.cpp EnemyHandler.cpp EnemyJump.cpp EnemyShooter.cpp EntityHandler.cpp Explosion.cpp FireMagic.cpp Game.cpp General.cpp main.cpp MovingRect.cpp Npc.cpp Particle.cpp Pickupable.cpp Player.cpp Portal.cpp Rect.cpp SaveState.cpp Shot.cpp TileHandler.cpp)
-target_link_libraries(SDL2Test ${SDL2_LIBRARIES} SDL2_mixer SDL2_image SDL2_ttf)
+	add_executable(SDL2Test ${SOURCES})
+	target_link_libraries(SDL2Test ${SDL2_LIBRARIES} SDL2_mixer SDL2_image SDL2_ttf)
+endif()
