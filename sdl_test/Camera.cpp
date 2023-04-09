@@ -37,11 +37,11 @@ void Camera::shake(Game& g, float divider, float intensity)
 }
 
 int Camera::convert_x(int x) const {
-	return (float)x - _x;
+	return int(std::ceil(((double)x - _x)));
 }
 
 int Camera::convert_y(int y) const {
-	return (float)y - _y;
+	return (double)y - _y;
 }
 
 int Camera::convert_x_to_j(float x)
@@ -57,27 +57,27 @@ int Camera::convert_y_to_i(float y)
 void Camera::play_logic(Game& g)
 {
 	Player& p = g._entity_handler._p;
-	float tarx = p.mid_x() - g._WIDTH / 2.f;
-	float tary = p.mid_y() - g._HEIGHT / 2.f;
+	double tarx = p.mid_x() - g._WIDTH / 2.f;
+	double tary = p.mid_y() - g._HEIGHT / 2.f;
 
-	float speed = 0.2f;
-	float x_change = (tarx - _x) * speed;
-	float y_change = (tary - _y) * speed;
+	double speed = 0.2f;
+	double x_change = (tarx - _x) * speed;
+	double y_change = (tary - _y) * speed;
 
 	// limit too small camera movements
-	static const float mov_boundary = 1.f;
-	if (std::abs(x_change) > mov_boundary)
+	static const double mov_boundary = 1.f;
+	//if (std::abs(x_change) > mov_boundary)
 		_x += x_change;
-	if (std::abs(y_change) > mov_boundary)
+	//if (std::abs(y_change) > mov_boundary)
 		_y += y_change;
-
+		
 	//if (_shake_timer > 0.f) {
 		//_shake_timer -= g._dt;
 
-	_x += (General::randf01()*2.f - 1.f) * _shake_intensity;
-	_y += (General::randf01()*2.f - 1.f) * _shake_intensity;
+	_x += (General::randf01()*2.0 - 1.0) * _shake_intensity;
+	_y += (General::randf01()*2.0 - 1.0) * _shake_intensity;
 	_shake_intensity /= _shake_divider;
-	_shake_intensity = std::max(0.f, _shake_intensity);
+	_shake_intensity = std::max(0.0, _shake_intensity);
 
 	//}
 
@@ -85,18 +85,18 @@ void Camera::play_logic(Game& g)
 	if (_y < 0) _y = 0;
 
 	// player should ALWAYS be on screen, allows pushing of screen if possible.
-	float max_x = std::max(_max_x, p._x + p._w - g._WIDTH);
-	float max_y = std::max(_max_y, p._y + p._h - g._HEIGHT);
+	double max_x = std::max(_max_x, (double)p._x + p._w - g._WIDTH);
+	double max_y = std::max(_max_y, (double)p._y + p._h - g._HEIGHT);
 	if (_x > max_x) _x = max_x;
 	if (_y > max_y) _y = max_y;
 	
 	// make coordinates NOT too floaty
-	const float dec = 1.f;
+	/*const float dec = 1.f;
 	_x *= dec; _y *= dec;
 	_x = std::round(_x);
 	_y = std::round(_y);
 
-	_x /= dec; _y /= dec;
+	_x /= dec; _y /= dec;*/
 }
 
 template <typename T>
@@ -110,7 +110,7 @@ void Camera::edit_logic(Game& g)
 {
 	// movement
 	auto& keys = g._keys_down;
-	float speed = (!keys[SDL_SCANCODE_LSHIFT]) ? 0.65f : 2.3f;
+	double speed = (!keys[SDL_SCANCODE_LSHIFT]) ? 0.65 : 2.3;
 	
 	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D]) {
 		_x += speed * g._dt;

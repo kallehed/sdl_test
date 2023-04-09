@@ -32,26 +32,31 @@ void TileHandler::draw_textures(Game& g, int alpha)
 	int i_start = g._cam.convert_y_to_i(y);
 	int i_end = g._cam.convert_y_to_i((y + h - 0.01f)) + 1;
 
-	float r_w = g._cam._fgrid;
-	float r_h = g._cam._fgrid;
-	for (int i = i_start; i < i_end; ++i)
+	int r_y = g._cam.convert_y(i_start * g._cam._grid);
+	int start_r_x = g._cam.convert_x(j_start * g._cam._grid);
+
+	SDL_Rect rect = { 0,0, g._cam._grid, g._cam._grid };
+
+	for (int i = i_start; i < i_end; ++i, r_y += g._cam._grid)
 	{
-		for (int j = j_start; j < j_end; ++j)
+		float r_x = start_r_x;
+		for (int j = j_start; j < j_end; ++j, r_x += g._cam._grid)
 		{
 			TEX::TEX tex = this->get_tile_tex(i, j);
-			int r_x = g._cam.convert_x(g._cam._grid * j);
-			int r_y = g._cam.convert_y(g._cam._grid * i);
-			SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
+			//int r_x = g._cam.convert_x(g._cam._grid * j);
+			//int r_y = g._cam.convert_y(g._cam._grid * i);
+			rect.x = r_x;
+			rect.y = r_y;
+			
 			SDL_SetTextureAlphaMod(g._textures[_background_tile],alpha);
 			SDL_RenderCopy(g._renderer, g._textures[_background_tile], NULL, &rect);
-			
+			//SDL_RenderCopy(g._renderer, g._textures[TEX::Bush], NULL, &rect);
+
 			TILE::TILE tile = this->get_tile_type(i, j);
 			if (tex > TEX::VOID) {
-				int r_x = g._cam.convert_x(g._cam._grid * j);
-				int r_y = g._cam.convert_y(g._cam._grid * i);
 				if (tile < TILE::TRI_NE) {
 
-					SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
+					//SDL_Rect rect = { r_x, r_y, g._cam._grid, g._cam._grid };
 					SDL_SetTextureAlphaMod(g._textures[tex], alpha);
 					SDL_RenderCopy(g._renderer, g._textures[tex], NULL, &rect);
 				}

@@ -6,7 +6,8 @@ class Game;
 
 class TileHandler {
 public:
-	static constexpr int _len = 100;
+	// how big the levels can be
+	static constexpr int _len = 100; 
 	// _tiles represents functionality
 	std::array<std::array<TILE::TILE, _len>, _len> _tiles;
 	std::array<std::array<TEX::TEX, _len>, _len> _texs;

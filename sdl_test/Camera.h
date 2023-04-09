@@ -9,8 +9,8 @@ struct SDL_Color;
 
 class Camera {
 public:
-	float _x = 0.f;
-	float _y = 0.f;
+	double _x = 0.0;
+	double _y = 0.0;
 	const int _grid = 55;
 	const float _fgrid = (float)_grid;
 
@@ -25,11 +25,11 @@ public:
 	CAM_VIEW::CAM_VIEW _cam_view = CAM_VIEW::TEX;
 
 	// shaking
-	float _shake_divider = 1.5f; // shake intensity will be divided by _shake_divider every frame
-	float _shake_intensity = 1.f;
+	double _shake_divider = 1.5f; // shake intensity will be divided by _shake_divider every frame
+	double _shake_intensity = 1.f;
 
-	float _max_x = 0.f;
-	float _max_y = 0.f;
+	double _max_x = 0.f;
+	double _max_y = 0.f;
 
 	void construct(Game& g);
 

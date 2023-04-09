@@ -108,7 +108,8 @@ Game::Game()
 		std::cin.get(); // stop
 	}
 
-	{ // load images
+	// load images
+	{ 
 		constexpr const char* paths[TEX::TOTAL] = {
 			"data/images/FireMagic.png",
 			"data/images/BombExplosion.png",
@@ -248,6 +249,7 @@ Game::Game()
 	
 	SDL_RenderSetLogicalSize(_renderer, _WIDTH, _HEIGHT);
 
+	// icon 
 	{
 		SDL_Surface* s = IMG_Load("data/icons/icon.png");
 		SDL_SetWindowIcon(_window, s);
