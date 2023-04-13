@@ -1,6 +1,11 @@
 #include "Game.h"
 #include "Npc.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
+
 void draw_circle(SDL_Renderer* renderer, float x, float y, float radius, SDL_Color c)
 {
 	constexpr int points = 31; // points on circle radius
@@ -90,11 +95,15 @@ Game::Game()
 		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	//SDL_SetWindowSize(_window, _WIDTH, _HEIGHT);
 	
+#ifndef __EMSCRIPTEN__
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	//_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+#else
+	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+#endif
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 
-	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+
+	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
@@ -258,9 +267,20 @@ Game::Game()
 	_cam.load_from_file(*this, _level);
 }
 
+#ifdef __EMSCRIPTEN__
+void emscript_loop(void* arg) {
+	Game* game = (Game*)arg;
+	game->game_loop();
+}
+#endif
+
 void Game::start_game()
 {
+#ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop_arg(emscript_loop, (void*)this, 60, true);
+#else
 	game_loop();
+#endif
 }
 
 void Game::close_game()
@@ -323,7 +343,9 @@ void Game::game_loop()
 {
 	bool running = true;
 	SDL_Event e;
+#ifndef __EMSCRIPTEN__
 	while (running) {
+#endif
 		Uint64 start_time = SDL_GetPerformanceCounter();
 
 		// reset variables only relevant for the frame
@@ -589,6 +611,7 @@ void Game::game_loop()
 			_change_level = false; // JUST IN CASE
 		}
 
+#ifndef __EMSCRIPTEN__
 		//std::cout << std::endl << "frame time MS " << _dt << std::endl;
 		if (_ticks % 60 == 0) {
 			//if (_dt != 0.f) std::cout << "fps: " << (int)(1000 / (_dt)) << std::endl;
@@ -596,13 +619,15 @@ void Game::game_loop()
 		_dt = 1000.f * (SDL_GetPerformanceCounter() - start_time) / ((float)SDL_GetPerformanceFrequency());
 		SDL_Delay(std::min((Uint32)30,std::max((Uint32)0,(Uint32)floor(16.666f - _dt))));
 		//_dt = std::min(_MAX_DT, _dt); // no less than 60 fps simulated.
+#endif
 		_dt = _MAX_DT;
 		_dt *= _slow_motion_factor;
 		_slow_motion_factor += 0.02f;
 		_slow_motion_factor = std::min(1.f, _slow_motion_factor);
-
 		++_ticks;
+#ifndef __EMSCRIPTEN__
 	}
+#endif
 }
 
 void Game::game_logic()
