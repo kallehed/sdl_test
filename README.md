@@ -1,3 +1,5 @@
+Play it in the browser: [HERE](https://kallehed.github.io/sdl_test/page)
+
 # Legend of the Banana Man
 First created simply as 'sdl_test'.
 
