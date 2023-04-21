@@ -130,6 +130,11 @@
       <div class=emscripten id=status>Downloading...</div>
       <div class=emscripten><progress hidden id=progress max=100 value=0></progress></div>
       <div class=emscripten_border><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas></div>
+	
+	<script>
+        	window.onclick = function () {window.focus();};
+    	</script>
+	
       <script>
         var statusElement = document.getElementById("status"),
           progressElement = document.getElementById("progress"),
